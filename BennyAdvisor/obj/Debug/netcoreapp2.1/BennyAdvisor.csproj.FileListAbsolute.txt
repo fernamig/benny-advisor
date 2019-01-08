@@ -68,3 +68,4 @@
 /Users/miguel/Projects/BennyAdvisor/benny-advisor/BennyAdvisor/obj/Debug/netcoreapp2.1/BennyAdvisor.dll
 /Users/miguel/Projects/BennyAdvisor/benny-advisor/BennyAdvisor/obj/Debug/netcoreapp2.1/BennyAdvisor.pdb
 /Users/miguel/Projects/BennyAdvisor/benny-advisor/BennyAdvisor/obj/Debug/netcoreapp2.1/BennyAdvisor.csproj.CopyComplete
+/Users/miguel/Projects/BennyAdvisor/benny-advisor/BennyAdvisor/obj/Debug/netcoreapp2.1/Razor/Pages/Advisor/MyStudents.g.cshtml.cs

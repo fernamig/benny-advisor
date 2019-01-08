@@ -1,0 +1,41 @@
+﻿@page
+@model MyStudentsModel
+
+<h3>My Students</h3>
+
+<div>
+    <input id="studentFilter" class="form-control" type="text" placeholder="Filter students..." />
+</div>
+
+<div class="mt-2">
+    <ul id="studentList" class="list-group">
+        @foreach (var s in Model.MyStudents)
+        {
+            <li class="list-group-item">
+                <a href="/Advisor/Student/@s.Id">
+                    <div class="row">
+                        <div class="col-1 p-1">
+                            <img class="rounded-circle img-fluid img-thumbnail" src="@s.ImagePath" />
+                        </div>
+                        <div class="col-11 p-1">
+                            <span class="d-none">@s.Id</span>
+                            <h6 class="m-0">@s.LastName, @s.FirstName</h6>
+                            <div>@s.Level - @s.DegreeName - @s.Major</div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        }
+    </ul>
+</div>
+
+@section Scripts {
+    <script>
+        $("#studentFilter").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#studentList > li").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    </script>
+}

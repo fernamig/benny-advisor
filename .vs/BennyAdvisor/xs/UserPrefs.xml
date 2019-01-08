@@ -1,14 +1,10 @@
 ﻿<Properties StartupConfiguration="{D2A0111A-E790-4B9A-B89B-4F8BF776A5C3}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="benny-advisor Status">
     <Files>
-      <File FileName="BennyAdvisor/Pages/Advisor/Index.cshtml" Line="42" Column="36" />
-      <File FileName="../../BennyAdvisor.1/BennyAdvisor/Pages/Advisor/Index.cshtml" Line="73" Column="1" />
-      <File FileName="../../BennyAdvisor.1/BennyAdvisor/Pages/Advisor/Index.cshtml.cs" Line="48" Column="1" />
-      <File FileName="BennyAdvisor/Pages/Advisor/Index.cshtml.cs" Line="47" Column="28" />
-      <File FileName="../../BennyAdvisor.1/BennyAdvisor/Models/Models.cs" Line="36" Column="1" />
-      <File FileName="BennyAdvisor/Models/StudentModel.cs" Line="5" Column="11" />
-      <File FileName="BennyAdvisor/Models/AppointmentModel.cs" Line="5" Column="34" />
-      <File FileName="BennyAdvisor/wwwroot/css/site.css" Line="103" Column="31" />
+      <File FileName="BennyAdvisor/Pages/Advisor/MyStudents.cshtml.cs" Line="12" Column="6" />
+      <File FileName="BennyAdvisor/Pages/Advisor/MyStudents.cshtml" Line="16" Column="38" />
+      <File FileName="../../BennyAdvisor.1/BennyAdvisor/Pages/Advisor/Student/Search.cshtml" Line="37" Column="1" />
+      <File FileName="BennyAdvisor/Pages/Advisor/Index.cshtml.cs" Line="56" Column="1" />
       <File FileName="benny-advisor Status" />
     </Files>
   </MonoDevelop.Ide.Workbench>
