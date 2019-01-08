@@ -41,9 +41,9 @@ body {
     height: 60px;
 }
 
-    .navbar-fixed-top > .navbar-brand > img {
-        width: 170px;
-    }
+.navbar-fixed-top > .navbar-brand > img {
+    width: 170px;
+}
 
 .side-bar {
     color: black;
@@ -94,4 +94,23 @@ body {
     margin-left: 4px;
     top: -6px;
     position: relative;
+}
+
+/* Cards */
+
+.card.bg-primary .row {
+    color: #004085;
+    background-color: #cce5ff;
+    border-bottom: 2px solid #b8daff;
+}
+
+.card.bg-danger .row {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-bottom: 2px solid #f5c6cb;
+}
+
+.card .col-middle {
+    display: flex;
+    align-items: center;
 }

@@ -1,4 +1,59 @@
 ﻿@page
 @model IndexModel
-@{
-}
+
+<div class="row">
+    <div class="col">
+        <div class="card bg-primary">
+            <h5 class="card-header text-white">Upcoming Appointments</h5>
+            @foreach (var a in Model.UpcomingAppointments)
+            {
+                <div class="row m-0">
+                    <div class="col-4 p-1 col-middle">
+                        <img class="rounded-circle img-fluid img-thumbnail" src="@a.Student.ImagePath" />
+                    </div>
+                    <div class="col-8 p-1">
+                        <div class="mt-0">@a.DateTime</div>
+                        <div class="">@a.Student.LastName, @a.Student.FirstName</div>
+                        <div class="text-muted">@a.Agenda</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-white bg-primary">
+            <h5 class="card-header">Recent Appointments</h5>
+            @foreach (var a in Model.RecentAppointments)
+            {
+                <div class="row m-0">
+                    <div class="col-4 p-1 col-middle">
+                        <img class="rounded-circle img-fluid img-thumbnail" src="@a.Student.ImagePath" />
+                    </div>
+                    <div class="col-8 p-1">
+                        <div class="mt-0">@a.DateTime</div>
+                        <div class="">@a.Student.LastName, @a.Student.FirstName</div>
+                        <div class="text-muted">@a.Agenda</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-white bg-danger">
+            <h5 class="card-header">Flagged Students</h5>
+            @foreach (var s in Model.FlaggedStudents)
+            {
+                <div class="row m-0">
+                    <div class="col-4 p-1 col-middle">
+                        <img class="rounded-circle img-fluid img-thumbnail" src="@s.ImagePath" />
+                    </div>
+                    <div class="col-8 p-1">
+                        <div class="mt-0">@s.LastName, @s.FirstName</div>
+                        <div class="">@s.DegreeName</div>
+                        <div class="text-muted">@s.Level</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

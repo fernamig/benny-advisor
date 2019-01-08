@@ -11,5 +11,6 @@
   <ItemGroup>
     <Folder Include="Pages\Advisor\" />
     <Folder Include="Pages\Student\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>
