@@ -150,3 +150,176 @@ function tabCoursePlanInit() {
 
     $("#tabCoursePlanContainer").html($(tmpl.render(data)));
 }
+
+
+//
+// Timeline tab.
+//
+
+function tabTimelineInit() {
+    var tmpl = $.templates("#timelineTmpl");
+    
+    // TODO: Load data by ajax get.
+    var data = [
+    {
+        title: "Fall 2018 to Spring 2019",
+        terms: [{
+            bgClass: "bg-info",
+            termCode: "20193",
+            termTitle: "2019 Winter",
+            termGpa: "3.3",
+            termCredit: "12",
+            courses: [{
+                code: "X",
+                title: "Sample Course",
+                grade: "4.0",
+                credit: 3
+            },
+            {
+                code: "X2",
+                title: "Another Course",
+                grade: "4.0",
+                credit: 3
+            },
+            {
+                code: "X3",
+                title: "One More Course",
+                grade: "4.0",
+                credit: 3
+            }]
+        },
+        {
+            bgClass: "bg-primary",
+            termCode: "20193",
+            termTitle: "2019 Winter",
+            termGpa: "3.3",
+            termCredit: "12",
+            courses: [{
+                code: "X",
+                title: "Sample Course",
+                grade: "4.0",
+                credit: 3
+            },
+            {
+                code: "X2",
+                title: "Another Course",
+                grade: "4.0",
+                credit: 3
+            },
+            {
+                code: "X3",
+                title: "One More Course",
+                grade: "4.0",
+                credit: 3
+                }]
+        },
+        {
+            bgClass: "bg-secondary",
+            termCode: "20193",
+            termTitle: "2019 Winter",
+            termGpa: "3.3",
+            termCredit: "12",
+            courses: [{
+                code: "X",
+                title: "Sample Course",
+                grade: "4.0",
+                credit: 3
+            },
+            {
+                code: "X2",
+                title: "Another Course",
+                grade: "4.0",
+                credit: 3
+            },
+            {
+                code: "X3",
+                title: "One More Course",
+                grade: "4.0",
+                credit: 3
+                }]
+        }
+        ]
+    },
+    {
+        title: "Fall 2018 to Spring 2019",
+        terms: [{
+            bgClass: "bg-info",
+            termCode: "20193",
+            termTitle: "2019 Winter",
+            termGpa: "3.3",
+            termCredit: "12",
+            courses: [{
+                code: "X",
+                title: "Sample Course",
+                grade: "4.0",
+                credit: 3
+            },
+            {
+                code: "X2",
+                title: "Another Course",
+                grade: "4.0",
+                credit: 3
+            },
+            {
+                code: "X3",
+                title: "One More Course",
+                grade: "4.0",
+                credit: 3
+            }]
+        },
+        {
+            bgClass: "bg-primary",
+            termCode: "20193",
+            termTitle: "2019 Winter",
+            termGpa: "3.3",
+            termCredit: "12",
+            courses: [{
+                code: "X",
+                title: "Sample Course",
+                grade: "4.0",
+                credit: 3
+            },
+            {
+                code: "X2",
+                title: "Another Course",
+                grade: "4.0",
+                credit: 3
+            },
+            {
+                code: "X3",
+                title: "One More Course",
+                grade: "4.0",
+                credit: 3
+                }]
+        },
+        {
+            bgClass: "bg-secondary",
+            termCode: "20193",
+            termTitle: "2019 Winter",
+            termGpa: "3.3",
+            termCredit: "12",
+            courses: [{
+                code: "X",
+                title: "Sample Course",
+                grade: "4.0",
+                credit: 3
+            },
+            {
+                code: "X2",
+                title: "Another Course",
+                grade: "4.0",
+                credit: 3
+            },
+            {
+                code: "X3",
+                title: "One More Course",
+                grade: "4.0",
+                credit: 3
+                }]
+        }
+        ]
+    }
+    ];
+
+    $("#tabTimelineContainer").html($(tmpl.render(data)));
+}
