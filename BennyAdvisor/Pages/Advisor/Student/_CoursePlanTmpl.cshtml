@@ -1,0 +1,43 @@
+﻿<script id="coursePlanTmpl" type="text/x-jsrender">
+    <div class="card mb-2 text-white {{:bgClass}}">
+        <h5 class="card-header">
+            <i class="fas fa-angle-up toggle-summary" onclick="$(parentNode.parentNode).toggleClass('show-summary')"></i>
+            {{:termTitle}}
+            &nbsp;<small>(GPA: {{:termGpa}}, Credit:  {{:termCredit}}, Courses: {{:courses.length}})</small>
+        </h5>
+        <div id="coursePlanTerm{{:termCode}}" class="container data-entry">
+            <div class="row font-weight-bold card-header px-0">
+                <div class="col-2">
+                    Status
+                </div>
+                <div class="col-6">
+                    Course
+                </div>
+                <div class="col-2 text-center">
+                    Grade
+                </div>
+                <div class="col-2 text-center">
+                    Credits
+                </div>
+            </div>
+            {{for courses tmpl="#coursePlanEntryTmpl" /}}
+        </div>
+    </div>
+</script>
+
+<script id="coursePlanEntryTmpl" type="text/x-jsrender">
+    <div class="row">
+        <div class="col-2">
+            ???
+        </div>
+        <div class="col-6">
+            {{:code}} {{:title}}
+        </div>
+        <div class="col-2 text-center">
+            {{:grade}}
+        </div>
+        <div class="col-2 text-center">
+            {{:credit}}
+        </div>
+    </div>
+</script>

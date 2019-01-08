@@ -116,9 +116,31 @@ body {
     border-bottom: 2px solid #bee5eb;
 }
 
+.card.bg-secondary .row {
+    color: #383d41;
+    background-color: #e2e3e5;
+    border-bottom: 2px solid #d6d8db;
+}
+
 .card .col-middle {
     display: flex;
     align-items: center;
+}
+
+/*
+ * Card summary toggle.
+ */
+
+.card.show-summary .toggle-summary {
+    transform: rotate(180deg);
+}
+
+.card.show-summary .data-entry {
+    display: none;
+}
+
+.card:not(.show-summary) .summary {
+    display: none;
 }
 
 /*
@@ -133,18 +155,6 @@ body {
 }
 
 .card-term:not(.bg-secondary) .show-grade {
-    display: none;
-}
-
-.card-term.show-summary .toggle-summary {
-    transform: rotate(180deg);
-}
-
-.card-term.show-summary .course {
-    display: none;
-}
-
-.card-term:not(.show-summary) .summary {
     display: none;
 }
 
@@ -169,7 +179,7 @@ body {
     color: lightskyblue !important;
 }
 
-.card-term .course {
+.card-term .data-entry {
     border-top: 1px solid rgba(0,0,0,.125);
 }
 
@@ -194,5 +204,9 @@ body {
 
 .container.student-details > .row > div:nth-child(1) {
     border-left: 1px solid #6c757d;
+}
+
+.tab-view {
+    display: none;
 }
 
