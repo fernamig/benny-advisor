@@ -110,7 +110,89 @@ body {
     border-bottom: 2px solid #f5c6cb;
 }
 
+.card.bg-info .row {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-bottom: 2px solid #bee5eb;
+}
+
 .card .col-middle {
     display: flex;
     align-items: center;
 }
+
+/*
+ * Term cards
+ */
+
+.card-term {
+    width: 290px;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.card-term:not(.bg-secondary) .show-grade {
+    display: none;
+}
+
+.card-term.show-summary .toggle-summary {
+    transform: rotate(180deg);
+}
+
+.card-term.show-summary .course {
+    display: none;
+}
+
+.card-term:not(.show-summary) .summary {
+    display: none;
+}
+
+.card-term.dragOver {
+    background-color: #c1f0cc !important;
+    border: dashed 3px #28a745;
+}
+
+.card-term.dragOver li {
+    background-color: #c1f0cc !important;
+}
+
+.card-term.bg-secondary .text-muted {
+    color: darkgray !important;
+}
+
+.card-term.bg-info .text-muted {
+    color: limegreen !important;
+}
+
+.card-term.bg-primary .text-muted {
+    color: lightskyblue !important;
+}
+
+.card-term .course {
+    border-top: 1px solid rgba(0,0,0,.125);
+}
+
+/*
+ * Student details
+ */
+    .container.student-details > .row > div:nth-child(1),
+    .container.student-details > .row > div:nth-child(3) {
+        background-color: #ffc107;
+    }
+
+.container.student-details > .row > div {
+    border-bottom: 1px solid #6c757d;
+    border-right: 1px solid #6c757d;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.container.student-details > .row:nth-child(1) > div {
+    border-top: 1px solid #6c757d;
+}
+
+.container.student-details > .row > div:nth-child(1) {
+    border-left: 1px solid #6c757d;
+}
+

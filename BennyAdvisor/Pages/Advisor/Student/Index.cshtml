@@ -1,0 +1,14 @@
+﻿@page "{id}"
+@model IndexModel
+
+<partial name="_StudentDetails.cshtml" for="Student" />
+
+<div class="tab-container">
+    <div id="tabSummary" class="tab-view">
+        <div id="tabSummaryContainer">
+            <partial name="_Spinner" />
+        </div>
+    </div>
+</div>
+
+<partial name="_SummaryTmpl.cshtml" />

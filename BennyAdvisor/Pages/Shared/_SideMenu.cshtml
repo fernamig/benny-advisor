@@ -11,7 +11,7 @@
     </li>
 
     <li class="nav-group">
-        <a asp-page="/Advisor/Student/Search">
+        <a asp-page="/Advisor/MyStudents">
             <i class="fas fa-search float-right"></i>My Students
         </a>
     </li>
@@ -23,13 +23,14 @@
                 <i class="fa fa-user float-right"></i>Student
             </a>
         </li>
-        <li class="nav-item" data-tab="tabCoursePlan"><a onclick="tabOnClick(this)">Course Plan</a></li>
-        <li class="nav-item" data-tab="tabTimeline"><a onclick="tabOnClick(this)">Timeline</a></li>
-        <li class="nav-item" data-tab="tabProgress"><a onclick="tabOnClick(this)">Progress</a></li>
-        <li class="nav-item" data-tab="tabAppointment"><a onclick="tabOnClick(this)">Make Appointment</a></li>
-        <li class="nav-item" data-tab="tabNotes"><a onclick="tabOnClick(this)">Notes</a></li>
-        <li class="nav-item" data-tab="tabScores"><a onclick="tabOnClick(this)">Test Scores</a></li>
-        <li class="nav-item" data-tab="tabTranscript"><a onclick="tabOnClick(this)">Unofficial Transcript</a></li>
+        <li class="nav-item" data-tab="tabSummary"><a onclick="tabClick(this)">Summary</a></li>
+        <li class="nav-item" data-tab="tabCoursePlan"><a onclick="tabClick(this)">Course Plan</a></li>
+        <li class="nav-item" data-tab="tabTimeline"><a onclick="tabClick(this)">Timeline</a></li>
+        <li class="nav-item" data-tab="tabProgress"><a onclick="tabClick(this)">Progress</a></li>
+        <li class="nav-item" data-tab="tabAppointment"><a onclick="tabClick(this)">Make Appointment</a></li>
+        <li class="nav-item" data-tab="tabNotes"><a onclick="tabClick(this)">Notes</a></li>
+        <li class="nav-item" data-tab="tabScores"><a onclick="tabClick(this)">Test Scores</a></li>
+        <li class="nav-item" data-tab="tabTranscript"><a onclick="tabClick(this)">Unofficial Transcript</a></li>
     }
 
     <li class="nav-group">
@@ -39,8 +40,8 @@
     </li>
     @if (activePage == "/Advisor/Cohort/Index")
     {
-        <li class="nav-item" data-tab="tabMyCohorts"><a onclick="tabOnClick(this)">My Cohorts</a></li>
-        <li class="nav-item" data-tab="tabManageCohorts"><a onclick="tabOnClick(this)">Manage Cohorts</a></li>
+        <li class="nav-item" data-tab="tabMyCohorts"><a onclick="tabClick(this)">My Cohorts</a></li>
+        <li class="nav-item" data-tab="tabManageCohorts"><a onclick="tabClick(this)">Manage Cohorts</a></li>
     }
 
     <li class="nav-group">
@@ -50,9 +51,9 @@
     </li>
     @if (activePage == "/Advisor/Resource/Index")
     {
-        <li class="nav-item" data-tab="tabFavorite"><a onclick="tabOnClick(this)">Favorite</a></li>
-        <li class="nav-item" data-tab="tabRecent"><a onclick="tabOnClick(this)">Recent</a></li>
-        <li class="nav-item" data-tab="tabFind"><a onclick="tabOnClick(this)">Find</a></li>
+        <li class="nav-item" data-tab="tabFavorite"><a onclick="tabClick(this)">Favorite</a></li>
+        <li class="nav-item" data-tab="tabRecent"><a onclick="tabClick(this)">Recent</a></li>
+        <li class="nav-item" data-tab="tabFind"><a onclick="tabClick(this)">Find</a></li>
     }
 
     <li class="nav-group">
@@ -62,8 +63,8 @@
     </li>
     @if (activePage == "/Advisor/MyProfile/Index")
     {
-        <li class="nav-item" data-tab="tabPreferences"><a onclick="tabOnClick(this)">Preferences</a></li>
-        <li class="nav-item" data-tab="tabRecent"><a onclick="tabOnClick(this)">Recent</a></li>
-        <li class="nav-item" data-tab="tabFind"><a onclick="tabOnClick(this">Find</a></li>
+        <li class="nav-item" data-tab="tabPreferences"><a onclick="tabClick(this)">Preferences</a></li>
+        <li class="nav-item" data-tab="tabRecent"><a onclick="tabClick(this)">Recent</a></li>
+        <li class="nav-item" data-tab="tabFind"><a onclick="tabClick(this">Find</a></li>
     }
 </ul>

@@ -1,0 +1,50 @@
+﻿<script id="termCardTmpl" type="text/x-jsrender">
+    <div class="card card-term text-white {{:bgClass}}" data-id="{{:termCode}}" data-title="{{:termTitle}}">
+        <div class="card-header font-weight-bold">
+            <i class="fas fa-angle-up toggle-summary" onclick="$(parentNode.parentNode).toggleClass('show-summary')"></i>
+            {{:termTitle}}
+            {{if !readonly}}
+            <button type="button" class="close float-right ml-3"
+                    aria-label="Remove Term" title="Remove Term"
+                    onclick="showRemoveTermModal({{:termCode}}, '{{:termTitle}}')">
+                <i class="fas fa-times"></i>
+            </button>
+            <button type="button" class="btn btn-success btn-sm float-right"
+                    aria-label="Add Course" title="Add Course"
+                    onclick="showAddCourseModal({{:termCode}})">
+                <i class="fa fa-plus fa-sm" aria-hidden="true"></i>&nbsp;Course
+            </button>
+            {{/if}}
+        </div>
+        {{for courses tmpl="#termCardCourseTmpl" /}}
+        <div class="p-3 summary">
+            <span class="termCourseCount">{{:courses.length}}</span> course(s)
+        </div>
+        <div class="card-footer">
+            <span class="float-left">
+                Credits: <span class="termCredits">{{:termCredits}}</span>
+                {{if !hideOverall}}
+                / <span class="totalCredits">{{:overallCredits}}</span>
+                {{/if}}
+            </span>
+            <span class="float-right">
+                {{if !hideGpa && termGpa}}
+                GPA: <span class="termGpa">{{:termGpa}}</span>
+                {{/if}}
+                {{if !hideOverall}}
+                / <span class="totalGpa">{{:overallGpa}}</span>
+                {{/if}}
+            </span>
+        </div>
+    </div>
+</script>
+
+<script id="termCardCourseTmpl" type="text/x-jsrender">
+    <div class="p-3 course" data-id="{{:code}}" data-grade="{{:grade}}" data-credits="{{:credit}}">
+        <div>{{:title}}</div>
+        <div class="text-muted">
+            <span class="">Credits: {{:credit}}</span>
+            <span class="show-grade float-right">Grade: {{:grade}}</span>
+        </div>
+    </div>
+</script>

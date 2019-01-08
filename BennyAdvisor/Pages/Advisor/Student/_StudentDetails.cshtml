@@ -1,0 +1,56 @@
+﻿@model StudentModel
+
+<div class="alert alert-secondary">
+    <div class="row">
+        <div class="col-3">
+            <img class="rounded-circle img-fluid img-thumbnail" src="@Model.ImagePath" />
+        </div>
+        <div class="col-9">
+            <h4 class="alert-heading">@Model.FirstName @Model.LastName</h4>
+            <div class="container student-details small">
+                <div class="row">
+                    <div class="col-3">ID</div>
+                    <div class="col-3">@Model.Id</div>
+                    <div class="col-3">Degree</div>
+                    <div class="col-3">@Model.DegreeName</div>
+                </div>
+                <div class="row">
+                    <div class="col-3">Level</div>
+                    <div class="col-3">@Model.Level</div>
+                    <div class="col-3">Major</div>
+                    <div class="col-3">@Model.Major</div>
+                </div>
+                <div class="row">
+                    <div class="col-3">Confidential</div>
+                    <div class="col-3"></div>
+                    <div class="col-3">Minor</div>
+                    <div class="col-3"></div>
+                </div>
+                <div class="row">
+                    <div class="col-3">Holds</div>
+                    <div class="col-3"></div>
+                    <div class="col-3">Overall GPA</div>
+                    <div class="col-3">@Model.OverallGpa</div>
+                </div>
+                <div class="row">
+                    <div class="col-3">Athlete</div>
+                    <div class="col-3"></div>
+                    <div class="col-3">Academic Standing</div>
+                    <div class="col-3"></div>
+                </div>
+                <div class="row d-none">
+                    <div class="col-3 test1"></div>
+                    <div class="col-3"></div>
+                    <div class="col-3 test2"></div>
+                    <div class="col-3"></div>
+                </div>
+                <div class="row d-none">
+                    <div class="col-3 test3"></div>
+                    <div class="col-3"></div>
+                    <div class="col-3"></div>
+                    <div class="col-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
