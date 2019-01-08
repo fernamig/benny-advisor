@@ -1,0 +1,69 @@
+﻿
+@{
+    var activePage = ViewContext.RouteData.Values["page"] as string;
+}
+
+<ul class="navbar-nav">
+    <li class="nav-group">
+        <a asp-page="/Advisor/Index">
+            <i class="fa fa-tachometer-alt float-right"></i>Dashboard
+        </a>
+    </li>
+
+    <li class="nav-group">
+        <a asp-page="/Advisor/Student/Search">
+            <i class="fas fa-search float-right"></i>My Students
+        </a>
+    </li>
+
+    @if (activePage == "/Advisor/Student/Index")
+    {
+        <li class="nav-group">
+            <a asp-page="@Url.RouteUrl(ViewContext.RouteData.Values)">
+                <i class="fa fa-user float-right"></i>Student
+            </a>
+        </li>
+        <li class="nav-item" data-tab="tabCoursePlan"><a onclick="tabOnClick(this)">Course Plan</a></li>
+        <li class="nav-item" data-tab="tabTimeline"><a onclick="tabOnClick(this)">Timeline</a></li>
+        <li class="nav-item" data-tab="tabProgress"><a onclick="tabOnClick(this)">Progress</a></li>
+        <li class="nav-item" data-tab="tabAppointment"><a onclick="tabOnClick(this)">Make Appointment</a></li>
+        <li class="nav-item" data-tab="tabNotes"><a onclick="tabOnClick(this)">Notes</a></li>
+        <li class="nav-item" data-tab="tabScores"><a onclick="tabOnClick(this)">Test Scores</a></li>
+        <li class="nav-item" data-tab="tabTranscript"><a onclick="tabOnClick(this)">Unofficial Transcript</a></li>
+    }
+
+    <li class="nav-group">
+        <a asp-page="/Advisor/Cohort/Index">
+            <i class="fa fa-users float-right"></i>Cohorts
+        </a>
+    </li>
+    @if (activePage == "/Advisor/Cohort/Index")
+    {
+        <li class="nav-item" data-tab="tabMyCohorts"><a onclick="tabOnClick(this)">My Cohorts</a></li>
+        <li class="nav-item" data-tab="tabManageCohorts"><a onclick="tabOnClick(this)">Manage Cohorts</a></li>
+    }
+
+    <li class="nav-group">
+        <a asp-page="/Advisor/Resource/Index">
+            <i class="fas fa-toolbox float-right"></i>Resources
+        </a>
+    </li>
+    @if (activePage == "/Advisor/Resource/Index")
+    {
+        <li class="nav-item" data-tab="tabFavorite"><a onclick="tabOnClick(this)">Favorite</a></li>
+        <li class="nav-item" data-tab="tabRecent"><a onclick="tabOnClick(this)">Recent</a></li>
+        <li class="nav-item" data-tab="tabFind"><a onclick="tabOnClick(this)">Find</a></li>
+    }
+
+    <li class="nav-group">
+        <a asp-page="/Advisor/MyProfile/Index">
+            <i class="fas fa-user-cog float-right"></i>My Profile
+        </a>
+    </li>
+    @if (activePage == "/Advisor/MyProfile/Index")
+    {
+        <li class="nav-item" data-tab="tabPreferences"><a onclick="tabOnClick(this)">Preferences</a></li>
+        <li class="nav-item" data-tab="tabRecent"><a onclick="tabOnClick(this)">Recent</a></li>
+        <li class="nav-item" data-tab="tabFind"><a onclick="tabOnClick(this">Find</a></li>
+    }
+</ul>

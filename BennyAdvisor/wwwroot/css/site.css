@@ -1,0 +1,97 @@
+/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification 
+for details on configuring this project to bundle and minify static web assets. */
+body {
+    padding-bottom: 20px;
+    background-color: #F1F1F1;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+
+/* DX */
+.navbar-fixed-top {
+    background: #d73f09;
+    height: 60px;
+}
+
+    .navbar-fixed-top > .navbar-brand > img {
+        width: 170px;
+    }
+
+.side-bar {
+    color: black;
+    background-color: #C0C0C0;
+    padding: 0;
+}
+
+.side-bar .navbar-nav {
+    width: 100%;
+}
+
+.side-bar .navbar-nav a {
+    color: black;
+    display: block;
+    padding: .5rem 1rem;
+    padding-left: 12px;
+    text-decoration: none;
+}
+
+.side-bar .nav-group {
+    border-bottom: 2px solid #B8B8B8;
+}
+
+.side-bar .nav-group:hover {
+    background-color: #A9A9A9;
+}
+
+.side-bar .nav-group + .nav-item,
+.side-bar .nav-item + .nav-group {
+    border-top: 2px solid black;
+}
+
+.side-bar .nav-item {
+    background-color: #D8D8D8;
+    border-bottom: 1px solid #BEBEBE;
+}
+
+.side-bar .nav-item:hover {
+    background-color: #F1F1F1;
+    cursor: pointer;
+}
+
+.side-bar .nav-item.active {
+    background-color: #F1F1F1;
+}
+
+.side-bar .badge {
+    margin-left: 4px;
+    top: -6px;
+    position: relative;
+}

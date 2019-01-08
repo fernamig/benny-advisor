@@ -1,0 +1,14 @@
+﻿<Properties StartupConfiguration="{D2A0111A-E790-4B9A-B89B-4F8BF776A5C3}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="benny-advisor Status">
+    <Files>
+      <File FileName="benny-advisor Status" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.BennyAdvisor PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

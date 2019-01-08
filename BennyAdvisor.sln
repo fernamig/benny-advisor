@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BennyAdvisor", "BennyAdvisor\BennyAdvisor.csproj", "{D2A0111A-E790-4B9A-B89B-4F8BF776A5C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{3246E6D0-8577-4494-B6C5-F3AF2FDD062C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D2A0111A-E790-4B9A-B89B-4F8BF776A5C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2A0111A-E790-4B9A-B89B-4F8BF776A5C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2A0111A-E790-4B9A-B89B-4F8BF776A5C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2A0111A-E790-4B9A-B89B-4F8BF776A5C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3246E6D0-8577-4494-B6C5-F3AF2FDD062C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3246E6D0-8577-4494-B6C5-F3AF2FDD062C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3246E6D0-8577-4494-B6C5-F3AF2FDD062C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3246E6D0-8577-4494-B6C5-F3AF2FDD062C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
