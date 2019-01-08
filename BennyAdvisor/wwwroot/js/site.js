@@ -323,3 +323,150 @@ function tabTimelineInit() {
 
     $("#tabTimelineContainer").html($(tmpl.render(data)));
 }
+
+//
+// Student progress tab.
+//
+
+function tabProgressInit() {
+    var tmpl = $.templates("#progressTmpl");
+
+    // TODO: Load data by ajax get.
+    var data = [
+    {
+        title: "Requirements part 1",
+        bgClass: "bg-danger",
+        credit: 9,
+        requirements: [{
+            bgClass: "alert-danger",
+            iconClass: "far fa-square",
+            title: "A requirement",
+            credit: 3,
+            status: 1,
+            course: {
+                code: "X",
+                title: "Sample",
+                grade: "4.0",
+                term: "Winter 2019"
+            }
+        },
+        {
+            bgClass: "alert-primary",
+            iconClass: "fas fa-minus-square",
+            title: "A requirement",
+            credit: 3,
+            status: 0,
+            course: {
+                code: "X",
+                title: "Sample",
+                grade: "4.0",
+                term: "Winter 2019"
+            }
+        },
+        {
+            bgClass: "alert-success",
+            iconClass: "fas fa-check-square",
+            title: "A requirement",
+            credit: 3,
+            status: 2,
+            course: {
+                code: "X",
+                title: "Sample",
+                grade: "4.0",
+                term: "Winter 2019"
+            }
+        }]
+    },
+        {
+        title: "Requirements part 1",
+        bgClass: "bg-primary",
+        credit: 9,
+        requirements: [{
+            bgClass: "alert-danger",
+            iconClass: "far fa-square",
+            title: "A requirement",
+            credit: 3,
+            status: 1,
+            course: {
+                code: "X",
+                title: "Sample",
+                grade: "4.0",
+                term: "Winter 2019"
+            }
+        },
+        {
+            bgClass: "alert-primary",
+            iconClass: "fas fa-minus-square",
+            title: "A requirement",
+            credit: 3,
+            status: 0,
+            course: {
+                code: "X",
+                title: "Sample",
+                grade: "4.0",
+                term: "Winter 2019"
+            }
+        },
+        {
+            bgClass: "alert-success",
+            iconClass: "fas fa-check-square",
+            title: "A requirement",
+            credit: 3,
+            status: 2,
+            course: {
+                code: "X",
+                title: "Sample",
+                grade: "4.0",
+                term: "Winter 2019"
+            }
+        }]
+    },
+    {
+        title: "Requirements part 1",
+        bgClass: "bg-success",
+        credit: 9,
+        requirements: [{
+            bgClass: "alert-danger",
+            iconClass: "far fa-square",
+            title: "A requirement",
+            credit: 3,
+            status: 1,
+            course: {
+                code: "X",
+                title: "Sample",
+                grade: "4.0",
+                term: "Winter 2019"
+            }
+        },
+        {
+            bgClass: "alert-primary",
+            iconClass: "fas fa-minus-square",
+            title: "A requirement",
+            credit: 3,
+            status: 0,
+            course: {
+                code: "X",
+                title: "Sample",
+                grade: "4.0",
+                term: "Winter 2019"
+            }
+        },
+        {
+            bgClass: "alert-success",
+            iconClass: "fas fa-check-square",
+            title: "A requirement",
+            credit: 3,
+            status: 2,
+            course: {
+                code: "X",
+                title: "Sample",
+                grade: "4.0",
+                term: "Winter 2019"
+            }
+        }]
+    }
+    ];
+
+
+    $("#tabProgressContainer").html($(tmpl.render(data)));
+}

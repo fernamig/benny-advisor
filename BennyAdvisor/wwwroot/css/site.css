@@ -98,25 +98,25 @@ body {
 
 /* Cards */
 
-.card.bg-primary .row {
+.card.bg-primary .row.bg-row {
     color: #004085;
     background-color: #cce5ff;
     border-bottom: 2px solid #b8daff;
 }
 
-.card.bg-danger .row {
+.card.bg-danger .row.bg-row {
     color: #721c24;
     background-color: #f8d7da;
     border-bottom: 2px solid #f5c6cb;
 }
 
-.card.bg-info .row {
+.card.bg-info .row.bg-row {
     color: #0c5460;
     background-color: #d1ecf1;
     border-bottom: 2px solid #bee5eb;
 }
 
-.card.bg-secondary .row {
+.card.bg-secondary .row.bg-row {
     color: #383d41;
     background-color: #e2e3e5;
     border-bottom: 2px solid #d6d8db;

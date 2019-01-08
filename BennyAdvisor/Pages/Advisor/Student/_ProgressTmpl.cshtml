@@ -1,0 +1,31 @@
+﻿<script id="progressTmpl" type="text/x-jsrender">
+    <div class="card text-white {{:bgClass}} mb-2">
+        <h6 class="card-header">
+            {{:title}}
+            <span class="float-right">Required Credits: {{:credit}}</span>
+        </h6>
+        {{for requirements tmpl="#progressEntryTmpl" /}}
+    </div>
+</script>
+
+<script id="progressEntryTmpl" type="text/x-jsrender">
+    <div class="row mx-0 py-2 border-top {{:bgClass}}">
+        <div class="col-5">
+            <i class="{{:iconClass}} mr-2"></i>{{:title}}
+        </div>
+        <div class="col-4">
+            {{if course}}
+                {{:course.code}} {{:course.title}}
+            {{/if}}
+        </div>
+        <div class="col-1">
+            <span class="float-left">{{if status === 2}} {{:course.grade}} {{/if}}</span>
+            <span class="float-right">{{:credit}}</span>
+        </div>
+        <div class="col-2">
+            {{if course}}
+                {{:course.term}}
+            {{/if}}
+        </div>
+    </div>
+</script>

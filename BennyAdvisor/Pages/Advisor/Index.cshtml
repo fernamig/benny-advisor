@@ -7,7 +7,7 @@
             <h5 class="card-header text-white">Upcoming Appointments</h5>
             @foreach (var a in Model.UpcomingAppointments)
             {
-                <div class="row m-0">
+                <div class="row bg-row m-0">
                     <div class="col-4 p-1 col-middle">
                         <img class="rounded-circle img-fluid img-thumbnail" src="@a.Student.ImagePath" />
                     </div>
@@ -25,7 +25,7 @@
             <h5 class="card-header">Recent Appointments</h5>
             @foreach (var a in Model.RecentAppointments)
             {
-                <div class="row m-0">
+                <div class="row bg-row m-0">
                     <div class="col-4 p-1 col-middle">
                         <img class="rounded-circle img-fluid img-thumbnail" src="@a.Student.ImagePath" />
                     </div>
@@ -43,7 +43,7 @@
             <h5 class="card-header">Flagged Students</h5>
             @foreach (var s in Model.FlaggedStudents)
             {
-                <div class="row m-0">
+                <div class="row bg-row m-0">
                     <div class="col-4 p-1 col-middle">
                         <img class="rounded-circle img-fluid img-thumbnail" src="@s.ImagePath" />
                     </div>
