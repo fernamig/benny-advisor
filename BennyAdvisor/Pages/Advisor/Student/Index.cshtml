@@ -30,6 +30,58 @@
             <partial name="_Spinner" />
         </div>
     </div>
+    <div id="tabAppointment" class="tab-view">
+        <div id="tabAppointmentContainer" class="small">
+            <div class="alert alert-secondary">
+                <button id="tabAppointmentPrev" class="btn btn-primary" onclick="">
+                    <i class="fas fa-angle-double-left"></i>&nbsp;Prev
+                </button>
+                <button class="btn btn-primary" onclick="">
+                    Next&nbsp;<i class="fas fa-angle-double-right"></i>
+                </button>
+                <span class="h5 pl-3 align-middle"><span id="tabAppointmentStart" data-date=""></span>&nbsp;through&nbsp;<span id="tabAppointmentEnd"></span></span>
+            </div>
+            <div class="card container">
+                <div class="row card-header p-0">
+                    <div class="col-2">
+                    </div>
+                    <div class="col-2">
+                        Mon, <span></span>
+                    </div>
+                    <div class="col-2">
+                        Tue, <span></span>
+                    </div>
+                    <div class="col-2">
+                        Wed, <span></span>
+                    </div>
+                    <div class="col-2">
+                        Thu, <span></span>
+                    </div>
+                    <div class="col-2">
+                        Fri, <span></span>
+                    </div>
+                </div>
+                @{
+                    var inc = new TimeSpan(0, 30, 0);
+                    var startTime = new DateTime(2018, 12, 10, 8, 0, 0);
+                    var endTime = new DateTime(2018, 12, 10, 16, 0, 0);
+                }
+                @for (DateTime p = startTime, t = startTime + inc; t <= endTime; p = t, t += inc)
+                {
+                    <div class="row">
+                        <div class="col-2">
+                            @p.ToString("h:mm") - @t.ToString("h:mm tt")
+                        </div>
+                        <div class="col-2"></div>
+                        <div class="col-2"></div>
+                        <div class="col-2"></div>
+                        <div class="col-2"></div>
+                        <div class="col-2"></div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </div>
 
 <partial name="_SummaryTmpl.cshtml" />

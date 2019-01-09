@@ -470,3 +470,44 @@ function tabProgressInit() {
 
     $("#tabProgressContainer").html($(tmpl.render(data)));
 }
+
+//
+// Make Appointment tab functionality.
+//
+
+function tabAppointmentInit() {
+    var day = moment().startOf("isoWeek");
+
+    $("#tabAppointmentStart").html(day.format("MMM D"));
+    $("#tabAppointmentEnd").html(moment(day).add(4, "days").format("MMM D"));
+
+    for (var i = 0; i < 5; i++) {
+        // Set the date in the day header.
+        $("#tabAppointmentContainer .row.card-header > div:nth-child(" + (2 + i) + ") span").html(day.format("MMM D"));
+        day.add(1, "days");
+
+        for (var j = 0; j < 4; j++) {
+            var slot = $("#tabAppointmentContainer .row:nth-child(" + (2 + j) + ") > div:nth-child(" + (2 + i) + ")");
+            slot.html("<a href='#'>Make Appt</a>");
+            slot.addClass("alert-success");
+        }
+        for (var j = 4; j < 8; j++) {
+            var slot = $("#tabAppointmentContainer .row:nth-child(" + (2 + j) + ") > div:nth-child(" + (2 + i) + ")");
+            slot.html("Unavailable");
+            slot.addClass("text-muted");
+            slot.addClass("alert-secondary");
+        }
+        for (var j = 8; j < 12; j++) {
+            var slot = $("#tabAppointmentContainer .row:nth-child(" + (2 + j) + ") > div:nth-child(" + (2 + i) + ")");
+            slot.html("Reserved");
+            slot.addClass("text-muted");
+            slot.addClass("alert-secondary");
+        }
+        for (var j = 12; j < 16; j++) {
+            var slot = $("#tabAppointmentContainer .row:nth-child(" + (2 + j) + ") > div:nth-child(" + (2 + i) + ")");
+            slot.html("In Class");
+            slot.addClass("text-muted");
+            slot.addClass("alert-danger");
+        }
+    }
+}
