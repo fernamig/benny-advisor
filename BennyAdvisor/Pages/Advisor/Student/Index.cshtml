@@ -82,9 +82,21 @@
             </div>
         </div>
     </div>
+    <div id="tabNotes" class="tab-view">
+        <button type="button" class="btn btn-primary mb-2"
+                aria-label="Create Note" title="Create Note"
+                onclick="">
+            <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Note
+        </button>
+        <div id="tabNotesContainer">
+            <partial name="_Spinner" />
+        </div>
+    </div>
+
 </div>
 
 <partial name="_SummaryTmpl.cshtml" />
 <partial name="_CoursePlanTmpl.cshtml" />
 <partial name="_TimelineTmpl.cshtml" />
 <partial name="_ProgressTmpl.cshtml" />
+<partial name="_NotesTmpl.cshtml" />

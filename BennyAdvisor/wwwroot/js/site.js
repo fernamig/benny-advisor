@@ -476,6 +476,7 @@ function tabProgressInit() {
 //
 
 function tabAppointmentInit() {
+    // TODO: Load data by ajax get.
     var day = moment().startOf("isoWeek");
 
     $("#tabAppointmentStart").html(day.format("MMM D"));
@@ -511,3 +512,31 @@ function tabAppointmentInit() {
         }
     }
 }
+
+//
+// Notes tab.
+//
+
+function tabNotesInit() {
+    var tmpl = $.templates("#notesTmpl");
+
+    // TODO: Load data by ajax get.
+    var data = [{
+        context: null,
+        note: "This is a sample note.",
+        source: "Benny Advisor",
+    },
+    {
+        context: "CS 101",
+        note: "This is a sample note.",
+        source: "Benny Advisor",
+    },
+    {
+        context: null,
+        note: "This is a sample note.",
+        source: "Benny Advisor",
+    }];
+
+    $("#tabNotesContainer").html(tmpl.render(data));
+}
+
