@@ -1,0 +1,35 @@
+﻿<script id="scoresTmpl" type="text/x-jsrender">
+    <div class="card text-white bg-primary mb-2">
+        <h5 class="card-header">
+            Test Scores on file as of {{:fileDate}}
+        </h5>
+        <div class="container">
+            <div class="row bg-row font-weight-bold card-header px-0">
+                <div class="col-8">
+                    Test Description
+                </div>
+                <div class="col-2 text-center">
+                    Test Score
+                </div>
+                <div class="col-2 text-center">
+                    Date Taken
+                </div>
+            </div>
+            {{for scores tmpl="#scoresEntryTmpl" /}}
+        </div>
+    </div>
+</script>
+
+<script id="scoresEntryTmpl" type="text/x-jsrender">
+    <div class="row bg-row py-2">
+        <div class="col-8">
+            {{:description}}
+        </div>
+        <div class="col-2 text-center">
+            {{:score}}
+        </div>
+        <div class="col-2 text-center">
+            {{:takenDate}}
+        </div>
+    </div>
+</script>

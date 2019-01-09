@@ -540,3 +540,33 @@ function tabNotesInit() {
     $("#tabNotesContainer").html(tmpl.render(data));
 }
 
+//
+// Test Scores tab.
+//
+
+function tabScoresInit() {
+    var tmpl = $.templates("#scoresTmpl");
+    
+    // TODO: Load data by ajax get.
+    var data = {
+        fileDate: moment().format("MMM D, YYYY"),
+        scores: 
+        [{
+            description: "SAT",
+            score: "100",
+            takenDate: moment().format("MMM D, YYYY"),
+        },
+        {
+            description: "ACT",
+            score: "100",
+            takenDate: moment().format("MMM D, YYYY"),
+        },
+        {
+            description: "GRE",
+            score: "100",
+            takenDate: moment().format("MMM D, YYYY"),
+        }]
+    };
+
+    $("#tabScoresContainer").html($(tmpl.render(data)));
+}
