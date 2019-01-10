@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BennyAdvisor.Models;
+using BennyAdvisor.api;
 
 namespace BennyAdvisor.Pages.Advisor.Student
 {
@@ -10,17 +11,10 @@ namespace BennyAdvisor.Pages.Advisor.Student
     {
         public StudentModel Student { get; set; }
 
-        public void OnGet()
+        public void OnGet(string id)
         {
-            Student = new StudentModel()
-            {
-                Level = "Graduate",
-                ImagePath = "/images/test.jpg",
-                FirstName = "Roger",
-                LastName = "Montgomery",
-                DegreeName = "ASSOC OF SCIENCE",
-                DegreeCode = "AS1"
-            };
+            var provider = new StudentProvider();
+            Student = provider.Get(id);
         }
     }
 }

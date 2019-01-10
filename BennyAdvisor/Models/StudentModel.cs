@@ -6,7 +6,7 @@ namespace BennyAdvisor.Models
 {
     public class StudentModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Level { get; set; }
         public string ImagePath { get; set; }
         public string FirstName { get; set; }

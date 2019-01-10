@@ -30,8 +30,8 @@ namespace UnitTests
             const string ownerId = "test";
 
             Assert.Null(Provider.Get(ownerId));
-            Provider.Set(ownerId, Group1);
-            VerifyEqual(Group1, Provider.Get(ownerId));
+            Provider.Set(ownerId, Group);
+            VerifyEqual(Group, Provider.Get(ownerId));
 
             Provider.Delete(ownerId);
             Assert.Null(Provider.Get(ownerId));

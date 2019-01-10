@@ -105,6 +105,18 @@ namespace BennyAdvisor.api
         {
             return JObject.Parse(ReadAllText(keyName)).ToObject<T>();
         }
+
+        public async Task<T> TryReadObjecAsync<T>(string keyName) where T : class
+        {
+            try
+            {
+                return await ReadObjectAsync<T>(keyName);
+            }
+            catch
+            {
+                return null;
+            }
+        }
         public T TryReadObject<T>(string keyName) where T : class
         {
             try
