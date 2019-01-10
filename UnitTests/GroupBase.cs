@@ -8,30 +8,30 @@ namespace UnitTests
 {
     public class GroupBase
     {
-    protected readonly GroupCollectionModel Group;
+        protected readonly GroupCollectionModel Group;
 
-    public GroupBase()
-    {
-        Group = new GroupCollectionModel()
+        public GroupBase()
         {
-            LastModified = DateTime.Parse("2018-01-01T00:00:00"),
-            Groups = new[]
+            Group = new GroupCollectionModel()
             {
-                new GroupModel()
+                LastModified = DateTime.Parse("2018-01-01T00:00:00"),
+                Groups = new[]
                 {
-                    Id = "1",
-                    Title = "Group 1",
-                    Members = new[] { "2", "4", "6", "8" }
-                },
-                new GroupModel()
-                {
-                    Id = "2",
-                    Title = "Group 2",
-                    Members = new[] { "21", "23", "25", "27", "29" }
+                    new GroupModel()
+                    {
+                        Id = "1",
+                        Title = "Group 1",
+                        Members = new[] { "2", "4", "6", "8" }
+                    },
+                    new GroupModel()
+                    {
+                        Id = "2",
+                        Title = "Group 2",
+                        Members = new[] { "21", "23", "25", "27", "29" }
+                    }
                 }
-            }
-        };
-    }
+            };
+        }
 
         protected void VerifyEqual(GroupCollectionModel g1, GroupCollectionModel g2)
         {

@@ -4,6 +4,25 @@
 // Write your Javascript code.
 
 
+//
+// Caching.
+//
+
+$.createCache = function(factory) {
+    var cache = {};
+    return function(key, force, callback) {
+        if (force || !cache[key]) {
+            cache[key] = $.Deferred(function(defer) {
+                factory(defer, key);
+            }).promise();
+        }
+        return cache[key].done(callback);
+    };
+}
+
+$.cachedAjax = $.createCache(function(defer, url) {
+    $.get(url).then(defer.resolve, defer.reject);
+});
 
 //
 // Tab functionality.

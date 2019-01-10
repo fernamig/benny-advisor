@@ -8,12 +8,17 @@ namespace BennyAdvisor.api
     {
         public AwsBucket Bucket { get; private set; }
 
-        public GroupProvider(string category)
+        public GroupProvider(string root)
         {
-            Bucket = new AwsBucket($"Groups/{category}");
+            Bucket = new AwsBucket(root);
         }
 
         public GroupCollectionModel Get(string ownerId)
+        {
+            var keyName = $"{ownerId}.json";
+            return Bucket.ReadObject<GroupCollectionModel>(keyName);
+        }
+        public GroupCollectionModel TryGet(string ownerId)
         {
             var keyName = $"{ownerId}.json";
             return Bucket.TryReadObject<GroupCollectionModel>(keyName);

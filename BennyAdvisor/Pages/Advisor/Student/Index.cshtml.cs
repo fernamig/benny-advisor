@@ -11,10 +11,10 @@ namespace BennyAdvisor.Pages.Advisor.Student
     {
         public StudentModel Student { get; set; }
 
-        public void OnGet(string id)
+        public void OnGet(string studentId)
         {
             var provider = new StudentProvider();
-            Student = provider.Get(id);
+            Student = provider.Get(studentId);
         }
     }
 }

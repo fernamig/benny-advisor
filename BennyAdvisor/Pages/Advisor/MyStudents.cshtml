@@ -1,5 +1,7 @@
-﻿@page
-@model MyStudentsModel
+﻿@page "/Advisor/{advisorId}/MyStudents"
+@{
+    var advisorId = ViewContext.RouteData.Values["advisorId"];
+}
 
 <h3>My Students</h3>
 
@@ -9,28 +11,38 @@
 
 <div class="mt-2">
     <ul id="studentList" class="list-group">
-        @foreach (var s in Model.MyStudents)
-        {
-            <li class="list-group-item">
-                <a href="/Advisor/Student/@s.Id">
-                    <div class="row">
-                        <div class="col-1 p-1">
-                            <img class="rounded-circle img-fluid img-thumbnail" src="@s.ImagePath" />
-                        </div>
-                        <div class="col-11 p-1">
-                            <span class="d-none">@s.Id</span>
-                            <h6 class="m-0">@s.LastName, @s.FirstName</h6>
-                            <div>@s.Level - @s.DegreeName - @s.Major</div>
-                        </div>
-                    </div>
-                </a>
-            </li>
-        }
+        <partial name="_Spinner" />
     </ul>
 </div>
 
+<script id="studentTmpl" type="text/x-jsrender">
+    <li class="list-group-item">
+        <a href="/Advisor/@advisorId/Student/{{:id}}">
+            <div class="row">
+                <div class="col-1 p-1">
+                    <img class="rounded-circle img-fluid img-thumbnail" src="{{:imagePath}}" />
+                </div>
+                <div class="col-11 p-1">
+                    <span class="d-none">{{:id}}</span>
+                    <h6 class="m-0">{{:lastName}}, {{:firstName}}</h6>
+                    {{:level}} - {{:degreeName}} - {{:major}}
+                </div>
+            </div>
+        </a>
+    </li>
+</script>
+
 @section Scripts {
     <script>
+        $.cachedAjax("/api/ajax/GetAdvisorStudents/@advisorId")
+        .done(function(data) {
+            var tmpl = $.templates("#studentTmpl");
+            $("#studentList").html(tmpl.render(data));
+        })
+        .fail(function(xhr, status, error) {
+            alert("Request Failed: " + status + ", " + error);
+        });
+
         $("#studentFilter").on("keyup", function() {
             var value = $(this).val().toLowerCase();
             $("#studentList > li").filter(function() {

@@ -1,5 +1,8 @@
-﻿@page "{id}"
+﻿@page "/Advisor/{advisorId}/Student/{studentId}"
 @model IndexModel
+@{
+    var advisorId = ViewContext.RouteData.Values["advisorId"];
+}
 
 <partial name="_StudentDetails.cshtml" for="Student" />
 

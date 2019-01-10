@@ -14,7 +14,7 @@ namespace BennyAdvisor.Pages.Advisor
         public IEnumerable<AppointmentModel> UpcomingAppointments { get; set; }
         public IEnumerable<AppointmentModel> RecentAppointments { get; set; }
 
-        public void OnGet()
+        public void OnGet(string advisorId)
         {
             UpcomingAppointments = Enumerable.Repeat(new AppointmentModel()
             {
@@ -23,7 +23,7 @@ namespace BennyAdvisor.Pages.Advisor
                 Student = new StudentModel()
                 {
                     Level = "Graduate",
-                    ImagePath = "images/test.jpg",
+                    ImagePath = "/images/test.jpg",
                     FirstName = "Roger",
                     LastName = "Montgomery",
                     DegreeName = "ASSOC OF SCIENCE",
@@ -37,7 +37,7 @@ namespace BennyAdvisor.Pages.Advisor
                 Student = new StudentModel()
                 {
                     Level = "Graduate",
-                    ImagePath = "images/test.jpg",
+                    ImagePath = "/images/test.jpg",
                     FirstName = "Roger",
                     LastName = "Montgomery",
                     DegreeName = "ASSOC OF SCIENCE",
@@ -47,7 +47,7 @@ namespace BennyAdvisor.Pages.Advisor
             FlaggedStudents = Enumerable.Repeat(new StudentModel()
             {
                 Level = "Graduate",
-                ImagePath = "images/test.jpg",
+                ImagePath = "/images/test.jpg",
                 FirstName = "Roger",
                 LastName = "Montgomery",
                 DegreeName = "ASSOC OF SCIENCE",

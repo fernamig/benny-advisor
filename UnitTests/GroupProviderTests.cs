@@ -11,17 +11,18 @@ namespace UnitTests
         readonly GroupProvider Provider = new GroupProvider("test.group");
 
         [Fact]
-        public void GetNonExistingMustReturnNull()
+        public void GetNonExisting()
         {
-            Assert.Null(Provider.Get("dummy"));
+            Assert.Null(Provider.TryGet("dummy"));
+            Assert.Throws<AggregateException>(() => Provider.Get("dummy"));
         }
 
         [Fact]
         public void DeleteNonExisting()
         {
-            Assert.Null(Provider.Get("dummy"));
+            Assert.Null(Provider.TryGet("dummy"));
             Provider.Delete("dummy");
-            Assert.Null(Provider.Get("dummy"));
+            Assert.Null(Provider.TryGet("dummy"));
         }
 
         [Fact]
@@ -29,12 +30,12 @@ namespace UnitTests
         {
             const string ownerId = "test";
 
-            Assert.Null(Provider.Get(ownerId));
+            Assert.Null(Provider.TryGet(ownerId));
             Provider.Set(ownerId, Group);
             VerifyEqual(Group, Provider.Get(ownerId));
 
             Provider.Delete(ownerId);
-            Assert.Null(Provider.Get(ownerId));
+            Assert.Null(Provider.TryGet(ownerId));
         }
     }
 }
