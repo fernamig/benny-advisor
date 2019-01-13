@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using BennyAdvisor.Models;
+using BennyAdvisor.Reports;
 
 namespace BennyAdvisor.api
 {
@@ -13,16 +14,37 @@ namespace BennyAdvisor.api
         [HttpGet]
         public JsonResult GetAdvisorStudents(string id)
         {
-            var ap = new AdvisorProvider();
-            var sp = new StudentProvider();
+            var advisorProvider = new AdvisorProvider();
+            var studentProvider = new StudentProvider();
 
             var students = new List<StudentModel>();
-            foreach (var sid in ap.Get(id))
+            foreach (var sid in advisorProvider.Get(id))
             {
-                students.Add(sp.Get(sid));
+                students.Add(studentProvider.Get(sid));
             }
 
             return Json(students);
+        }
+
+        [HttpGet]
+        public JsonResult GetCoursePlan(string id)
+        {
+            var provider = new CoursePlanProvider();
+            return Json(provider.TryGet(id)?.Groups);
+        }
+
+        [HttpGet]
+        public JsonResult GetRegistrarCourses(string id)
+        {
+            var provider = new RegistrarCourseProvider();
+            return Json(provider.TryGet(id)?.Groups);
+        }
+
+        [HttpGet]
+        public JsonResult GetAdvisingCoursePlan(string id)
+        {
+            var report = new CoursePlanReport();
+            return Json(report.Generate(id));
         }
     }
 }

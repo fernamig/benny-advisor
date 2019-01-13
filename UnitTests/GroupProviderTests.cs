@@ -8,7 +8,7 @@ namespace UnitTests
 {
     public class GroupProviderTests : GroupBase
     {
-        readonly GroupProvider Provider = new GroupProvider("test.group");
+        readonly GroupProvider<string> Provider = new GroupProvider<string>("test.group");
 
         [Fact]
         public void GetNonExisting()

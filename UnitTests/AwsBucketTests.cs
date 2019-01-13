@@ -81,10 +81,10 @@ namespace UnitTests
         [Fact]
         public void VerifyReadObject()
         {
-            VerifyEqual(Group, Bucket.ReadObjectAsync<GroupCollectionModel>("test.group.json").Result);
-            VerifyEqual(Group, Bucket.ReadObject<GroupCollectionModel>("test.group.json"));
-            VerifyEqual(Group, Bucket.TryReadObject<GroupCollectionModel>("test.group.json"));
-            Assert.Null(Bucket.TryReadObject<GroupCollectionModel>("dummy"));
+            VerifyEqual(Group, Bucket.ReadObjectAsync<GroupCollectionModel<string>>("test.group.json").Result);
+            VerifyEqual(Group, Bucket.ReadObject<GroupCollectionModel<string>>("test.group.json"));
+            VerifyEqual(Group, Bucket.TryReadObject<GroupCollectionModel<string>>("test.group.json"));
+            Assert.Null(Bucket.TryReadObject<GroupCollectionModel<string>>("dummy"));
         }
 
         [Fact]
@@ -112,12 +112,12 @@ namespace UnitTests
             Bucket.DeleteFile(keyName);
             Assert.False(Bucket.Exists(keyName));
             Bucket.WriteObjectAsync(keyName, Group).Wait();
-            VerifyEqual(Group, Bucket.ReadObject<GroupCollectionModel>(keyName));
+            VerifyEqual(Group, Bucket.ReadObject<GroupCollectionModel<string>>(keyName));
 
             Bucket.DeleteFile(keyName);
             Assert.False(Bucket.Exists(keyName));
             Bucket.WriteObject(keyName, Group);
-            VerifyEqual(Group, Bucket.ReadObject<GroupCollectionModel>(keyName));
+            VerifyEqual(Group, Bucket.ReadObject<GroupCollectionModel<string>>(keyName));
         }
     }
 }

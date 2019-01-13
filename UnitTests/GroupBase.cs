@@ -8,22 +8,22 @@ namespace UnitTests
 {
     public class GroupBase
     {
-        protected readonly GroupCollectionModel Group;
+        protected readonly GroupCollectionModel<string> Group;
 
         public GroupBase()
         {
-            Group = new GroupCollectionModel()
+            Group = new GroupCollectionModel<string>()
             {
                 LastModified = DateTime.Parse("2018-01-01T00:00:00"),
                 Groups = new[]
                 {
-                    new GroupModel()
+                    new GroupModel<string>()
                     {
                         Id = "1",
                         Title = "Group 1",
                         Members = new[] { "2", "4", "6", "8" }
                     },
-                    new GroupModel()
+                    new GroupModel<string>()
                     {
                         Id = "2",
                         Title = "Group 2",
@@ -33,7 +33,7 @@ namespace UnitTests
             };
         }
 
-        protected void VerifyEqual(GroupCollectionModel g1, GroupCollectionModel g2)
+        protected void VerifyEqual(GroupCollectionModel<string> g1, GroupCollectionModel<string> g2)
         {
             Assert.Equal(g1.LastModified, g2.LastModified);
             // Confirm that we actually have items.
@@ -48,7 +48,7 @@ namespace UnitTests
                 VerifyEqual(g1List[i], g2List[i]);
         }
 
-        protected void VerifyEqual(GroupModel g1, GroupModel g2)
+        protected void VerifyEqual(GroupModel<string> g1, GroupModel<string> g2)
         {
             Assert.Equal(g1.Id, g2.Id);
             Assert.Equal(g1.Title, g2.Title);

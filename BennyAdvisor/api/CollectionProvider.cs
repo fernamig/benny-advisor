@@ -7,11 +7,11 @@ namespace BennyAdvisor.api
 {
     public class CollectionProvider
     {
-        protected GroupProvider Provider { get; private set; }
+        protected GroupProvider<string> Provider { get; private set; }
 
         public CollectionProvider(string root)
         {
-            Provider = new GroupProvider(root);
+            Provider = new GroupProvider<string>(root);
         }
 
         public IEnumerable<string> Get(string id)
@@ -24,12 +24,12 @@ namespace BennyAdvisor.api
 
         public void Set(string id, IEnumerable<string> items)
         {
-            var group = new GroupCollectionModel()
+            var group = new GroupCollectionModel<string>()
             {
                 LastModified = DateTime.UtcNow,
                 Groups = new[]
                 {
-                    new GroupModel()
+                    new GroupModel<string>()
                     {
                         Id = "",
                         Title = "",

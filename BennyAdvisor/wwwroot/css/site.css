@@ -98,28 +98,34 @@ body {
 
 /* Cards */
 
-.card.bg-primary .row.bg-row {
+.card.bg-primary .row.bg-card {
     color: #004085;
     background-color: #cce5ff;
     border-bottom: 2px solid #b8daff;
 }
 
-.card.bg-danger .row.bg-row {
+.card.bg-danger .row.bg-card {
     color: #721c24;
     background-color: #f8d7da;
     border-bottom: 2px solid #f5c6cb;
 }
 
-.card.bg-info .row.bg-row {
+.card.bg-info .row.bg-card {
     color: #0c5460;
     background-color: #d1ecf1;
     border-bottom: 2px solid #bee5eb;
 }
 
-.card.bg-secondary .row.bg-row {
+.card.bg-secondary .row.bg-card {
     color: #383d41;
     background-color: #e2e3e5;
     border-bottom: 2px solid #d6d8db;
+}
+
+.card.bg-success .row.bg-card {
+    color: #155724;
+    background-color: #d4edda;
+    border-bottom: 2px solid #c3e6cb;
 }
 
 .card .col-middle {

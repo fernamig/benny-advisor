@@ -3,6 +3,13 @@
 
 // Write your Javascript code.
 
+//
+// Globals.
+//
+
+// TODO:Hard coded current term. Load it by ajax.
+var gCurrentTermCode = 20191;
+var gStudentId = "";
 
 //
 // Caching.
@@ -23,6 +30,30 @@ $.createCache = function(factory) {
 $.cachedAjax = $.createCache(function(defer, url) {
     $.get(url).then(defer.resolve, defer.reject);
 });
+
+
+//
+// Misc Helpers.
+//
+
+function getCoursesStats(courses) {
+    var gpaGrade = 0;
+    var gpaCredit = 0;
+    var totalCredit = 0;
+    $.each(courses, function(i, course) {
+        if (course.grade >= 0) {
+            gpaGrade += course.grade * course.credit;
+            gpaCredit += course.credit;
+        }
+        totalCredit += course.credit;
+    });
+
+    var gpa = "";
+    if (gpaCredit !== 0)
+        gpa = (gpaGrade / gpaCredit).toFixed(1);
+
+    return { gpa: gpa, credit: totalCredit };
+}
 
 //
 // Tab functionality.
@@ -89,85 +120,27 @@ function tabSummaryInit() {
 
 function tabCoursePlanInit() {
     var tmpl = $.templates("#coursePlanTmpl");
-    
-    // TODO: Load data by ajax get.
-    var data = [{
-        bgClass: "bg-info",
-        termCode: "20193",
-        termTitle: "2019 Winter",
-        termGpa: "3.3",
-        termCredit: "12",
-        courses: [{
-            code: "X",
-            title: "Sample Course",
-            grade: "4.0",
-            credit: 3
-        },
-        {
-            code: "X2",
-            title: "Another Course",
-            grade: "4.0",
-            credit: 3
-        },
-        {
-            code: "X3",
-            title: "One More Course",
-            grade: "4.0",
-            credit: 3
-        }]
-    },
-    {
-        bgClass: "bg-primary",
-        termCode: "20193",
-        termTitle: "2019 Winter",
-        termGpa: "3.3",
-        termCredit: "12",
-        courses: [{
-            code: "X",
-            title: "Sample Course",
-            grade: "4.0",
-            credit: 3
-        },
-        {
-            code: "X2",
-            title: "Another Course",
-            grade: "4.0",
-            credit: 3
-        },
-        {
-            code: "X3",
-            title: "One More Course",
-            grade: "4.0",
-            credit: 3
-            }]
-    },
-    {
-        bgClass: "bg-secondary",
-        termCode: "20193",
-        termTitle: "2019 Winter",
-        termGpa: "3.3",
-        termCredit: "12",
-        courses: [{
-            code: "X",
-            title: "Sample Course",
-            grade: "4.0",
-            credit: 3
-        },
-        {
-            code: "X2",
-            title: "Another Course",
-            grade: "4.0",
-            credit: 3
-        },
-        {
-            code: "X3",
-            title: "One More Course",
-            grade: "4.0",
-            credit: 3
-            }]
-    }];
 
-    $("#tabCoursePlanContainer").html($(tmpl.render(data)));
+    $.cachedAjax("/api/ajax/GetAdvisingCoursePlan/" + gStudentId)
+    .done(function(data) {
+        $.each(data, function(i, term) {
+            if (term.termCode < gCurrentTermCode)
+                term.bgClass = "bg-secondary";
+            else if (term.termCode > gCurrentTermCode)
+                term.bgClass = "bg-primary";
+            else
+                term.bgClass = "bg-success";
+
+            var stats = getCoursesStats(term.courses);
+            term.termCredit = stats.credit;
+            term.termGpa = stats.gpa;
+        });
+
+        $("#tabCoursePlanContainer").html($(tmpl.render(data)));
+    })
+    .fail(function(xhr, status, error) {
+        alert("Request Failed: " + status + ", " + error);
+    });
 }
 
 
