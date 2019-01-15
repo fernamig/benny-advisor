@@ -43,7 +43,7 @@ namespace BennyAdvisor.Reports
                     var termCode = int.Parse(g.Id);
                     termTitles[termCode] = g.Title;
                     terms[termCode] = g.Members
-                        .Select(x => new CourseGradeModel() { Code = x })
+                        .Select(x => new CourseGradeModel() { Code = x, Grade = -1 })
                         .ToDictionary(x => x.Code, x => x);
                 }
             }

@@ -1,15 +1,19 @@
 ﻿<script id="coursePlanTmpl" type="text/x-jsrender">
-    <div class="card mb-2 text-white {{:bgClass}}">
+    {{*
+        initTermCardLayout(data);
+    }}
+    <div class="card mb-2 text-white bg-{{:bgClass}}">
         <h5 class="card-header">
             <i class="fas fa-angle-up toggle-summary" onclick="$(parentNode.parentNode).toggleClass('show-summary')"></i>
             {{:termTitle}}
-            &nbsp;<small>(
+            &nbsp;<small>
+            (
                 {{if termGpa }}
                     GPA: {{:termGpa}},
                 {{/if}}
                 Credit:  {{:termCredit}}, Courses: {{:courses.length}}
             )
-</small>
+            </small>
         </h5>
         <div id="coursePlanTerm{{:termCode}}" class="container data-entry">
             <div class="row bg-card font-weight-bold card-header px-0">

@@ -173,16 +173,17 @@ body {
     background-color: #c1f0cc !important;
 }
 
-.card-term.bg-secondary .text-muted {
-    color: darkgray !important;
+.card-term.bg-secondary .muted {
+    opacity: 0.5;
 }
 
-.card-term.bg-info .text-muted {
-    color: limegreen !important;
+.card-term.bg-success .muted,
+.card-term.bg-info .muted {
+    opacity: 0.6;
 }
 
-.card-term.bg-primary .text-muted {
-    color: lightskyblue !important;
+.card-term.bg-primary .muted {
+    opacity: 0.7;
 }
 
 .card-term .data-entry {

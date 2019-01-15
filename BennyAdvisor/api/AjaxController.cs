@@ -46,5 +46,12 @@ namespace BennyAdvisor.api
             var report = new CoursePlanReport();
             return Json(report.Generate(id));
         }
+
+        [HttpGet]
+        public JsonResult GetAdvisingTimelime(string id)
+        {
+            var report = new TimelimeReport();
+            return Json(report.Generate(id));
+        }
     }
 }

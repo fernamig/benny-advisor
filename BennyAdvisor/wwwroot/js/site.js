@@ -11,6 +11,7 @@
 var gCurrentTermCode = 20191;
 var gStudentId = "";
 
+
 //
 // Caching.
 //
@@ -53,6 +54,19 @@ function getCoursesStats(courses) {
         gpa = (gpaGrade / gpaCredit).toFixed(1);
 
     return { gpa: gpa, credit: totalCredit };
+}
+
+function initTermCardLayout(data) {
+    if (data.termCode < gCurrentTermCode)
+        data.bgClass = "secondary";
+    else if (data.termCode > gCurrentTermCode)
+        data.bgClass = "primary";
+    else
+        data.bgClass = "success";
+
+    var stats = getCoursesStats(data.courses);
+    data.termCredit = stats.credit;
+    data.termGpa = stats.gpa;
 }
 
 //
@@ -123,19 +137,6 @@ function tabCoursePlanInit() {
 
     $.cachedAjax("/api/ajax/GetAdvisingCoursePlan/" + gStudentId)
     .done(function(data) {
-        $.each(data, function(i, term) {
-            if (term.termCode < gCurrentTermCode)
-                term.bgClass = "bg-secondary";
-            else if (term.termCode > gCurrentTermCode)
-                term.bgClass = "bg-primary";
-            else
-                term.bgClass = "bg-success";
-
-            var stats = getCoursesStats(term.courses);
-            term.termCredit = stats.credit;
-            term.termGpa = stats.gpa;
-        });
-
         $("#tabCoursePlanContainer").html($(tmpl.render(data)));
     })
     .fail(function(xhr, status, error) {
@@ -150,170 +151,14 @@ function tabCoursePlanInit() {
 
 function tabTimelineInit() {
     var tmpl = $.templates("#timelineTmpl");
-    
-    // TODO: Load data by ajax get.
-    var data = [
-    {
-        title: "Fall 2018 to Spring 2019",
-        terms: [{
-            bgClass: "bg-info",
-            termCode: "20193",
-            termTitle: "2019 Winter",
-            termGpa: "3.3",
-            termCredit: "12",
-            courses: [{
-                code: "X",
-                title: "Sample Course",
-                grade: "4.0",
-                credit: 3
-            },
-            {
-                code: "X2",
-                title: "Another Course",
-                grade: "4.0",
-                credit: 3
-            },
-            {
-                code: "X3",
-                title: "One More Course",
-                grade: "4.0",
-                credit: 3
-            }]
-        },
-        {
-            bgClass: "bg-primary",
-            termCode: "20193",
-            termTitle: "2019 Winter",
-            termGpa: "3.3",
-            termCredit: "12",
-            courses: [{
-                code: "X",
-                title: "Sample Course",
-                grade: "4.0",
-                credit: 3
-            },
-            {
-                code: "X2",
-                title: "Another Course",
-                grade: "4.0",
-                credit: 3
-            },
-            {
-                code: "X3",
-                title: "One More Course",
-                grade: "4.0",
-                credit: 3
-                }]
-        },
-        {
-            bgClass: "bg-secondary",
-            termCode: "20193",
-            termTitle: "2019 Winter",
-            termGpa: "3.3",
-            termCredit: "12",
-            courses: [{
-                code: "X",
-                title: "Sample Course",
-                grade: "4.0",
-                credit: 3
-            },
-            {
-                code: "X2",
-                title: "Another Course",
-                grade: "4.0",
-                credit: 3
-            },
-            {
-                code: "X3",
-                title: "One More Course",
-                grade: "4.0",
-                credit: 3
-                }]
-        }
-        ]
-    },
-    {
-        title: "Fall 2018 to Spring 2019",
-        terms: [{
-            bgClass: "bg-info",
-            termCode: "20193",
-            termTitle: "2019 Winter",
-            termGpa: "3.3",
-            termCredit: "12",
-            courses: [{
-                code: "X",
-                title: "Sample Course",
-                grade: "4.0",
-                credit: 3
-            },
-            {
-                code: "X2",
-                title: "Another Course",
-                grade: "4.0",
-                credit: 3
-            },
-            {
-                code: "X3",
-                title: "One More Course",
-                grade: "4.0",
-                credit: 3
-            }]
-        },
-        {
-            bgClass: "bg-primary",
-            termCode: "20193",
-            termTitle: "2019 Winter",
-            termGpa: "3.3",
-            termCredit: "12",
-            courses: [{
-                code: "X",
-                title: "Sample Course",
-                grade: "4.0",
-                credit: 3
-            },
-            {
-                code: "X2",
-                title: "Another Course",
-                grade: "4.0",
-                credit: 3
-            },
-            {
-                code: "X3",
-                title: "One More Course",
-                grade: "4.0",
-                credit: 3
-                }]
-        },
-        {
-            bgClass: "bg-secondary",
-            termCode: "20193",
-            termTitle: "2019 Winter",
-            termGpa: "3.3",
-            termCredit: "12",
-            courses: [{
-                code: "X",
-                title: "Sample Course",
-                grade: "4.0",
-                credit: 3
-            },
-            {
-                code: "X2",
-                title: "Another Course",
-                grade: "4.0",
-                credit: 3
-            },
-            {
-                code: "X3",
-                title: "One More Course",
-                grade: "4.0",
-                credit: 3
-                }]
-        }
-        ]
-    }
-    ];
 
-    $("#tabTimelineContainer").html($(tmpl.render(data)));
+    $.cachedAjax("/api/ajax/GetAdvisingTimelime/" + gStudentId)
+    .done(function(data) {
+        $("#tabTimelineContainer").html($(tmpl.render(data)));
+    })
+    .fail(function(xhr, status, error) {
+        alert("Request Failed: " + status + ", " + error);
+    });
 }
 
 //
