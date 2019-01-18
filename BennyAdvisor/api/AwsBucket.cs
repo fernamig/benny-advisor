@@ -129,6 +129,11 @@ namespace BennyAdvisor.api
             }
         }
 
+        public T[] ReadArray<T>(string keyName)
+        {
+            return JArray.Parse(ReadAllText(keyName)).ToObject<T[]>();
+        }
+
         public async Task WriteAllTextAsync(string keyName, string body)
         {
             using (var client = new AmazonS3Client(RegionEndpoint.USWest2))

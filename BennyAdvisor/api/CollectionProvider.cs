@@ -5,31 +5,31 @@ using BennyAdvisor.Models;
 
 namespace BennyAdvisor.api
 {
-    public class CollectionProvider
+    public class CollectionProvider<T>
     {
-        protected GroupProvider<string> Provider { get; private set; }
+        protected GroupProvider<T> Provider { get; private set; }
 
         public CollectionProvider(string root)
         {
-            Provider = new GroupProvider<string>(root);
+            Provider = new GroupProvider<T>(root);
         }
 
-        public IEnumerable<string> Get(string id)
+        public IEnumerable<T> Get(string id)
         {
             var group = Provider.TryGet(id);
             if ((group != null) && (group.Groups.Count() > 0))
                 return group.Groups.First().Members;
-            return Enumerable.Empty<string>();
+            return Enumerable.Empty<T>();
         }
 
-        public void Set(string id, IEnumerable<string> items)
+        public void Set(string id, IEnumerable<T> items)
         {
-            var group = new GroupCollectionModel<string>()
+            var group = new GroupCollectionModel<T>()
             {
                 LastModified = DateTime.UtcNow,
                 Groups = new[]
                 {
-                    new GroupModel<string>()
+                    new GroupModel<T>()
                     {
                         Id = "",
                         Title = "",

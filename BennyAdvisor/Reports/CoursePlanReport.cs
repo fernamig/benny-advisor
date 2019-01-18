@@ -132,8 +132,11 @@ namespace BennyAdvisor.Reports
 
                 plan.Add(new TermCoursesModel()
                 {
-                    TermCode = kv.Key,
-                    TermTitle = termTitles[kv.Key],
+                    Term = new TermModel()
+                    {
+                        Code = kv.Key,
+                        Title = termTitles[kv.Key],
+                    },
                     Courses = kv.Value.Values
                 });
             }

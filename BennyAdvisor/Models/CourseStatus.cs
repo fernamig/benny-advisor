@@ -6,8 +6,8 @@ namespace BennyAdvisor.Models
     {
         NotCompleted = 0,
         Skipped = 1,
-        InProgress = 2,
-        Planned = 3,
+        Planned = 2,
+        InProgress = 3,
         Completed = 4,
     }
 }

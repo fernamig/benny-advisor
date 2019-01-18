@@ -2,19 +2,19 @@
     {{*
         initTermCardLayout(data);
     }}
-    <div class="card card-term text-white bg-{{:bgClass}}" data-id="{{:termCode}}" data-title="{{:termTitle}}">
+    <div class="card card-term text-white bg-{{:bgClass}}" data-id="{{:term.code}}" data-title="{{:term.title}}">
         <div class="card-header font-weight-bold">
             <i class="fas fa-angle-up toggle-summary" onclick="$(parentNode.parentNode).toggleClass('show-summary')"></i>
-            {{:termTitle}}
+            {{:term.title}}
             {{if !readonly && false}}
             <button type="button" class="close float-right ml-3"
                     aria-label="Remove Term" title="Remove Term"
-                    onclick="showRemoveTermModal({{:termCode}}, '{{:termTitle}}')">
+                    onclick="showRemoveTermModal({{:term.code}}, '{{:term.title}}')">
                 <i class="fas fa-times"></i>
             </button>
             <button type="button" class="btn btn-warning btn-sm float-right"
                     aria-label="Add Course" title="Add Course"
-                    onclick="showAddCourseModal({{:termCode}})">
+                    onclick="showAddCourseModal({{:term.code}})">
                 <i class="fa fa-plus fa-sm" aria-hidden="true"></i>&nbsp;Course
             </button>
             {{/if}}

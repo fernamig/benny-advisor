@@ -1,4 +1,14 @@
 ﻿<script id="progressTmpl" type="text/x-jsrender">
+    {{*
+        if (data.status === 4 )
+            data.bgClass = "bg-success";
+        else if (data.status == 3)
+            data.bgClass = "bg-primary";
+        else if (data.status == 2)
+            data.bgClass = "bg-warning";
+        else
+            data.bgClass = "bg-danger";
+    }}
     <div class="card text-white {{:bgClass}} mb-2">
         <h6 class="card-header">
             {{:title}}
@@ -9,6 +19,8 @@
 </script>
 
 <script id="progressEntryTmpl" type="text/x-jsrender">
+    {{*
+        if (data.status === 4 ) {             data.bgClass = "alert-success";             data.iconClass = "fas fa-check-square text-success";         } else if (data.status == 3) {             data.bgClass = "alert-primary";             data.iconClass = "fas fa-minus-square text-primary";         } else if (data.status == 2) {             data.bgClass = "alert-warning";             data.iconClass = "fas fa-square text-warning";         } else {             data.bgClass = "alert-danger";             data.iconClass = "far fa-square text-danger";         }     }}
     <div class="row mx-0 py-2 border-top {{:bgClass}}">
         <div class="col-5">
             <i class="{{:iconClass}} mr-2"></i>{{:title}}
@@ -19,12 +31,12 @@
             {{/if}}
         </div>
         <div class="col-1">
-            <span class="float-left">{{if status === 2}} {{:course.grade}} {{/if}}</span>
+            <span class="float-left">{{if status === 4}} {{:course.grade}} {{/if}}</span>
             <span class="float-right">{{:credit}}</span>
         </div>
         <div class="col-2">
             {{if course}}
-                {{:course.term}}
+                {{:course.term.title}}
             {{/if}}
         </div>
     </div>

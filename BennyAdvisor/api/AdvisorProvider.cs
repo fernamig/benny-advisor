@@ -5,7 +5,7 @@ using BennyAdvisor.Models;
 
 namespace BennyAdvisor.api
 {
-    public class AdvisorProvider : CollectionProvider
+    public class AdvisorProvider : CollectionProvider<string>
     {
         public AdvisorProvider()
             : base("advisor")

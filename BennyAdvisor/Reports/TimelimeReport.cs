@@ -16,7 +16,7 @@ namespace BennyAdvisor.Reports
 
             // Group the terms into years.
             var groups = terms
-                .GroupBy(x => (x.TermCode - 3) / 10)
+                .GroupBy(x => (x.Term.Code - 3) / 10)
                 .OrderBy(x => x.Key)
                 .Select(x => new YearTermsModel(x.Key, x))
                 .ToList();
@@ -52,15 +52,27 @@ namespace BennyAdvisor.Reports
                 var terms = new Dictionary<int, TermCoursesModel>();
                 title = $"{year} Fall";
                 code = CalcTermCode(title);
-                terms[code] = new TermCoursesModel() { TermCode = code, TermTitle = title, Courses = Enumerable.Empty<CourseGradeModel>() };
+                terms[code] = new TermCoursesModel()
+                {
+                    Term = new TermModel() { Code = code, Title = title },
+                    Courses = Enumerable.Empty<CourseGradeModel>()
+                };
                 title = $"{year + 1} Winter";
                 code = CalcTermCode(title);
-                terms[code] = new TermCoursesModel() { TermCode = code, TermTitle = title, Courses = Enumerable.Empty<CourseGradeModel>() };
+                terms[code] = new TermCoursesModel()
+                {
+                    Term = new TermModel() { Code = code, Title = title },
+                    Courses = Enumerable.Empty<CourseGradeModel>()
+                };
                 title = $"{year + 1} Spring";
                 code = CalcTermCode(title);
-                terms[code] = new TermCoursesModel() { TermCode = code, TermTitle = title, Courses = Enumerable.Empty<CourseGradeModel>() };
+                terms[code] = new TermCoursesModel()
+                {
+                    Term = new TermModel() { Code = code, Title = title },
+                    Courses = Enumerable.Empty<CourseGradeModel>()
+                };
 
-                groups.Insert(index, new YearTermsModel(year, terms.Values.OrderBy(x => x.TermCode)));
+                groups.Insert(index, new YearTermsModel(year, terms.Values.OrderBy(x => x.Term.Code)));
             }
         }
 
