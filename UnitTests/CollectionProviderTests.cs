@@ -9,7 +9,7 @@ namespace UnitTests
 {
     public class CollectionProviderTests
     {
-        readonly CollectionProvider Provider = new CollectionProvider("test.collection");
+        readonly CollectionProvider<string> Provider = new CollectionProvider<string>("test.collection");
 
         [Fact]
         public void VerifyNonExisting()
