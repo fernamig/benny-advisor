@@ -75,5 +75,23 @@ namespace BennyAdvisor.api
             var provider = new CalendarProvider();
             return Json(provider.Get(id));
         }
+
+        [HttpGet]
+        public JsonResult GetStudentNotes(string id)
+        {
+            var provider = new NotesProvider();
+            return Json(provider.Get(id));
+        }
+
+        [HttpPost]
+        public JsonResult AddStudentNote(string id, [FromBody] NoteModel note)
+        {
+            note.Date = DateTime.UtcNow;
+            note.Source = "BennyAdvisor";
+
+            var provider = new NotesProvider();
+            provider.Add(id, note);
+            return Json("The note was added.");
+        }
     }
 }

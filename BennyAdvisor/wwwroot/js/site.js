@@ -235,26 +235,11 @@ function tabAppointmentInit() {
 //
 
 function tabNotesInit() {
-    var tmpl = $.templates("#notesTmpl");
-
-    // TODO: Load data by ajax get.
-    var data = [{
-        context: null,
-        note: "This is a sample note.",
-        source: "Benny Advisor",
-    },
-    {
-        context: "CS 101",
-        note: "This is a sample note.",
-        source: "Benny Advisor",
-    },
-    {
-        context: null,
-        note: "This is a sample note.",
-        source: "Benny Advisor",
-    }];
-
-    $("#tabNotesContainer").html(tmpl.render(data));
+    $.cachedAjax("/api/ajax/GetStudentNotes/" + gStudentId)
+    .done(notesShowNotes)
+    .fail(function(xhr, status, error) {
+        alert("Request Failed: " + status + ", " + error);
+    });
 }
 
 //
@@ -315,3 +300,43 @@ function makeAppointmentSetDates(wk) {
     $("#tabAppointmentEnd").html(wk.add(4, 'days').format("MMM DD"));
 }
 
+//
+// Add note functionality.
+//
+
+function notesShowNotes(data) {
+    var tmpl = $.templates("#notesTmpl");
+    $("#tabNotesContainer").html(tmpl.render(data));
+}
+
+function notesShowAddModal() {
+    $("#notesAddNote").val("");
+    $('#notesAddModal').modal('show');
+}
+
+function notesAdd() {
+    $('#notesAddModal').modal('hide');
+
+    var note = {
+        context: null,
+        note: $("#notesAddNote").val()
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "/api/ajax/AddStudentNote/" + gStudentId,
+        data: JSON.stringify(note),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json"
+    })
+    .done(function(data) {
+        $.cachedAjax("/api/ajax/GetStudentNotes/" + gStudentId, true)
+        .done(notesShowNotes)
+        .fail(function(xhr, status, error) {
+            alert("Request Failed: " + status + ", " + error);
+        });
+    })
+    .fail(function(xhr, status, error) {
+        alert("Request Failed: " + status + ", " + error);
+    });
+}
