@@ -37,15 +37,18 @@
     <div id="tabAppointment" class="tab-view">
         <div id="tabAppointmentContainer" class="small">
             <div class="alert alert-secondary">
-                <button id="tabAppointmentPrev" class="btn btn-primary" onclick="">
+                <button id="tabAppointmentPrev" class="btn btn-primary" onclick="makeAppointmentShowPrevWeek()">
                     <i class="fas fa-angle-double-left"></i>&nbsp;Prev
                 </button>
-                <button class="btn btn-primary" onclick="">
+                <button id="tabAppointmentNext" class="btn btn-primary" onclick="makeAppointmentShowNextWeek()">
                     Next&nbsp;<i class="fas fa-angle-double-right"></i>
                 </button>
-                <span class="h5 pl-3 align-middle"><span id="tabAppointmentStart" data-date=""></span>&nbsp;through&nbsp;<span id="tabAppointmentEnd"></span></span>
+                <span class="h5 pl-3 align-middle">
+                    <span id="tabAppointmentStart" data-date=""></span>
+                    &nbsp;through&nbsp;<span id="tabAppointmentEnd"></span>
+                </span>
             </div>
-            <div class="card container">
+            <div class="card alert-secondary container">
                 <div class="row card-header p-0">
                     <div class="col-2">
                     </div>
@@ -116,8 +119,10 @@
 <partial name="_ScoresTmpl.cshtml" />
 
 @section Scripts {
-    <script>
-        gStudentId = '@Model.Student.Id';
-        $.views.settings.allowCode(true);
-    </script>
+<script>
+    gStudentId = '@Model.Student.Id';
+    gAdvisorId = '@advisorId';
+    $.views.settings.allowCode(true);
+    makeAppointmentSetDates();
+</script>
 }

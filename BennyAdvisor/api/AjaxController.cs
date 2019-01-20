@@ -60,5 +60,20 @@ namespace BennyAdvisor.api
             var report = new ProgressReport();
             return Json(report.Generate(id));
         }
+
+        [HttpGet]
+        [Route("{advisorId}/{wk}")]
+        public JsonResult GetAdvisingAvailability(string id, string advisorId, DateTime wk)
+        {
+            var report = new AvailabilityReport();
+            return Json(report.Generate(advisorId, id, wk));
+        }
+
+        [HttpGet]
+        public JsonResult GetCalendar(string id)
+        {
+            var provider = new CalendarProvider();
+            return Json(provider.Get(id));
+        }
     }
 }

@@ -21,4 +21,10 @@
   <ItemGroup>
     <Compile Remove="api\StudentsController %28copy%29.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\images\test.JPG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\images\test.jpg" />
+  </ItemGroup>
 </Project>
