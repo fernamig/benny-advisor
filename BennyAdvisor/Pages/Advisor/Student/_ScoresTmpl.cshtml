@@ -1,7 +1,7 @@
 ﻿<script id="scoresTmpl" type="text/x-jsrender">
     <div class="card text-white bg-primary mb-2">
         <h5 class="card-header">
-            Test Scores on file as of {{:fileDate}}
+            Test Scores on file as of {{*:moment(data.fileDate).format("MMM DD, YYYY")}}
         </h5>
         <div class="container">
             <div class="row bg-card font-weight-bold card-header px-0">
@@ -29,7 +29,7 @@
             {{:score}}
         </div>
         <div class="col-2 text-center">
-            {{:takenDate}}
+            {{*:moment(data.takenDate).format("MMM DD, YYYY")}}
         </div>
     </div>
 </script>

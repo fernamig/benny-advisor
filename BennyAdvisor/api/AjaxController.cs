@@ -93,5 +93,12 @@ namespace BennyAdvisor.api
             provider.Add(id, note);
             return Json("The note was added.");
         }
+
+        [HttpGet]
+        public JsonResult GetStudentTestScores(string id)
+        {
+            var provider = new TestScoresProvider();
+            return Json(provider.Get(id));
+        }
     }
 }
