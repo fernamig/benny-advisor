@@ -111,8 +111,8 @@
     </div>
 </div>
 
-<partial name="_TermCardTmpl.cshtml" />
-<partial name="_CoursePlanTmpl.cshtml" />
+<partial name="_TermCardTmpl" />
+<partial name="_CoursePlanTmpl" />
 <partial name="_TimelineTmpl.cshtml" />
 <partial name="_ProgressTmpl.cshtml" />
 <partial name="_NotesTmpl.cshtml" />
@@ -120,9 +120,9 @@
 
 @section Scripts {
 <script>
+    $.views.settings.allowCode(true);
     gStudentId = '@Model.Student.Id';
     gAdvisorId = '@advisorId';
-    $.views.settings.allowCode(true);
     makeAppointmentSetDates();
 </script>
 }

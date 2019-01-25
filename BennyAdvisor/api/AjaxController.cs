@@ -12,6 +12,20 @@ namespace BennyAdvisor.api
     public class AjaxController : Controller
     {
         [HttpGet]
+        public JsonResult GetCourses()
+        {
+            var provider = new CourseProvider();
+            return Json(provider.GetAllTitles());
+        }
+
+        [HttpGet]
+        public JsonResult GetCourseData(string id)
+        {
+            var provider = new CourseProvider();
+            return Json(provider.Get(id));
+        }
+
+        [HttpGet]
         public JsonResult GetAdvisorStudents(string id)
         {
             var advisorProvider = new AdvisorProvider();
@@ -24,13 +38,6 @@ namespace BennyAdvisor.api
             }
 
             return Json(students);
-        }
-
-        [HttpGet]
-        public JsonResult GetCoursePlan(string id)
-        {
-            var provider = new CoursePlanProvider();
-            return Json(provider.TryGet(id)?.Groups);
         }
 
         [HttpGet]
@@ -99,6 +106,14 @@ namespace BennyAdvisor.api
         {
             var provider = new TestScoresProvider();
             return Json(provider.Get(id));
+        }
+
+        [HttpPost]
+        public JsonResult SetCoursePlan(string id, [FromBody] List<GroupModel<string>> plan)
+        {
+            var provider = new CoursePlanProvider();
+            provider.Set(id, plan);
+            return Json("The plan has been updated.");
         }
     }
 }

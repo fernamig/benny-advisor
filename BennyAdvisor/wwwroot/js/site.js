@@ -37,6 +37,13 @@ $.cachedAjax = $.createCache(function(defer, url) {
 // Misc Helpers.
 //
 
+function findFirst(array, predicate) {
+    for (var i = 0; i < array.length; i++)
+        if (predicate(array[i]))
+            return array[i];
+    return null;
+}
+
 function getCoursesStats(courses) {
     var gpaGrade = 0;
     var gpaCredit = 0;
@@ -53,12 +60,12 @@ function getCoursesStats(courses) {
     if (gpaCredit !== 0)
         gpa = (gpaGrade / gpaCredit).toFixed(1);
 
-    return { gpa: gpa, credit: totalCredit };
+    return { gpa: gpa, credit: totalCredit, count: courses.length };
 }
 
 function initTermCardLayout(data) {
     if (data.term.code < gCurrentTermCode)
-        data.bgClass = "secondary";
+        data.bgClass = "info";
     else if (data.term.code > gCurrentTermCode)
         data.bgClass = "primary";
     else
@@ -320,6 +327,86 @@ function notesAdd() {
         .fail(function(xhr, status, error) {
             alert("Request Failed: " + status + ", " + error);
         });
+    })
+    .fail(function(xhr, status, error) {
+        alert("Request Failed: " + status + ", " + error);
+    });
+}
+
+//
+// Course plan functionality.
+//
+
+function coursePlanExpandAllCards(expand)
+{
+    $.each($("#tabCoursePlanContainer > .card"), function() {
+        if (expand)
+            $(this).removeClass("show-summary");
+        else
+            $(this).addClass("show-summary");
+    });
+}
+
+function coursePlanSendUpdate() {
+    var plans = [];
+
+    $("#tabCoursePlanContainer > .card").each(function() {
+        var courseIds = [];
+        $(this).find(".row.course").each(function() {
+            courseIds.push($(this).attr("data-id"));
+        });
+
+        plans.push({
+            "id": $(this).attr("data-id"),
+            "title": $(this).attr("data-title"),
+            "members": courseIds,
+        });
+    });
+
+    $.ajax({
+        type: "POST",
+        url: "/api/ajax/SetCoursePlan/" + gStudentId,
+        data: JSON.stringify(plans),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json"
+    })
+    .fail(function(xhr, status, error) {
+        alert("Request Failed: " + status + ", " + error);
+    });
+}
+
+function coursePlanGetCourseCardStats(card) {
+    var courses = [];
+    card.find(".row.course").each(function() {
+        courses.push({
+            "grade": parseFloat($(this).attr("data-grade")),
+            "credit": parseInt($(this).attr("data-credit")),
+        });
+    });
+    return getCoursesStats(courses);
+}
+
+function coursePlanUpdateTermStats(card) {
+    var stats = coursePlanGetCourseCardStats(card);
+    card.find(".termGpa").text(stats.gpa);
+    card.find(".termCredit").text(stats.credit);
+    card.find(".termCourseCount").text(stats.count);
+}
+
+function coursePlanAddCourseToTerm(courseCode)
+{
+    var termCode = $("#addCourseTermCode").val();
+    $("#addCourseModal").modal("hide");
+
+    $.cachedAjax("/api/ajax/GetCourseData/" + courseCode)
+    .done(function(data) {
+        var tmpl = $.templates("#coursePlanEntryTmpl");
+
+        data.status = 2;
+        data.grade = -1;
+        $("#coursePlanTerm" + termCode).append($(tmpl.render(data)));
+        coursePlanUpdateTermStats($("#coursePlanTerm" + termCode).closest(".card"));
+        coursePlanSendUpdate();
     })
     .fail(function(xhr, status, error) {
         alert("Request Failed: " + status + ", " + error);
