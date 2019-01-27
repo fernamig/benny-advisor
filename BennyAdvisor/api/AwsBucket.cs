@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
@@ -31,7 +33,7 @@ namespace BennyAdvisor.api
         {
             try
             {
-                using (var client = new AmazonS3Client(RegionEndpoint.USWest2))
+                using (var client = CreateClient())
                 {
                     var request = new GetObjectMetadataRequest
                     {
@@ -55,7 +57,7 @@ namespace BennyAdvisor.api
 
         public async Task<string> ReadAllTextAsync(string keyName)
         {
-            using (var client = new AmazonS3Client(RegionEndpoint.USWest2))
+            using (var client = CreateClient())
             {
                 var request = new GetObjectRequest
                 {
@@ -136,7 +138,7 @@ namespace BennyAdvisor.api
 
         public async Task WriteAllTextAsync(string keyName, string body)
         {
-            using (var client = new AmazonS3Client(RegionEndpoint.USWest2))
+            using (var client = CreateClient())
             {
                 var request = new PutObjectRequest
                 {
@@ -164,7 +166,7 @@ namespace BennyAdvisor.api
 
         public async Task DeleteFileAsync(string keyName)
         {
-            using (var client = new AmazonS3Client(RegionEndpoint.USWest2))
+            using (var client = CreateClient())
             {
                 var request = new DeleteObjectRequest
                 {
@@ -202,5 +204,48 @@ namespace BennyAdvisor.api
             {
             }
         }
+
+        IAmazonS3 CreateClient()
+        {
+#if DEBUG
+            if (!string.IsNullOrWhiteSpace(s_AwsAccessKey) && !string.IsNullOrWhiteSpace(s_AwsSecretKey))
+                return new AmazonS3Client(s_AwsAccessKey, s_AwsSecretKey, RegionEndpoint.USWest2);
+#endif
+            return new AmazonS3Client(RegionEndpoint.USWest2);
+        }
+
+#if DEBUG
+        readonly static string s_AwsAccessKey;
+        readonly static string s_AwsSecretKey;
+
+        static AwsBucket()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                var props = ReadProperties(@"C:\.aws\credentials", "[default]");
+                s_AwsAccessKey = props["aws_access_key_id"];
+                s_AwsSecretKey = props["aws_secret_access_key"];
+            }
+        }
+#endif
+
+#if DEBUG
+        static Dictionary<string, string> ReadProperties(string path, string section)
+        {
+            var inSection = false;
+            var Properties = new Dictionary<string, string>();
+            foreach (string line in File.ReadAllLines(path))
+            {
+                if (line == section)
+                    inSection = true;
+                else if (inSection)
+                {
+                    var parts = line.Split("=");
+                    Properties.Add(parts[0].Trim().ToLower(), parts[1].Trim());
+                }
+            }
+            return Properties;
+        }
+#endif
     }
 }

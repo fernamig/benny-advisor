@@ -1,0 +1,9 @@
+/debug/
+/bin/
+/.vs/
+/BennyAdvisor/debug/
+/BennyAdvisor/bin/
+/BennyAdvisor/obj/
+/UnitTests/debug/
+/UnitTests/bin/
+/UnitTests/obj/
