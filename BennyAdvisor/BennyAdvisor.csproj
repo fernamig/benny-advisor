@@ -17,6 +17,7 @@
     <Folder Include="api\" />
     <Folder Include="Reports\" />
     <Folder Include="TagHelpers\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="api\StudentsController %28copy%29.cs" />

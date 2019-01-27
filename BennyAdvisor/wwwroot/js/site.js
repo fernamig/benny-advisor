@@ -190,47 +190,11 @@ function tabProgressInit() {
 
 function tabAppointmentInit() {
     // Get the start of the week.
-    var wk = moment($("#tabAppointmentStart").attr("data-date"), "MM-DD-YYYY");
+    var wk = $("#tabAppointmentStart").attr("data-date");
 
-    $.cachedAjax("/api/ajax/GetAdvisingAvailability/" + gStudentId + "/" + gAdvisorId + "/" + wk.format("MM-DD-YYYY"))
+    $.get("/api/ajax/GetAdvisingAvailability/" + gStudentId + "/" + gAdvisorId + "/" + wk)
     .done(function(data) {
-        $.each(data, function(i, day) {
-            $("#tabAppointmentContainer .row.card-header > div:nth-child(" + (2 + i) + ") span").html(moment(day.date).format("MMM DD"));
-
-            $.each(day.slots, function(j, status) {
-                var slot = $("#tabAppointmentContainer .row:nth-child(" + (2 + j) + ") > div:nth-child(" + (2 + i) + ")");
-                slot.removeClass("text-muted")
-                    .removeClass("alert-success")
-                    .removeClass("alert-secondary")
-                    .removeClass("alert-warning")
-                    .removeClass("alert-danger");
-
-                if (status === 0) {
-                    slot.html("<a href='#'>Make Appt</a>");
-                    slot.addClass("alert-success");
-                }
-                else if (status === 1) {
-                    slot.html("Unavailable");
-                    slot.addClass("text-muted");
-                    slot.addClass("alert-secondary");
-                }
-                else if (status === 2) {
-                    slot.html("Busy");
-                    slot.addClass("text-muted");
-                    slot.addClass("alert-secondary");
-                }
-                else if (status === 3) {
-                    slot.html("Advising");
-                    slot.addClass("text-muted");
-                    slot.addClass("alert-warning");
-                }
-                else if (status === 4) {
-                    slot.html("In Class");
-                    slot.addClass("text-muted");
-                    slot.addClass("alert-danger");
-                }
-            });
-        });
+        $("#tabAppointmentContainer").html($.templates("#scheduleTmpl").render(data));
     })
     .fail(function(xhr, status, error) {
         alert("Request Failed: " + status + ", " + error);
@@ -266,30 +230,18 @@ function tabScoresInit() {
 }
 
 //
-// Make appointment functionality.
+// Scheduler appointment functionality.
 //
 
-function makeAppointmentShowPrevWeek() {
+function schedulerShowPrevWeek() {
     var wk = moment($("#tabAppointmentStart").attr("data-date"), "MM-DD-YYYY");
-    makeAppointmentSetDates(wk.subtract(7, 'days'));
-    tabAppointmentInit();
-}
-function makeAppointmentShowNextWeek() {
-    var wk = moment($("#tabAppointmentStart").attr("data-date"), "MM-DD-YYYY");
-    makeAppointmentSetDates(wk.add(7, 'days'));
-    tabAppointmentInit();
-}
-function makeAppointmentSetDates(wk) {
-    var curr = moment().startOf("isoWeek");
-    var last = moment().add(3, 'weeks').startOf("isoWeek");
-    if (!wk)
-        wk = curr;
-
-    $("#tabAppointmentPrev").prop('disabled', curr >= wk);
-    $("#tabAppointmentNext").prop('disabled', wk >= last);
     $("#tabAppointmentStart").attr("data-date", wk.format("MM-DD-YYYY"));
-    $("#tabAppointmentStart").html(wk.format("MMM DD"));
-    $("#tabAppointmentEnd").html(wk.add(4, 'days').format("MMM DD"));
+    tabAppointmentInit();
+}
+function schedulerShowNextWeek() {
+    var wk = moment($("#tabAppointmentStart").attr("data-date"), "MM-DD-YYYY");
+    $("#tabAppointmentStart").attr("data-date", wk.format("MM-DD-YYYY"));
+    tabAppointmentInit();
 }
 
 //
