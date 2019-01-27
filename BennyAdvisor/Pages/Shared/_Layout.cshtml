@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var activePage = ViewContext.RouteData.Values["page"] as string;
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -30,7 +33,14 @@
     <div class="container body-content">
         <div class="row">
             <div class="col-2 side-bar">
-                <partial name="_SideMenu.cshtml" />
+                @if (activePage.StartsWith("/Advisor/"))
+                {
+                    <partial name="_SideMenuAdvisor.cshtml" />
+                }
+                else if (activePage.StartsWith("/Student/"))
+                {
+                    <partial name="_SideMenuStudent.cshtml" />
+                }
             </div>
             <div class="col-10 pt-2">
                 @RenderBody()

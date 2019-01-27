@@ -37,6 +37,13 @@ $.cachedAjax = $.createCache(function(defer, url) {
 // Misc Helpers.
 //
 
+function findFirst(array, predicate) {
+    for (var i = 0; i < array.length; i++)
+        if (predicate(array[i]))
+            return array[i];
+    return null;
+}
+
 function getCoursesStats(courses) {
     var gpaGrade = 0;
     var gpaCredit = 0;
@@ -53,12 +60,12 @@ function getCoursesStats(courses) {
     if (gpaCredit !== 0)
         gpa = (gpaGrade / gpaCredit).toFixed(1);
 
-    return { gpa: gpa, credit: totalCredit };
+    return { gpa: gpa, credit: totalCredit, count: courses.length };
 }
 
 function initTermCardLayout(data) {
     if (data.term.code < gCurrentTermCode)
-        data.bgClass = "secondary";
+        data.bgClass = "info";
     else if (data.term.code > gCurrentTermCode)
         data.bgClass = "primary";
     else
@@ -183,47 +190,11 @@ function tabProgressInit() {
 
 function tabAppointmentInit() {
     // Get the start of the week.
-    var wk = moment($("#tabAppointmentStart").attr("data-date"), "MM-DD-YYYY");
+    var wk = $("#tabAppointmentStart").attr("data-date");
 
-    $.cachedAjax("/api/ajax/GetAdvisingAvailability/" + gStudentId + "/" + gAdvisorId + "/" + wk.format("MM-DD-YYYY"))
+    $.get("/api/ajax/GetAdvisingAvailability/" + gStudentId + "/" + gAdvisorId + "/" + wk)
     .done(function(data) {
-        $.each(data, function(i, day) {
-            $("#tabAppointmentContainer .row.card-header > div:nth-child(" + (2 + i) + ") span").html(moment(day.date).format("MMM DD"));
-
-            $.each(day.slots, function(j, status) {
-                var slot = $("#tabAppointmentContainer .row:nth-child(" + (2 + j) + ") > div:nth-child(" + (2 + i) + ")");
-                slot.removeClass("text-muted")
-                    .removeClass("alert-success")
-                    .removeClass("alert-secondary")
-                    .removeClass("alert-warning")
-                    .removeClass("alert-danger");
-
-                if (status === 0) {
-                    slot.html("<a href='#'>Make Appt</a>");
-                    slot.addClass("alert-success");
-                }
-                else if (status === 1) {
-                    slot.html("Unavailable");
-                    slot.addClass("text-muted");
-                    slot.addClass("alert-secondary");
-                }
-                else if (status === 2) {
-                    slot.html("Busy");
-                    slot.addClass("text-muted");
-                    slot.addClass("alert-secondary");
-                }
-                else if (status === 3) {
-                    slot.html("Advising");
-                    slot.addClass("text-muted");
-                    slot.addClass("alert-warning");
-                }
-                else if (status === 4) {
-                    slot.html("In Class");
-                    slot.addClass("text-muted");
-                    slot.addClass("alert-danger");
-                }
-            });
-        });
+        $("#tabAppointmentContainer").html($.templates("#scheduleTmpl").render(data));
     })
     .fail(function(xhr, status, error) {
         alert("Request Failed: " + status + ", " + error);
@@ -235,26 +206,11 @@ function tabAppointmentInit() {
 //
 
 function tabNotesInit() {
-    var tmpl = $.templates("#notesTmpl");
-
-    // TODO: Load data by ajax get.
-    var data = [{
-        context: null,
-        note: "This is a sample note.",
-        source: "Benny Advisor",
-    },
-    {
-        context: "CS 101",
-        note: "This is a sample note.",
-        source: "Benny Advisor",
-    },
-    {
-        context: null,
-        note: "This is a sample note.",
-        source: "Benny Advisor",
-    }];
-
-    $("#tabNotesContainer").html(tmpl.render(data));
+    $.cachedAjax("/api/ajax/GetStudentNotes/" + gStudentId)
+    .done(notesShowNotes)
+    .fail(function(xhr, status, error) {
+        alert("Request Failed: " + status + ", " + error);
+    });
 }
 
 //
@@ -263,55 +219,148 @@ function tabNotesInit() {
 
 function tabScoresInit() {
     var tmpl = $.templates("#scoresTmpl");
-    
-    // TODO: Load data by ajax get.
-    var data = {
-        fileDate: moment().format("MMM D, YYYY"),
-        scores: 
-        [{
-            description: "SAT",
-            score: "100",
-            takenDate: moment().format("MMM D, YYYY"),
-        },
-        {
-            description: "ACT",
-            score: "100",
-            takenDate: moment().format("MMM D, YYYY"),
-        },
-        {
-            description: "GRE",
-            score: "100",
-            takenDate: moment().format("MMM D, YYYY"),
-        }]
+
+    $.cachedAjax("/api/ajax/GetStudentTestScores/" + gStudentId)
+    .done(function(data) {
+        $("#tabScoresContainer").html($(tmpl.render(data)));
+    })
+    .fail(function(xhr, status, error) {
+        alert("Request Failed: " + status + ", " + error);
+    });
+}
+
+//
+// Scheduler appointment functionality.
+//
+
+function schedulerShowPrevWeek() {
+    var wk = moment($("#tabAppointmentStart").attr("data-date"), "MM-DD-YYYY");
+    $("#tabAppointmentStart").attr("data-date", wk.format("MM-DD-YYYY"));
+    tabAppointmentInit();
+}
+function schedulerShowNextWeek() {
+    var wk = moment($("#tabAppointmentStart").attr("data-date"), "MM-DD-YYYY");
+    $("#tabAppointmentStart").attr("data-date", wk.format("MM-DD-YYYY"));
+    tabAppointmentInit();
+}
+
+//
+// Add note functionality.
+//
+
+function notesShowNotes(data) {
+    var tmpl = $.templates("#notesTmpl");
+    $("#tabNotesContainer").html(tmpl.render(data));
+}
+
+function notesShowAddModal() {
+    $("#notesAddNote").val("");
+    $('#notesAddModal').modal('show');
+}
+
+function notesAdd() {
+    $('#notesAddModal').modal('hide');
+
+    var note = {
+        context: null,
+        note: $("#notesAddNote").val()
     };
 
-    $("#tabScoresContainer").html($(tmpl.render(data)));
+    $.ajax({
+        type: "POST",
+        url: "/api/ajax/AddStudentNote/" + gStudentId,
+        data: JSON.stringify(note),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json"
+    })
+    .done(function(data) {
+        $.cachedAjax("/api/ajax/GetStudentNotes/" + gStudentId, true)
+        .done(notesShowNotes)
+        .fail(function(xhr, status, error) {
+            alert("Request Failed: " + status + ", " + error);
+        });
+    })
+    .fail(function(xhr, status, error) {
+        alert("Request Failed: " + status + ", " + error);
+    });
 }
 
 //
-// Make appointment functionality.
+// Course plan functionality.
 //
 
-function makeAppointmentShowPrevWeek() {
-    var wk = moment($("#tabAppointmentStart").attr("data-date"), "MM-DD-YYYY");
-    makeAppointmentSetDates(wk.subtract(7, 'days'));
-    tabAppointmentInit();
-}
-function makeAppointmentShowNextWeek() {
-    var wk = moment($("#tabAppointmentStart").attr("data-date"), "MM-DD-YYYY");
-    makeAppointmentSetDates(wk.add(7, 'days'));
-    tabAppointmentInit();
-}
-function makeAppointmentSetDates(wk) {
-    var curr = moment().startOf("isoWeek");
-    var last = moment().add(3, 'weeks').startOf("isoWeek");
-    if (!wk)
-        wk = curr;
-
-    $("#tabAppointmentPrev").prop('disabled', curr >= wk);
-    $("#tabAppointmentNext").prop('disabled', wk >= last);
-    $("#tabAppointmentStart").attr("data-date", wk.format("MM-DD-YYYY"));
-    $("#tabAppointmentStart").html(wk.format("MMM DD"));
-    $("#tabAppointmentEnd").html(wk.add(4, 'days').format("MMM DD"));
+function coursePlanExpandAllCards(expand)
+{
+    $.each($("#tabCoursePlanContainer > .card"), function() {
+        if (expand)
+            $(this).removeClass("show-summary");
+        else
+            $(this).addClass("show-summary");
+    });
 }
 
+function coursePlanSendUpdate() {
+    var plans = [];
+
+    $("#tabCoursePlanContainer > .card").each(function() {
+        var courseIds = [];
+        $(this).find(".row.course").each(function() {
+            courseIds.push($(this).attr("data-id"));
+        });
+
+        plans.push({
+            "id": $(this).attr("data-id"),
+            "title": $(this).attr("data-title"),
+            "members": courseIds,
+        });
+    });
+
+    $.ajax({
+        type: "POST",
+        url: "/api/ajax/SetCoursePlan/" + gStudentId,
+        data: JSON.stringify(plans),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json"
+    })
+    .fail(function(xhr, status, error) {
+        alert("Request Failed: " + status + ", " + error);
+    });
+}
+
+function coursePlanGetCourseCardStats(card) {
+    var courses = [];
+    card.find(".row.course").each(function() {
+        courses.push({
+            "grade": parseFloat($(this).attr("data-grade")),
+            "credit": parseInt($(this).attr("data-credit")),
+        });
+    });
+    return getCoursesStats(courses);
+}
+
+function coursePlanUpdateTermStats(card) {
+    var stats = coursePlanGetCourseCardStats(card);
+    card.find(".termGpa").text(stats.gpa);
+    card.find(".termCredit").text(stats.credit);
+    card.find(".termCourseCount").text(stats.count);
+}
+
+function coursePlanAddCourseToTerm(courseCode)
+{
+    var termCode = $("#addCourseTermCode").val();
+    $("#addCourseModal").modal("hide");
+
+    $.cachedAjax("/api/ajax/GetCourseData/" + courseCode)
+    .done(function(data) {
+        var tmpl = $.templates("#coursePlanEntryTmpl");
+
+        data.status = 2;
+        data.grade = -1;
+        $("#coursePlanTerm" + termCode).append($(tmpl.render(data)));
+        coursePlanUpdateTermStats($("#coursePlanTerm" + termCode).closest(".card"));
+        coursePlanSendUpdate();
+    })
+    .fail(function(xhr, status, error) {
+        alert("Request Failed: " + status + ", " + error);
+    });
+}

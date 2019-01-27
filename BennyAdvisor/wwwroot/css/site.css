@@ -219,10 +219,10 @@ body {
 
 
 /*
- * Make appointment
+ * Scheduler
  */
 
-#tabAppointmentContainer .row > div {
+#scheduleContainer .row > div {
     border-left: 1px dotted gray;
     border-bottom: 1px dotted gray;
     padding-top: 5px;
@@ -230,12 +230,12 @@ body {
     text-align: center;
 }
 
-#tabAppointmentContainer .row > div:nth-child(1) {
+#scheduleContainer .row > div:nth-child(1) {
     border-left: 0;
     text-align: right;
 }
 
-#tabAppointmentContainer .row.card-header > div {
+#scheduleContainer .row.card-header > div {
     padding-top: 10px;
     padding-bottom: 10px;
     border-bottom: 0;

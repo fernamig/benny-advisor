@@ -21,7 +21,6 @@ namespace BennyAdvisor.Reports
             // Get the courses that the student is registered for and
             // merge that with the courses in the student course plan.
             MergeCourseGrades(terms, termTitles, currentTermCode, studentId);
-
             // Update the status of each course.
             UpdateStatus(terms, currentTermCode);
 

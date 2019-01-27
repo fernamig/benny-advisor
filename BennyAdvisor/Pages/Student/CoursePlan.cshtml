@@ -1,0 +1,154 @@
+﻿@page "/Student/{studentId}/CoursePlan"
+
+@{
+    var startYear = DateTime.Now.Year - 5;
+    var endYear = startYear + 10;
+}
+
+<div class="alert alert-secondary">
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar">
+        <div class="btn-group mr-2" role="group" aria-label="">
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Add Term
+                </button>
+                <div class="dropdown-menu">
+                    @for (int y = startYear; y < endYear; y++)
+                    {
+                        <button class="dropdown-item add-term" type="button" data-code="@(10 * y + 1)">@y Winter</button>
+                        <button class="dropdown-item add-term" type="button" data-code="@(10 * y + 2)">@y Spring</button>
+                        <button class="dropdown-item add-term" type="button" data-code="@(10 * y + 3)">@y Fall</button>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="btn-group mr-2" role="group" aria-label="">
+            <button class="btn btn-primary" type="button" onclick="coursePlanExpandAllCards(true)">
+                Expand All
+            </button>
+        </div>
+        <div class="btn-group" role="group" aria-label="">
+            <button class="btn btn-primary" type="button" onclick="coursePlanExpandAllCards(false)">
+                Collapse All
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="tabCoursePlanContainer">
+    <partial name="_Spinner" />
+</div>
+
+<partial name="_TermCardTmpl" />
+<partial name="_CoursePlanTmpl" />
+
+<modal id="addCourseModal" title="Add Course" ok-title="Add" on-ok-click="">
+    <input type="hidden" id="addCourseTermCode">
+    <div class="alert alert-primary">
+        You can filter courses by entering keywords into the input field below.
+    </div>
+    <input id="courseFilter" class="form-control" type="text" placeholder="Filter courses..." />
+    <br>
+    <ul id="courseList" class="list-group">
+        <li class="list-group-item">
+            <partial name="_Spinner" />
+        </li>
+    </ul>
+</modal>
+
+<modal id="removeTermModal" title="Remove Term" ok-title="Yes" cancel-title="No" on-ok-click="onRemoveTerm()">
+    <input type="hidden" id="removeTermCode">
+    <p>
+        Do you want to remove term '<span id="removeTermTitle"></span>'?
+    </p>
+</modal>
+
+<script id="searchCourseItemTmpl" type="text/x-jsrender">
+    <li class="list-group-item">
+        <button type="button" class="btn btn-success btn-sm"
+                aria-label="Add Course" title="Add Course"
+                onclick="coursePlanAddCourseToTerm('{{:code}}')">
+            <i class="fa fa-plus fa-sm" aria-hidden="true"></i>
+        </button>
+        {{:code}} {{:title}}
+    </li>
+</script>
+
+@section Scripts {
+    <script>
+    $.views.settings.allowCode(true);
+    gStudentId = '@ViewContext.RouteData.Values["studentId"]';
+
+    $("#courseFilter").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#courseList > li").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+
+    $.cachedAjax("/api/ajax/GetAdvisingCoursePlan/" + gStudentId)
+    .done(function(data) {
+        $("#tabCoursePlanContainer").html($.templates("#coursePlanTmpl").render(data, { currentTermCode: gCurrentTermCode }));
+    })
+    .fail(function(xhr, status, error) {
+        alert("Request Failed: " + status + ", " + error);
+    });
+
+    $("button.add-term").on("click", function () {
+        var tmpl = $.templates("#coursePlanTmpl");
+        var termCode = parseInt($(this).attr("data-code"));
+        var termTitle = $(this).text();
+
+        var data = {
+            term: {
+                code: termCode,
+                title: termTitle,
+            },
+            termGpa: "",
+            termCredits: "0",
+            courses: []
+        };
+
+        var nextPlan = findFirst($(".card.term"), function(plan) {
+            return parseInt($(plan).attr("data-id")) > termCode;
+        });
+        if (nextPlan)
+            $(tmpl.render(data, { currentTermCode: gCurrentTermCode })).insertBefore($(nextPlan));
+        else
+            $("#tabCoursePlanContainer").append($(tmpl.render(data, { currentTermCode: gCurrentTermCode })));
+        coursePlanSendUpdate();
+    });
+
+    function showRemoveTermModal(termCode, termTitle)
+    {
+        $('#removeTermCode').val(termCode);
+        $('#removeTermTitle').text(termTitle);
+        $('#removeTermModal').modal('show');
+    }
+
+    function onRemoveTerm()
+    {
+        var termCode = $("#removeTermCode").val();
+        $("#coursePlanTerm" + termCode).closest(".card").remove();
+        $("#removeTermModal").modal("hide");
+        coursePlanSendUpdate();
+    }
+
+    function showAddCourseModal(termCode)
+    {
+        $("#courseFilter").val('');
+        $("#courseList").html('<li class="list-group-item">Loading...</li>');
+        $('#addCourseTermCode').val(termCode);
+        $('#addCourseModal').modal('show');
+
+        $.cachedAjax("/api/ajax/GetCourses")
+        .done(function(data) {
+            var tmpl = $.templates("#searchCourseItemTmpl");
+            $("#courseList").html(tmpl.render(data));
+        })
+        .fail(function(xhr, status, error) {
+            alert("Request Failed: " + status + ", " + error);
+        });
+    }
+    </script>
+}

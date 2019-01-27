@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BennyAdvisor.Models;
 
@@ -24,6 +25,14 @@ namespace BennyAdvisor.api
             return Bucket.TryReadObject<GroupCollectionModel<T>>(keyName);
         }
 
+        public void Set(string ownerId, IEnumerable<GroupModel<T>> groups)
+        {
+            Set(ownerId, new GroupCollectionModel<T>()
+            {
+                LastModified = DateTime.UtcNow,
+                Groups = groups
+            });
+        }
         public void Set(string ownerId, GroupCollectionModel<T> groups)
         {
             var keyName = $"{ownerId}.json";
