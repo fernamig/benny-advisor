@@ -1,0 +1,67 @@
+﻿<script id="scheduleTmpl" type="text/x-jsrender">
+    <div class="alert alert-secondary">
+        <div class="row">
+            <div class="col-2 text-left">
+                <button id="tabAppointmentPrev" class="btn btn-primary"
+                        {{if days[0].day <= earliest}} disabled{{/if}}
+                        onclick="schedulerShowPrevWeek()">
+                    <i class="fas fa-angle-double-left"></i>&nbsp;Prev
+                </button>
+            </div>
+            <div class="col-8 text-center">
+                <div class="h6 pl-3 align-middle">
+                    <span id="tabAppointmentStart" data-date="{{*:moment(data.days[0].day).format('MM-DD-YYYY')}}">
+                        {{*:moment(data.days[0].day).format("MMM D")}}
+                    </span>
+                    &nbsp;through&nbsp;
+                    <span id="tabAppointmentEnd">{{*:moment(data.days[4].day).format("MMM D")}}</span>
+                </div>
+                <div class="small text-uppercase text-muted">
+                    {{if weeksFromToday == 0}}this week{{else weeksFromToday == 1}}next week{{else}}in {{:weeksFromToday}} weeks{{/if}}
+                </div>
+            </div>
+            <div class="col-2 text-right">
+                <button id="tabAppointmentNext" class="btn btn-primary"
+                        {{if days[4].day >= latest}} disabled{{/if}}
+                        onclick="schedulerShowNextWeek()">
+                    Next&nbsp;<i class="fas fa-angle-double-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="scheduleContainer" class="card alert-secondary container small">
+        <div class="row card-header p-0">
+            <div class="col-1"></div>
+            {{for days tmpl="#scheduleHeaderColTmpl" /}}
+            <div class="col-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-1"></div>
+            {{for days tmpl="#scheduleDayTmpl" /}}
+            <div class="col-1"></div>
+        </div>
+    </div>
+</script>
+
+<script id="scheduleHeaderColTmpl" type="text/x-jsrender">
+    <div class="col-2">
+        <div class="text-uppercase">
+            {{*:moment(data.day).format("dddd")}}
+        </div>
+        <div class="text-muted">
+            {{*:moment(data.day).format("MMM D")}}
+        </div>
+    </div>
+</script>
+
+<script id="scheduleDayTmpl" type="text/x-jsrender">
+    <div class="col-2">
+        {{for slots tmpl="#scheduleSlotTmpl" /}}
+    </div>
+</script>
+
+<script id="scheduleSlotTmpl" type="text/x-jsrender">
+    <div class="schedule-slot rounded" onclick="schedulerShowCreateAppointmentModal()">
+        {{*:moment(data.start).format("h:mm")}} - {{*:moment(data.end).format("h:mma")}}
+    </div>
+</script>

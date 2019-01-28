@@ -263,8 +263,26 @@ function schedulerSelectAdvisor(el) {
     });
 }
 
-function schedulerCreateAppointmentModal() {
+function schedulerShowCreateAppointmentModal() {
     $('#schedulerCreateAppointmentModal').modal('show');
+}
+
+function schedulerSelectSlot(el) {
+    $("#tabAppointmentContainer").html($("#spinnerContainer").html());
+
+    gAdvisorId = $(el).attr("data-id");
+    $("#selectedAdvisor").attr("data-id", gAdvisorId);
+    $("#selectedAdvisor").html($(el).html());
+
+    var curr = moment().add(2, 'days').startOf("isoWeek");
+
+    $.get("/api/ajax/GetAdvisingAvailability/" + gStudentId + "/" + gAdvisorId + "/" + curr.format("MM-DD-YYYY"))
+        .done(function (data) {
+            $("#tabAppointmentContainer").html($.templates("#scheduleTmpl").render(data));
+        })
+        .fail(function (xhr, status, error) {
+            alert("Request Failed: " + status + ", " + error);
+        });
 }
 
 //
