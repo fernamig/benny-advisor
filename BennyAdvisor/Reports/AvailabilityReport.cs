@@ -25,8 +25,7 @@ namespace BennyAdvisor.Reports
             var advisorEvents = Provider.Get(advisorId).ToList();
             var studentEvents = Provider.Get(studentId).ToList();
 
-            var days = new List<DateTime>();
-            var daySlots = new List<List<TimeSlot>>();
+            var days = new List<AvailabilityDayModel>();
             for (int i = 0; i < 5; i++, day = day.AddDays(1))
             {
                 // Generate the advisor time slots for the day.
@@ -35,25 +34,11 @@ namespace BennyAdvisor.Reports
                 SetSlotsStatus(timeSlots, studentEvents, SlotStatus.InClass);
                 SetSlotsStatus(timeSlots, advisorEvents, SlotStatus.Unavailable);
 
-                days.Add(day);
-                daySlots.Add(timeSlots);
-            }
-
-            var slotCount = daySlots[0].Count;
-            var availability = new List<AvailabilitySlotModel>();
-            for (int i = 0; i < slotCount; i++)
-            {
-                availability.Add(new AvailabilitySlotModel()
-                {
-                    Start = daySlots[0][i].End - inc,
-                    End = daySlots[0][i].End,
-                    Slots = new SlotStatus[] {
-                        daySlots[0][i].Status,
-                        daySlots[1][i].Status,
-                        daySlots[2][i].Status,
-                        daySlots[3][i].Status,
-                        daySlots[4][i].Status,
-                    }
+                days.Add(new AvailabilityDayModel() {
+                    Day = day,
+                    Slots = timeSlots
+                        .Where(x => x.Status == SlotStatus.Available)
+                        .Select(x => new TimeRange() { Start = x.End - inc, End = x.End })
                 });
             }
 
@@ -61,8 +46,7 @@ namespace BennyAdvisor.Reports
                 WeeksFromToday = weeksFromToday,
                 Earliest = earliest,
                 Latest = earliest.AddDays(daysFuture),
-                Days = days,
-                Availability = availability
+                Days = days
             };
         }
 

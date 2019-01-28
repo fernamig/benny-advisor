@@ -13,13 +13,13 @@
                 </div>
             </div>
             <div class="alert alert-secondary w-100 dropdown-menu">
-                <div class="p-2 dropdown-select mb-1" data-id="100000001" onclick="selectAdvisor(this)">
+                <div class="p-2 dropdown-select mb-1" data-id="100000001" onclick="schedulerSelectAdvisor(this)">
                     <div>John Doe ~ College of Engineering ~ Specialty</div>
-                    <div class="text-muted">20 minutes</div>
+                    <div class="text-muted">30 minutes</div>
                 </div>
-                <div class="p-2 dropdown-select mb-1" data-id="100000001" onclick="selectAdvisor(this)">
+                <div class="p-2 dropdown-select mb-1" data-id="100000001" onclick="schedulerSelectAdvisor(this)">
                     <div>John Doe ~ College of Engineering ~ Specialty</div>
-                    <div class="text-muted">20 minutes</div>
+                    <div class="text-muted">30 minutes</div>
                 </div>
             </div>
         </li>
@@ -35,44 +35,20 @@
 
 <partial name="_MakeAppointmentTmpl" />
 
-<style>
-    .dropdown-select {
-        border: 1px solid #c0c0c0;
-    }
-
-    .dropdown-select:hover {
-        border: 1px solid #a0a0a0;
-        background-color: #d7d8db;
-    }
-
-    .dropdown-select .dropdown-toggle {
-        height: 4em;
-    }
-
-    .chevron-right {
-        top: 1.5em;
-        position: relative;
-        line-height: 0;
-        margin-right: 6px;
-        float: right;
-    }
-
-    .caret-off::before {
-        display: none;
-    }
-
-    .caret-off::after {
-        display: none;
-    }
-</style>
+<modal id="schedulerCreateAppointmentModal" title="Schedule Appointment" ok-title="Schedule" on-ok-click="">
+    <div class="form-group">
+        <div class="alert alert-danger">
+            Not Implemented.
+        </div>
+    </div>
+</modal>
 
 @section Scripts {
 <script>
     $.views.settings.allowCode(true);
     gStudentId = '@ViewContext.RouteData.Values["studentId"]';
 
-    function selectAdvisor(el)
-    {
+    function schedulerSelectSlot(el) {
         $("#tabAppointmentContainer").html($("#spinnerContainer").html());
 
         gAdvisorId = $(el).attr("data-id");
@@ -82,12 +58,12 @@
         var curr = moment().add(2, 'days').startOf("isoWeek");
 
         $.get("/api/ajax/GetAdvisingAvailability/" + gStudentId + "/" + gAdvisorId + "/" + curr.format("MM-DD-YYYY"))
-        .done(function(data) {
-            $("#tabAppointmentContainer").html($.templates("#scheduleTmpl").render(data));
-        })
-        .fail(function(xhr, status, error) {
-            alert("Request Failed: " + status + ", " + error);
-        });
+            .done(function (data) {
+                $("#tabAppointmentContainer").html($.templates("#scheduleTmpl").render(data));
+            })
+            .fail(function (xhr, status, error) {
+                alert("Request Failed: " + status + ", " + error);
+            });
     }
 </script>
 }

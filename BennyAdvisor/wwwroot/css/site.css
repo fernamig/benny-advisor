@@ -34,7 +34,6 @@ body {
     }
 }
 
-
 /* DX */
 .navbar-fixed-top {
     background: #d73f09;
@@ -193,10 +192,10 @@ body {
 /*
  * Student details
  */
-    .container.student-details > .row > div:nth-child(1),
-    .container.student-details > .row > div:nth-child(3) {
-        background-color: #ffc107;
-    }
+.container.student-details > .row > div:nth-child(1),
+.container.student-details > .row > div:nth-child(3) {
+    background-color: #ffc107;
+}
 
 .container.student-details > .row > div {
     border-bottom: 1px solid #6c757d;
@@ -239,4 +238,47 @@ body {
     padding-top: 10px;
     padding-bottom: 10px;
     border-bottom: 0;
+}
+
+.schedule-slot {
+    padding: 6px 0px;
+    border: 2px solid transparent;
+}
+
+.schedule-slot:hover {
+    border-color: #303030;
+    cursor: pointer;
+}
+
+/*
+ * Misc
+ */
+
+.dropdown-select {
+    border: 1px solid #c0c0c0;
+}
+
+.dropdown-select:hover {
+    border: 1px solid #a0a0a0;
+    background-color: #d7d8db;
+}
+
+.dropdown-select .dropdown-toggle {
+    height: 4em;
+}
+
+.chevron-right {
+    top: 1.5em;
+    position: relative;
+    line-height: 0;
+    margin-right: 6px;
+    float: right;
+}
+
+.caret-off::before {
+    display: none;
+}
+
+.caret-off::after {
+    display: none;
 }
