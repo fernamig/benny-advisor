@@ -1,6 +1,7 @@
+.vs
+.DS_Store
 /debug/
 /bin/
-/.vs/
 /BennyAdvisor/debug/
 /BennyAdvisor/bin/
 /BennyAdvisor/obj/

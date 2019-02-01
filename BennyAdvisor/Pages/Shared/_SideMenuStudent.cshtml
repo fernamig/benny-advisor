@@ -1,36 +1,39 @@
-﻿
+﻿@{
+    var activePage = ViewContext.RouteData.Values["page"] as string;
+}
+
 <ul class="navbar-nav">
-    <li class="nav-item">
+    <li class="nav-item @(activePage == "/Student/CoursePlan" ? "active" : "")">
         <a asp-page="/Student/CoursePlan">
             <i class="fas fa-map-marked float-right"></i>Course Plan
         </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item @(activePage == "/Student/Timeline" ? "active" : "")">
         <a asp-page="/Student/Timeline">
             <i class="fas fa-sliders-h float-right"></i>Timeline
         </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item @(activePage == "/Student/Progress" ? "active" : "")">
         <a asp-page="/Student/Progress">
             <i class="fas fa-tasks float-right"></i>Progress
         </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item @(activePage == "/Student/Schedule" ? "active" : "")">
         <a asp-page="/Student/Schedule">
             <i class="fa fa-calendar-check float-right"></i>Schedule Appointment
         </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item @(activePage == "/Student/Notes" ? "active" : "")">
         <a asp-page="/Student/Notes">
             <i class="far fa-comment-alt float-right"></i>Notes
         </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item @(activePage == "/Student/TestScores" ? "active" : "")">
         <a asp-page="/Student/TestScores">
             <i class="fas fa-poll-h float-right"></i>Test Scores
         </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item @(activePage == "/Student/Transcript" ? "active" : "")">
         <a asp-page="/Student/Transcript">
             <i class="fas fa-file-chart-line float-right"></i>Unofficial Transcript
         </a>
