@@ -1,5 +1,15 @@
 ﻿@page "/Student/{studentId}/Notes"
 
-<div class="alert alert-danger">
-    Not Implemented.
+<partial name="_NotesTmpl" />
+
+<div id="tabNotesContainer">
+    <partial name="_Spinner" />
 </div>
+
+@section Scripts {
+<script>
+    $.views.settings.allowCode(true);
+    gStudentId = '@ViewContext.RouteData.Values["studentId"]';
+    tabNotesInit();
+</script>
+}
