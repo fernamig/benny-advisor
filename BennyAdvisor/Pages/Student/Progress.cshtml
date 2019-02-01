@@ -1,5 +1,17 @@
 ﻿@page "/Student/{studentId}/Progress"
 
-<div class="alert alert-danger">
-    Not Implemented.
+<partial name="_ProgressLegend" />
+
+<div id="tabProgressContainer">
+    <partial name="_Spinner" />
 </div>
+
+<partial name="_ProgressTmpl" />
+
+@section Scripts {
+    <script>
+    $.views.settings.allowCode(true);
+    gStudentId = '@ViewContext.RouteData.Values["studentId"]';
+    tabProgressInit();
+    </script>
+}

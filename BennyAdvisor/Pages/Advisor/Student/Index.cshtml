@@ -23,13 +23,7 @@
         </div>
     </div>
     <div id="tabProgress" class="tab-view">
-        <div class="alert alert-secondary">
-            <span class="alert-heading h4 mr-4">Legend:</span>
-            <i class="fas fa-check-square text-success mr-1"></i><span class="mr-4">Complete</span>
-            <i class="fas fa-minus-square text-primary mr-1"></i><span class="mr-4">In Progress</span>
-            <i class="fas fa-square text-warning mr-1"></i><span class="mr-4">Planned</span>
-            <i class="far fa-square text-danger mr-1"></i><span class="mr-4">Not Complete</span>
-        </div>
+        <partial name="_ProgressLegend" />
         <div id="tabProgressContainer">
             <partial name="_Spinner" />
         </div>
@@ -114,7 +108,7 @@
 <partial name="_TermCardTmpl" />
 <partial name="_CoursePlanTmpl" />
 <partial name="_TimelineTmpl.cshtml" />
-<partial name="_ProgressTmpl.cshtml" />
+<partial name="_ProgressTmpl" />
 <partial name="_NotesTmpl" />
 <partial name="_TestScoresTmpl" />
 
