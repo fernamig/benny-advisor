@@ -1,5 +1,16 @@
 ﻿@page "/Student/{studentId}/Timeline"
 
-<div class="alert alert-danger">
-    Not Implemented.
+<div id="tabTimelineContainer">
+    <partial name="_Spinner" />
 </div>
+
+<partial name="_TermCardTmpl" />
+<partial name="_TimelineTmpl" />
+
+@section Scripts {
+    <script>
+    $.views.settings.allowCode(true);
+    gStudentId = '@ViewContext.RouteData.Values["studentId"]';
+    tabTimelineInit();
+    </script>
+}
