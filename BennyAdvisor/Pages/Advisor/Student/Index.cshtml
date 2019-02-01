@@ -123,6 +123,14 @@
     $.views.settings.allowCode(true);
     gStudentId = '@Model.Student.Id';
     gAdvisorId = '@advisorId';
-    makeAppointmentSetDates();
+    //makeAppointmentSetDates();
+
+    var hash = window.location && window.location.hash;
+    console.log(hash);
+    var tab = hash && hash.slice(1);
+    console.log(tab);
+    if (!tab)
+        tab = "tabCoursePlan";
+    tabShow(tab);
 </script>
 }
