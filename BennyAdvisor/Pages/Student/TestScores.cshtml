@@ -1,5 +1,15 @@
 ﻿@page "/Student/{studentId}/TestScores"
 
-<div class="alert alert-danger">
-    Not Implemented.
+<div id="tabScoresContainer">
+    <partial name="_Spinner" />
 </div>
+
+<partial name="_TestScoresTmpl" />
+
+@section Scripts {
+<script>
+    $.views.settings.allowCode(true);
+    gStudentId = '@ViewContext.RouteData.Values["studentId"]';
+    tabScoresInit();
+</script>
+}
