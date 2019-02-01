@@ -21,8 +21,11 @@ namespace BennyAdvisor.Reports
                 .Select(x => new YearTermsModel(x.Key, x))
                 .ToList();
 
-            // Add 3 years a the end to reduce the complexity of the below code.
-            InsertYears(groups, groups[groups.Count - 1].Year, groups.Count, 3);
+            // Add 3 years (or 4 years) to the end to reduce the complexity of the below code.
+            if (groups.Count == 0)
+                InsertYears(groups, DateTime.Now.Year, groups.Count, 4);
+            else
+                InsertYears(groups, groups[groups.Count - 1].Year, groups.Count, 3);
 
             // Add any missing years.
             var count = Math.Min(3, groups[1].Year - groups[0].Year - 1);

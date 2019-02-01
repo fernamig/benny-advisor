@@ -140,11 +140,16 @@ function tabSummaryInit() {
 //
 
 function tabCoursePlanInit() {
-    var tmpl = $.templates("#coursePlanTmpl");
-
     $.cachedAjax("/api/ajax/GetAdvisingCoursePlan/" + gStudentId)
     .done(function(data) {
-        $("#tabCoursePlanContainer").html($(tmpl.render(data)));
+        if (data || data.length === 0) {
+            var tmpl = $.templates("#infoMessageTmpl");
+            $("#tabCoursePlanContainer").html($(tmpl.render("A course plan has not been created.")));
+        }
+        else {
+            var tmpl = $.templates("#coursePlanTmpl");
+            $("#tabCoursePlanContainer").html($(tmpl.render(data)));
+        }
     })
     .fail(function(xhr, status, error) {
         alert("Request Failed: " + status + ", " + error);
@@ -189,12 +194,13 @@ function tabProgressInit() {
 //
 
 function tabAppointmentInit() {
+    var tmpl = $.templates("#scheduleTmpl");
     // Get the start of the week.
     var wk = $("#tabAppointmentStart").attr("data-date");
 
     $.get("/api/ajax/GetAdvisingAvailability/" + gStudentId + "/" + gAdvisorId + "/" + wk)
     .done(function(data) {
-        $("#tabAppointmentContainer").html($.templates("#scheduleTmpl").render(data));
+        $("#tabAppointmentContainer").html(tmpl.render(data));
     })
     .fail(function(xhr, status, error) {
         alert("Request Failed: " + status + ", " + error);
@@ -218,11 +224,16 @@ function tabNotesInit() {
 //
 
 function tabScoresInit() {
-    var tmpl = $.templates("#scoresTmpl");
-
     $.cachedAjax("/api/ajax/GetStudentTestScores/" + gStudentId)
     .done(function(data) {
-        $("#tabScoresContainer").html($(tmpl.render(data)));
+        if (data || data.length === 0) {
+            var tmpl = $.templates("#infoMessageTmpl");
+            $("#tabScoresContainer").html($(tmpl.render("No test scores have been submitted.")));
+        }
+        else {
+            var tmpl = $.templates("#scoresTmpl");
+            $("#tabScoresContainer").html($(tmpl.render(data)));
+        }
     })
     .fail(function(xhr, status, error) {
         alert("Request Failed: " + status + ", " + error);
@@ -290,8 +301,14 @@ function schedulerSelectSlot(el) {
 //
 
 function notesShowNotes(data) {
-    var tmpl = $.templates("#notesTmpl");
-    $("#tabNotesContainer").html(tmpl.render(data));
+    if (data || data.length === 0) {
+        var tmpl = $.templates("#infoMessageTmpl");
+        $("#tabNotesContainer").html($(tmpl.render("No notes have been added.")));
+    }
+    else {
+        var tmpl = $.templates("#notesTmpl");
+        $("#tabNotesContainer").html($(tmpl.render(data)));
+    }
 }
 
 function notesShowAddModal() {

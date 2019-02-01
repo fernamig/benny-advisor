@@ -5,11 +5,12 @@
 </div>
 
 <partial name="_TestScoresTmpl" />
+<partial name="_InfoMessageTmpl" />
 
 @section Scripts {
-<script>
+    <script>
     $.views.settings.allowCode(true);
     gStudentId = '@ViewContext.RouteData.Values["studentId"]';
     tabScoresInit();
-</script>
+    </script>
 }

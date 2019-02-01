@@ -5,11 +5,12 @@
 </div>
 
 <partial name="_NotesTmpl" />
+<partial name="_InfoMessageTmpl" />
 
 @section Scripts {
-<script>
+    <script>
     $.views.settings.allowCode(true);
     gStudentId = '@ViewContext.RouteData.Values["studentId"]';
     tabNotesInit();
-</script>
+    </script>
 }

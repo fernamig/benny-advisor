@@ -111,9 +111,10 @@
 <partial name="_ProgressTmpl" />
 <partial name="_NotesTmpl" />
 <partial name="_TestScoresTmpl" />
+<partial name="_InfoMessageTmpl" />
 
 @section Scripts {
-<script>
+    <script>
     $.views.settings.allowCode(true);
     gStudentId = '@Model.Student.Id';
     gAdvisorId = '@advisorId';
@@ -126,5 +127,5 @@
     if (!tab)
         tab = "tabCoursePlan";
     tabShow(tab);
-</script>
+    </script>
 }
