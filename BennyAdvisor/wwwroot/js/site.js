@@ -142,7 +142,7 @@ function tabSummaryInit() {
 function tabCoursePlanInit() {
     $.cachedAjax("/api/ajax/GetAdvisingCoursePlan/" + gStudentId)
     .done(function(data) {
-        if (data || data.length === 0) {
+        if (!data || data.length === 0) {
             var tmpl = $.templates("#infoMessageTmpl");
             $("#tabCoursePlanContainer").html($(tmpl.render("A course plan has not been created.")));
         }
@@ -226,7 +226,7 @@ function tabNotesInit() {
 function tabScoresInit() {
     $.cachedAjax("/api/ajax/GetStudentTestScores/" + gStudentId)
     .done(function(data) {
-        if (data || data.length === 0) {
+        if (!data || data.length === 0) {
             var tmpl = $.templates("#infoMessageTmpl");
             $("#tabScoresContainer").html($(tmpl.render("No test scores have been submitted.")));
         }
@@ -301,7 +301,7 @@ function schedulerSelectSlot(el) {
 //
 
 function notesShowNotes(data) {
-    if (data || data.length === 0) {
+    if (!data || data.length === 0) {
         var tmpl = $.templates("#infoMessageTmpl");
         $("#tabNotesContainer").html($(tmpl.render("No notes have been added.")));
     }

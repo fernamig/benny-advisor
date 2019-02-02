@@ -1,0 +1,22 @@
+﻿@page "/Advisor/{advisorId}/Student/{studentId}/AdvisingReport"
+@model AdvisingReportModel
+@{
+    var advisorId = ViewContext.RouteData.Values["advisorId"];
+}
+
+<partial name="_StudentDetails.cshtml" for="Student" />
+
+<div id="tabCoursePlanContainer">
+</div>
+
+<partial name="_TermCardTmpl" />
+<partial name="_CoursePlanTmpl" />
+
+@section Scripts {
+<script>
+    $.views.settings.allowCode(true);
+    gStudentId = '@Model.Student.Id';
+    gAdvisorId = '@advisorId';
+    tabCoursePlanInit();
+</script>
+}
