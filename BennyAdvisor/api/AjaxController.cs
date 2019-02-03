@@ -11,6 +11,9 @@ namespace BennyAdvisor.api
     [Route("api/[controller]/[action]/{id?}")]
     public class AjaxController : Controller
     {
+        static object s_LockCoursePlan = new object();
+        static object s_LockNotes = new object();
+
         [HttpGet]
         public JsonResult GetCourses()
         {
@@ -93,12 +96,15 @@ namespace BennyAdvisor.api
         [HttpPost]
         public JsonResult AddStudentNote(string id, [FromBody] NoteModel note)
         {
-            note.Date = DateTime.UtcNow;
-            note.Source = "BennyAdvisor";
+            lock (s_LockNotes)
+            {
+                note.Date = DateTime.UtcNow;
+                note.Source = "BennyAdvisor";
 
-            var provider = new NotesProvider();
-            provider.Add(id, note);
-            return Json("The note was added.");
+                var provider = new NotesProvider();
+                provider.Add(id, note);
+                return Json("The note was added.");
+            }
         }
 
         [HttpGet]
@@ -111,9 +117,12 @@ namespace BennyAdvisor.api
         [HttpPost]
         public JsonResult SetCoursePlan(string id, [FromBody] List<GroupModel<string>> plan)
         {
-            var provider = new CoursePlanProvider();
-            provider.Set(id, plan);
-            return Json("The plan has been updated.");
+            lock (s_LockCoursePlan)
+            {
+                var provider = new CoursePlanProvider();
+                provider.Set(id, plan);
+                return Json("The plan has been updated.");
+            }
         }
     }
 }
