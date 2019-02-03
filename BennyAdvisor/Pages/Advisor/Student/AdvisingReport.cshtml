@@ -6,17 +6,50 @@
 
 <partial name="_StudentDetails.cshtml" for="Student" />
 
-<div id="tabCoursePlanContainer">
+<div class="card text-white bg-info show-summary">
+    <h5 class="card-header">
+        <i class="fas fa-angle-up toggle-summary" onclick="$(parentNode.parentNode).toggleClass('show-summary')"></i>
+        Student Course Plan
+    </h5>
+    <div class="container bg-light pt-2 data-entry">
+        <div id="tabCoursePlanContainer">
+        </div>
+    </div>
+</div>
+<div class="card text-white bg-info show-summary">
+    <h5 class="card-header">
+        <i class="fas fa-angle-up toggle-summary" onclick="$(parentNode.parentNode).toggleClass('show-summary')"></i>
+        Student Timeline
+    </h5>
+    <div class="container bg-light pt-2 data-entry">
+        <div id="tabTimelineContainer">
+        </div>
+    </div>
+</div>
+<div class="card text-white bg-info show-summary">
+    <h5 class="card-header">
+        <i class="fas fa-angle-up toggle-summary" onclick="$(parentNode.parentNode).toggleClass('show-summary')"></i>
+        Student Progress
+    </h5>
+    <div class="container bg-light pt-2 data-entry">
+        <partial name="_ProgressLegend" />
+        <div id="tabProgressContainer">
+        </div>
+    </div>
 </div>
 
 <partial name="_TermCardTmpl" />
 <partial name="_CoursePlanTmpl" />
+<partial name="_TimelineTmpl" />
+<partial name="_ProgressTmpl" />
 
 @section Scripts {
-<script>
+    <script>
     $.views.settings.allowCode(true);
     gStudentId = '@Model.Student.Id';
     gAdvisorId = '@advisorId';
     tabCoursePlanInit();
-</script>
+    tabTimelineInit();
+    tabProgressInit();
+    </script>
 }

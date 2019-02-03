@@ -8,3 +8,5 @@
 /UnitTests/debug/
 /UnitTests/bin/
 /UnitTests/obj/
+
+/BennyAdvisor/aws-beanstalk-tools-defaults.json
