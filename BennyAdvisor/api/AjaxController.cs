@@ -31,16 +31,25 @@ namespace BennyAdvisor.api
         [HttpGet]
         public JsonResult GetAdvisorStudents(string id)
         {
-            var advisorProvider = new AdvisorProvider();
-            var studentProvider = new StudentProvider();
+            return Json(GetStudents(id));
+        }
 
-            var students = new List<StudentModel>();
-            foreach (var sid in advisorProvider.Get(id))
+        [HttpGet]
+        public JsonResult GetAdvisorStudentAlerts(string id)
+        {
+            var provider = new StudentClaimsProvider();
+            var results = new List<StudentClaimsModel>();
+            foreach (var s in GetStudents(id))
             {
-                students.Add(studentProvider.Get(sid));
+                var claims = provider.HasClaims(s.Id, "HSRCAssistance");
+                if (claims.Count() > 0)
+                    results.Add(new StudentClaimsModel()
+                    {
+                        Student = s,
+                        Claims = claims
+                    });
             }
-
-            return Json(students);
+            return Json(results);
         }
 
         [HttpGet]
@@ -123,6 +132,28 @@ namespace BennyAdvisor.api
                 provider.Set(id, plan);
                 return Json("The plan has been updated.");
             }
+        }
+
+        [HttpGet]
+        [Route("{claims}")]
+        public JsonResult GetStudentClaims(string id, string claims)
+        {
+            var provider = new StudentClaimsProvider();
+            return Json(provider.HasClaims(id, claims));
+        }
+
+        private IEnumerable<StudentModel> GetStudents(string advisorId)
+        {
+            var advisorProvider = new AdvisorProvider();
+            var studentProvider = new StudentProvider();
+
+            var students = new List<StudentModel>();
+            foreach (var sid in advisorProvider.Get(advisorId))
+            {
+                students.Add(studentProvider.Get(sid));
+            }
+
+            return students;
         }
     }
 }

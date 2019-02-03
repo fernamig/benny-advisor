@@ -11,9 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Pages\Advisor\Student\" />
-    <Folder Include="api\" />
     <Folder Include="Reports\" />
     <Folder Include="TagHelpers\" />
     <Folder Include="Extensions\" />

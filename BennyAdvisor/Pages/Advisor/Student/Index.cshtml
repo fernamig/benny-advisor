@@ -4,6 +4,7 @@
     var advisorId = ViewContext.RouteData.Values["advisorId"];
 }
 
+<div id="studentAlertsContainer"></div>
 <partial name="_StudentDetails.cshtml" for="Student" />
 
 <div class="tab-container">
@@ -113,12 +114,32 @@
 <partial name="_TestScoresTmpl" />
 <partial name="_InfoMessageTmpl" />
 
+<script id="studentAlertTmpl" type="text/x-jsrender">
+    <div class="alert alert-danger">
+        {{for #data}}
+        {{include tmpl="#studentAlertMsg" + #data + "Tmpl" /}}
+        {{/for}}
+    </div>
+</script>
+
+<script id="studentAlertMsgHSRCAssistanceTmpl" type="text/x-jsrender">
+    <p>The student might qualify for additional financial assistance. Have the student contact HSRC for further assistance.</p>
+</script>
+
 @section Scripts {
     <script>
     $.views.settings.allowCode(true);
     gStudentId = '@Model.Student.Id';
     gAdvisorId = '@advisorId';
-    //makeAppointmentSetDates();
+
+    $.cachedAjax("/api/ajax/GetStudentClaims/" + gStudentId + "/HSRCAssistance")
+        .done(function (data) {
+            var tmpl = $.templates("#studentAlertTmpl");
+            $("#studentAlertsContainer").html($(tmpl.render(data)));
+        })
+        .fail(function (xhr, status, error) {
+            alert("Request Failed: " + status + ", " + error);
+        });
 
     var hash = window.location && window.location.hash;
     console.log(hash);
