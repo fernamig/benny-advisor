@@ -1,0 +1,11 @@
+﻿@page "/Student/{studentId}/Update"
+@model UpdateModel
+
+<form method="post">
+    <input type="hidden" asp-for="Student.Id" />
+    <div class="form-group">
+        <label>First Name</label>
+        <input asp-for="Student.FirstName" class="form-control" placeholder="Enter your first name">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

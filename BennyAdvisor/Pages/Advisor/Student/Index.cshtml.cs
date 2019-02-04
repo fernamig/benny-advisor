@@ -14,7 +14,7 @@ namespace BennyAdvisor.Pages.Advisor.Student
         public void OnGet(string studentId)
         {
             var provider = new StudentProvider();
-            Student = provider.Get(studentId);
+            Student = provider.TryGet(studentId);
         }
     }
 }
