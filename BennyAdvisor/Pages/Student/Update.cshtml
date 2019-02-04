@@ -3,9 +3,42 @@
 
 <form method="post">
     <input type="hidden" asp-for="Student.Id" />
-    <div class="form-group">
+    <div class="form-group" style="width:70%">
+
         <label>First Name</label>
         <input asp-for="Student.FirstName" class="form-control" placeholder="Enter your first name">
+        <br />
+        <label>Last Name</label>
+        <input asp-for="Student.LastName" class="form-control" placeholder="Enter your last name">
+        <br />
+        <label>Id</label>
+        <input asp-for="Student.Id" class="form-control" placeholder="Enter your Id">
+        <br />
+        <label>Level</label>
+        <input asp-for="Student.Level" class="form-control" placeholder="Enter your level">
+        <br />
+        <label>Image Path</label>
+        <input asp-for="Student.ImagePath" class="form-control" placeholder="Enter image path">
+        <br />
+        <label>Degree Name</label>
+        <input asp-for="Student.DegreeName" class="form-control" placeholder="Enter Degree Name">
+        <br />
+        <label>Degree Code</label>
+        <input asp-for="Student.DegreeCode" class="form-control" placeholder="Enter Degree Code">
+        <br />
+        <label>Major</label>
+        <input asp-for="Student.Major" class="form-control" placeholder="Enter your Major">
+        <br />
+        <label>Minor</label>
+        <input asp-for="Student.Minor" class="form-control" placeholder="Enter your Minor">
+        <br />
+        <label>Overall GPA</label>
+        <input asp-for="Student.OverallGpa" class="form-control" placeholder="Enter your overall GPA">
+        <br />
+
+        <label>Confidential</label>
+        <input asp-for="Student.Confidential" class="form-control" style="width:auto">
+        <br />
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
