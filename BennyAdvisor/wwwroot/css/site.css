@@ -216,7 +216,6 @@ body {
     display: none;
 }
 
-
 /*
  * Scheduler
  */
@@ -273,6 +272,10 @@ body {
     line-height: 0;
     margin-right: 6px;
     float: right;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }
 
 .caret-off::before {
