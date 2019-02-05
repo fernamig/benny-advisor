@@ -257,6 +257,8 @@ body {
     border: 1px solid #c0c0c0;
 }
 
+.dropdown-heading,
+.dropdown-heading:focus,
 .dropdown-select:hover {
     border: 1px solid #a0a0a0;
     background-color: #d7d8db;
