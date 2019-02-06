@@ -287,3 +287,11 @@ body {
 .caret-off::after {
     display: none;
 }
+
+.icon-btn {
+    opacity: 0.6;
+}
+
+.icon-btn:hover {
+    opacity: 1.0;
+}
