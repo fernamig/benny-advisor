@@ -1,0 +1,6 @@
+﻿@model string
+
+<div id="day@(Model)" class="show-summary col border border-secondary p-1 @(Model.ToLower() == "friday" ? "border" : "border-right-0")">
+    <textarea class="small data-entry w-100 h-100"></textarea>
+    <div class="summary"></div>
+</div>

@@ -31,20 +31,16 @@
     </div>
     <div id="scheduleContainer" class="card alert-secondary container small">
         <div class="row card-header p-0">
-            <div class="col-1"></div>
             {{for days tmpl="#scheduleHeaderColTmpl" /}}
-            <div class="col-1"></div>
         </div>
         <div class="row">
-            <div class="col-1"></div>
             {{for days tmpl="#scheduleDayTmpl" /}}
-            <div class="col-1"></div>
         </div>
     </div>
 </script>
 
 <script id="scheduleHeaderColTmpl" type="text/x-jsrender">
-    <div class="col-2">
+    <div class="col">
         <div class="text-uppercase">
             {{*:moment(data.day).format("dddd")}}
         </div>
@@ -55,7 +51,7 @@
 </script>
 
 <script id="scheduleDayTmpl" type="text/x-jsrender">
-    <div class="col-2">
+    <div class="col">
         {{for slots tmpl="#scheduleSlotTmpl" /}}
     </div>
 </script>

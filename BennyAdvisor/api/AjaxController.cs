@@ -11,8 +11,8 @@ namespace BennyAdvisor.api
     [Route("api/[controller]/[action]/{id?}")]
     public class AjaxController : Controller
     {
-        static object s_LockCoursePlan = new object();
-        static object s_LockNotes = new object();
+        static readonly object s_LockCoursePlan = new object();
+        static readonly object s_LockNotes = new object();
 
         [HttpGet]
         public JsonResult GetCourses()
@@ -42,14 +42,43 @@ namespace BennyAdvisor.api
             foreach (var s in GetStudents(id))
             {
                 var claims = provider.HasClaims(s.Id, "HSRCAssistance");
-                if (claims.Count() > 0)
+                if (claims.Any())
+                {
                     results.Add(new StudentClaimsModel()
                     {
                         Student = s,
                         Claims = claims
                     });
+                }
             }
             return Json(results);
+        }
+
+        [HttpGet]
+        public JsonResult GetMyProfileScheduler(string id)
+        {
+            var provider = new MyProfileProvider();
+            var my = provider.TryGet(id) ?? new MyProfileModel();
+            return Json(new MyProfileSchedulerViewModel
+            {
+                Limits = my.Scheduler.Limits,
+                Availability = new MyProfileSchedulerAvailabilityViewModel(my.Scheduler.Availability)
+            });
+        }
+
+        [HttpPost]
+        public JsonResult SetMyProfileScheduler(string id, [FromBody] MyProfileSchedulerViewModel schedulerView)
+        {
+            var provider = new MyProfileProvider();
+            var my = provider.TryGet(id) ?? new MyProfileModel();
+            my.Scheduler = new MyProfileSchedulerModel
+            {
+                Limits = schedulerView.Limits,
+                Availability = new MyProfileSchedulerAvailabilityModel(schedulerView.Availability),
+            };
+            provider.Set(id, my);
+
+            return Json("The scheduler preferences have been updated.");
         }
 
         [HttpGet]

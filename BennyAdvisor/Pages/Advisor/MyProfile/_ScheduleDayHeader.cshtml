@@ -1,0 +1,17 @@
+﻿@model string
+
+<div class="col text-uppercase text-center">
+    <b>@Model</b>
+    <button type="button" class="data-entry btn btn-primary btn-xs float-right mb-1"
+            aria-label="Update @Model Availability"
+            title="Update @Model Availability"
+            onclick="$(parentNode).toggleClass('show-summary');$('#day@(Model)').toggleClass('show-summary')">
+        <i class="fas fa-edit"></i>
+    </button>
+    <button type="button" class="summary btn-success btn-xs float-right mb-1"
+            aria-label="Save @Model Availability"
+            title="Save @Model Availability"
+            onclick="$(parentNode).toggleClass('show-summary');$('#day@(Model)').toggleClass('show-summary');schedulerSaveDay('day@(Model)')">
+        <i class="far fa-save"></i>
+    </button>
+</div>

@@ -133,18 +133,18 @@ body {
 }
 
 /*
- * Card summary toggle.
+ * Sƒummary toggle.
  */
 
-.card.show-summary .toggle-summary {
+div.show-summary > .toggle-summary {
     transform: rotate(180deg);
 }
 
-.card.show-summary .data-entry {
+div.show-summary > .data-entry {
     display: none;
 }
 
-.card:not(.show-summary) .summary {
+div:not(.show-summary) > .summary {
     display: none;
 }
 
@@ -288,10 +288,23 @@ body {
     display: none;
 }
 
-.icon-btn {
-    opacity: 0.6;
+.btn-xs {
+    padding: .2rem .4rem;
+    font-size: .775rem;
+    line-height: 1.4;
+    border-radius: .2rem;
 }
 
-.icon-btn:hover {
-    opacity: 1.0;
+.mh-100 {
+    min-height: 100px;
+}
+
+.lh-24 {
+    line-height: 2.4em;
+}
+
+.slider {
+    width: 100% !important;
+    margin: 0;
+    margin-top: 1.0em;
 }
