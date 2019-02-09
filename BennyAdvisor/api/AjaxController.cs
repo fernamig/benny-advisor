@@ -58,25 +58,24 @@ namespace BennyAdvisor.api
         public JsonResult GetMyProfileScheduler(string id)
         {
             var provider = new MyProfileProvider();
-            var my = provider.TryGet(id) ?? new MyProfileModel();
+            var sch = provider.GetSchedule(id);
             return Json(new MyProfileSchedulerViewModel
             {
-                Limits = my.Scheduler.Limits,
-                Availability = new MyProfileSchedulerAvailabilityViewModel(my.Scheduler.Availability)
+                Limits = sch.Limits,
+                Availability = new MyProfileSchedulerAvailabilityViewModel(sch.Availability)
             });
         }
 
         [HttpPost]
         public JsonResult SetMyProfileScheduler(string id, [FromBody] MyProfileSchedulerViewModel schedulerView)
         {
-            var provider = new MyProfileProvider();
-            var my = provider.TryGet(id) ?? new MyProfileModel();
-            my.Scheduler = new MyProfileSchedulerModel
+            var sch = new MyProfileSchedulerModel
             {
                 Limits = schedulerView.Limits,
                 Availability = new MyProfileSchedulerAvailabilityModel(schedulerView.Availability),
             };
-            provider.Set(id, my);
+            var provider = new MyProfileProvider();
+            provider.SetSchedule(id, sch);
 
             return Json("The scheduler preferences have been updated.");
         }

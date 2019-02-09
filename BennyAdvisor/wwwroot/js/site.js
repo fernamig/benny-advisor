@@ -241,7 +241,7 @@ function tabScoresInit() {
 }
 
 //
-// Scheduler appointment functionality.
+// Scheduler functionality.
 //
 
 function schedulerShowPrevWeek() {
@@ -291,6 +291,64 @@ function schedulerSelectSlot(el) {
         .done(function (data) {
             $("#tabAppointmentContainer").html($.templates("#scheduleTmpl").render(data));
         })
+        .fail(function (xhr, status, error) {
+            alert("Request Failed: " + status + ", " + error);
+        });
+}
+
+function schedulerSaveDay(day) {
+    schedulerSetDay(day);
+    schedulerSendUpdate();
+}
+
+function schedulerSetDay(day) {
+    var val = $("#" + day + " > textarea").val();
+    var parts = val.split(",");
+    var text = [];
+    var badges = [];
+    parts.forEach(function (el) {
+        var range = el.split("-");
+        if (range.length === 2) {
+            var startTime = moment(range[0], ['h:m a', 'h:ma', 'ha']);
+            var endTime = moment(range[1], ['h:m a', 'h:ma', 'ha']);
+            if (startTime < endTime) {
+                var start = startTime.format('h:mma');
+                var end = endTime.format('h:mma');
+                text.push(start + "-" + end);
+                badges.push(
+                    '<span class="badge badge-warning">'
+                    + start + " - " + end +
+                    '</span>');
+            }
+        }
+    });
+
+    $("#" + day + " > textarea").val(text.join(", "));
+    $("#" + day + " > div").html(badges.join(" "));
+}
+
+function schedulerSendUpdate() {
+    var data = {
+        limits: {
+            minHours: $("#minHours").val(),
+            maxDays: $("#maxDays").val(),
+            appointmentLength: $("output").text()
+        },
+        availability: {
+            monday: $("#dayMonday > textarea").val(),
+            tuesday: $("#dayTuesday > textarea").val(),
+            wednesday: $("#dayWednesday > textarea").val(),
+            thursday: $("#dayThursday > textarea").val(),
+            friday: $("#dayFriday > textarea").val()
+        }
+    };
+    $.ajax({
+        type: "POST",
+        url: "/api/ajax/SetMyProfileScheduler/" + gAdvisorId,
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json"
+    })
         .fail(function (xhr, status, error) {
             alert("Request Failed: " + status + ", " + error);
         });

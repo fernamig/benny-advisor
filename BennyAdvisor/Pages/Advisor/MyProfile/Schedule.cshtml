@@ -96,91 +96,37 @@
 
     <script>
         gAdvisorId = '@advisorId';
-function schedulerSaveDay(day) {
-    schedulerSetDay(day);
-    schedulerSendUpdate();
-}
 
-function schedulerSetDay(day) {
-    var val = $("#" + day + " > textarea").val();
-    var parts = val.split(",");
-    var text = [];
-    var badges = [];
-    parts.forEach(function (el) {
-        var range = el.split("-");
-        if (range.length === 2) {
-            var start = moment(range[0], ['h:m a', 'h:ma', 'ha']).format('h:mma');
-            var end = moment(range[1], ['h:m a', 'h:ma', 'ha']).format('h:mma');
-            text.push(start + "-" + end);
-            badges.push(
-                '<span class="badge badge-warning">'
-                + start + " - " + end +
-                '</span>');
-        }
-    });
+        var slider = $("#sliderApptLen").slider()
+            .on("slideStop", function(e) {
+                $("output").text(e.value);
+            })
+            .data('slider');
 
-    $("#" + day + " > textarea").val(text.join(", "));
-    $("#" + day + " > div").html(badges.join(" "));
-}
+        $.get("/api/ajax/GetMyProfileScheduler/" + gAdvisorId)
+        .done(function(data) {
+            $("#dayMonday > textarea").val(data.availability.monday);
+            schedulerSetDay("dayMonday");
+            $("#dayTuesday > textarea").val(data.availability.tuesday);
+            schedulerSetDay("dayTuesday");
+            $("#dayWednesday > textarea").val(data.availability.wednesday);
+            schedulerSetDay("dayWednesday");
+            $("#dayThursday > textarea").val(data.availability.thursday);
+            schedulerSetDay("dayThursday");
+            $("#dayFriday > textarea").val(data.availability.friday);
+            schedulerSetDay("dayFriday");
 
-function schedulerSendUpdate() {
-    var data = {
-        limits: {
-            minHours: $("#minHours").val(),
-            maxDays: $("#maxDays").val(),
-            appointmentLength: $("output").text()
-        },
-        availability: {
-            monday: $("#dayMonday > textarea").val(),
-            tuesday: $("#dayTuesday > textarea").val(),
-            wednesday: $("#dayWednesday > textarea").val(),
-            thursday: $("#dayThursday > textarea").val(),
-            friday: $("#dayFriday > textarea").val()
-        }
-    };
-    $.ajax({
-        type: "POST",
-        url: "/api/ajax/SetMyProfileScheduler/" + gAdvisorId,
-        data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json"
-    })
-    .fail(function(xhr, status, error) {
-        alert("Request Failed: " + status + ", " + error);
-    });
-}
+            $("#minHours").val(data.limits.minHours);
+            $("#maxDays").val(data.limits.maxDays);
+            $("output").val(data.limits.appointmentLength);
+            slider.setValue(data.limits.appointmentLength);
 
-
-    var slider = $("#sliderApptLen").slider()
-        .on("slideStop", function(e) {
-            $("output").text(e.value);
+            $("#spinner").addClass("d-none");
+            $("#container").removeClass("d-none");
+            slider.refresh({ useCurrentValue: true });
         })
-        .data('slider');
-
-    $.get("/api/ajax/GetMyProfileScheduler/" + gAdvisorId)
-    .done(function(data) {
-        $("#dayMonday > textarea").val(data.availability.monday);
-        schedulerSetDay("dayMonday");
-        $("#dayTuesday > textarea").val(data.availability.tuesday);
-        schedulerSetDay("dayTuesday");
-        $("#dayWednesday > textarea").val(data.availability.wednesday);
-        schedulerSetDay("dayWednesday");
-        $("#dayThursday > textarea").val(data.availability.thursday);
-        schedulerSetDay("dayThursday");
-        $("#dayFriday > textarea").val(data.availability.friday);
-        schedulerSetDay("dayFriday");
-
-        $("#minHours").val(data.limits.minHours);
-        $("#maxDays").val(data.limits.maxDays);
-        $("output").val(data.limits.appointmentLength);
-        slider.setValue(data.limits.appointmentLength);
-
-        $("#spinner").addClass("d-none");
-        $("#container").removeClass("d-none");
-        slider.refresh({ useCurrentValue: true });
-    })
-    .fail(function(xhr, status, error) {
-        alert("Request Failed: " + status + ", " + error);
-    });
+        .fail(function(xhr, status, error) {
+            alert("Request Failed: " + status + ", " + error);
+        });
     </script>
 }
