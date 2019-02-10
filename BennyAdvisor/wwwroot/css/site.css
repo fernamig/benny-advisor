@@ -136,7 +136,7 @@ body {
  * Summary toggle.
  */
 
-div.show-summary > .toggle-summary {
+div.show-summary > .card-header > .toggle-summary {
     transform: rotate(180deg);
 }
 

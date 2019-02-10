@@ -505,6 +505,12 @@ function coursePlanShowAddCourseModal(termCode) {
         });
 }
 
+function coursePlanShowRemoveTermModal(termCode, termTitle) {
+    $('#removeTermCode').val(termCode);
+    $('#removeTermTitle').text(termTitle);
+    $('#removeTermModal').modal('show');
+}
+
 function coursePlanOnRemoveTerm() {
     var termCode = $("#removeTermCode").val();
     $("#coursePlanTerm" + termCode).closest(".card").remove();
@@ -512,8 +518,18 @@ function coursePlanOnRemoveTerm() {
     coursePlanSendUpdate();
 }
 
-function coursePlanShowRemoveTermModal(termCode, termTitle) {
-    $('#removeTermCode').val(termCode);
-    $('#removeTermTitle').text(termTitle);
-    $('#removeTermModal').modal('show');
+function coursePlanShowRemoveCourseModal(courseCode, courseTitle, termCode, termTitle) {
+    $('#removeCourseCode').val(courseCode);
+    $('#removeCourseTitle').text(courseTitle);
+    $('#removeCourseTermCode').val(termCode);
+    $('#removeCourseTermTitle').text(termTitle);
+    $('#removeCourseModal').modal('show');
+}
+
+function coursePlanOnRemoveCourse() {
+    var courseCode = $("#removeCourseCode").val();
+    var termCode = $("#removeCourseTermCode").val();
+    $("#coursePlanTerm" + termCode).find(".course[data-id=" + courseCode + "]").remove();
+    $("#removeCourseModal").modal("hide");
+    coursePlanSendUpdate();
 }

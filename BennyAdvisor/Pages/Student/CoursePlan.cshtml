@@ -66,6 +66,16 @@
     </p>
 </modal>
 
+<modal id="removeCourseModal" title="Remove Course" ok-title="Yes" cancel-title="No"
+       on-ok-click="coursePlanOnRemoveCourse()">
+    <input type="hidden" id="removeCourseCode">
+    <input type="hidden" id="removeCourseTermCode">
+    <p>
+        Do you want to remove the course '<span id="removeCourseTitle"></span>'
+        from the term '<span id="removeCourseTermTitle"></span>'?
+    </p>
+</modal>
+
 <script id="searchCourseItemTmpl" type="text/x-jsrender">
     <li class="list-group-item">
         <button type="button" class="btn btn-success btn-sm"

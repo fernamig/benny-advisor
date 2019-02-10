@@ -15,7 +15,6 @@
                 Courses: <span class="termCourseCount">{{:courses.length}}</span>
                 )
             </small>
-            {{if term.code > ~currentTermCode }}
             <button student-only type="button" class="close float-right ml-3"
                     aria-label="Remove Term" title="Remove Term"
                     onclick="coursePlanShowRemoveTermModal({{:term.code}}, '{{:term.title}}')">
@@ -26,7 +25,6 @@
                     onclick="coursePlanShowAddCourseModal({{:term.code}})">
                 <i class="fa fa-plus fa-sm" aria-hidden="true"></i>&nbsp;Course
             </button>
-            {{/if}}
         </h5>
         <div id="coursePlanTerm{{:term.code}}" class="container data-entry">
             <div class="row bg-card font-weight-bold card-header px-0">
@@ -36,14 +34,14 @@
                 <div class="col-6">
                     Course
                 </div>
-                <div class="col-2 text-center">
+                <div class="col-2 text-center px-1">
                     Grade
                 </div>
-                <div class="col-2 text-center">
-                    Credits
+                <div class="col-1 text-center px-1">
+                    Credit
                 </div>
             </div>
-            {{for courses tmpl="#coursePlanEntryTmpl" /}}
+            {{for courses tmpl="#coursePlanEntryTmpl" ~termCode=term.code ~termTitle=term.title /}}
         </div>
     </div>
 </script>
@@ -64,13 +62,22 @@
         <div class="col-6">
             {{:code}} {{:title}}
         </div>
-        <div class="col-2 text-center">
+        <div class="col-2 text-center px-1">
             {{if status === 4 }}
             {{:grade}}
             {{/if}}
         </div>
-        <div class="col-2 text-center">
+        <div class="col-1 text-center px-1">
             {{:credit}}
+        </div>
+        <div class="col-1 text-center">
+            {{if status < 3 }}
+                <button student-only type="button" class="close float-right"
+                        aria-label="Remove Course '{{:title}}'" title="Remove Course '{{:title}}'"
+                        onclick="coursePlanShowRemoveCourseModal('{{:code}}', '{{:title}}', '{{:~termCode}}', '{{:~termTitle}}')">
+                    <i class="fas fa-times small"></i>
+                </button>
+            {{/if}}
         </div>
     </div>
 </script>
