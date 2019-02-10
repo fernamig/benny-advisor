@@ -133,7 +133,7 @@ body {
 }
 
 /*
- * Sƒummary toggle.
+ * Summary toggle.
  */
 
 div.show-summary > .toggle-summary {
@@ -190,8 +190,17 @@ div:not(.show-summary) > .summary {
 }
 
 /*
+ * Course plan
+ */
+
+.add-term[disabled="disabled"] {
+    display: none;
+}
+
+/*
  * Student details
  */
+
 .container.student-details > .row > div:nth-child(1),
 .container.student-details > .row > div:nth-child(3) {
     background-color: #ffc107;
@@ -217,7 +226,7 @@ div:not(.show-summary) > .summary {
 }
 
 /*
- * Scheduler
+ * Schedule
  */
 
 #scheduleContainer .row > div {

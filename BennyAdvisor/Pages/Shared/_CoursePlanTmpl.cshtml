@@ -1,29 +1,29 @@
-﻿<js-template id="coursePlanTmpl">
+﻿<script id="coursePlanTmpl" type="text/x-jsrender">
     {{*
-        initTermCardLayout(data);
+    initTermCardLayout(data);
     }}
     <div class="card term mb-2 text-white bg-{{:bgClass}}" data-id="{{:term.code}}" data-title="{{:term.title}}">
         <h5 class="card-header">
             <i class="fas fa-angle-up toggle-summary" onclick="$(parentNode.parentNode).toggleClass('show-summary')"></i>
             {{:term.title}}
             &nbsp;<small>
-            (
+                (
                 {{if termGpa }}
-                    GPA: <span class="termGpa">{{:termGpa}}</span>,
+                GPA: <span class="termGpa">{{:termGpa}}</span>,
                 {{/if}}
                 Credit: <span class="termCredit">{{:termCredit}}</span>,
                 Courses: <span class="termCourseCount">{{:courses.length}}</span>
-            )
+                )
             </small>
             {{if term.code > ~currentTermCode }}
             <button student-only type="button" class="close float-right ml-3"
                     aria-label="Remove Term" title="Remove Term"
-                    onclick="showRemoveTermModal({{:term.code}}, '{{:term.title}}')">
+                    onclick="coursePlanShowRemoveTermModal({{:term.code}}, '{{:term.title}}')">
                 <i class="fas fa-times"></i>
             </button>
             <button student-only type="button" class="btn btn-warning btn-sm float-right"
                     aria-label="Add Course" title="Add Course"
-                    onclick="showAddCourseModal({{:term.code}})">
+                    onclick="coursePlanShowAddCourseModal({{:term.code}})">
                 <i class="fa fa-plus fa-sm" aria-hidden="true"></i>&nbsp;Course
             </button>
             {{/if}}
@@ -46,19 +46,19 @@
             {{for courses tmpl="#coursePlanEntryTmpl" /}}
         </div>
     </div>
-</js-template>
+</script>
 
 <script id="coursePlanEntryTmpl" type="text/x-jsrender">
     <div class="row bg-card course" data-id="{{:code}}" data-grade="{{:grade}}" data-credit="{{:credit}}">
         <div class="col-2">
             {{if status === 4 }}
-                Completed
+            Completed
             {{else status === 3}}
-                In Progress
+            In Progress
             {{else status === 2}}
-                Planned
+            Planned
             {{else}}
-                Not Completed
+            Not Completed
             {{/if}}
         </div>
         <div class="col-6">
@@ -66,7 +66,7 @@
         </div>
         <div class="col-2 text-center">
             {{if status === 4 }}
-                {{:grade}}
+            {{:grade}}
             {{/if}}
         </div>
         <div class="col-2 text-center">

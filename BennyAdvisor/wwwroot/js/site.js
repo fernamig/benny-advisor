@@ -480,3 +480,40 @@ function coursePlanAddCourseToTerm(courseCode)
         alert("Request Failed: " + status + ", " + error);
     });
 }
+
+function coursePlanDisableSelectedTerms() {
+    $(".add-term").removeAttr("disabled");
+    $(".card.term").each(function () {
+        var termCode = $(this).attr("data-id");
+        $(".add-term[data-code=" + termCode + "]").attr("disabled", "disabled");
+    });
+}
+
+function coursePlanShowAddCourseModal(termCode) {
+    $("#courseFilter").val('');
+    $("#courseList").html('<li class="list-group-item">Loading...</li>');
+    $('#addCourseTermCode').val(termCode);
+    $('#addCourseModal').modal('show');
+
+    $.cachedAjax("/api/ajax/GetCourses")
+        .done(function (data) {
+            var tmpl = $.templates("#searchCourseItemTmpl");
+            $("#courseList").html(tmpl.render(data));
+        })
+        .fail(function (xhr, status, error) {
+            alert("Request Failed: " + status + ", " + error);
+        });
+}
+
+function coursePlanOnRemoveTerm() {
+    var termCode = $("#removeTermCode").val();
+    $("#coursePlanTerm" + termCode).closest(".card").remove();
+    $("#removeTermModal").modal("hide");
+    coursePlanSendUpdate();
+}
+
+function coursePlanShowRemoveTermModal(termCode, termTitle) {
+    $('#removeTermCode').val(termCode);
+    $('#removeTermTitle').text(termTitle);
+    $('#removeTermModal').modal('show');
+}
