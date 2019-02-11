@@ -1,4 +1,4 @@
-﻿<script id="coursePlanTmpl" type="text/x-jsrender">
+﻿<js-template id="coursePlanTmpl">
     {{*
     initTermCardLayout(data);
     }}
@@ -44,14 +44,14 @@
             {{for courses tmpl="#coursePlanEntryTmpl" ~termCode=term.code ~termTitle=term.title /}}
         </div>
     </div>
-</script>
+</js-template>
 
-<script id="coursePlanEntryTmpl" type="text/x-jsrender">
+<js-template id="coursePlanEntryTmpl">
     {{*
-        if (data.status === 1)
-            data.bgClass = "alert-danger";
-        else
-            data.bgClass = "bg-card";
+    if (data.status === 1)
+        data.bgClass = "alert-danger";
+    else
+        data.bgClass = "bg-card";
     }}
     <div class="row {{:bgClass}} course" data-id="{{:code}}" data-grade="{{:grade}}" data-credit="{{:credit}}">
         <div class="col-2">
@@ -86,4 +86,4 @@
             {{/if}}
         </div>
     </div>
-</script>
+</js-template>
