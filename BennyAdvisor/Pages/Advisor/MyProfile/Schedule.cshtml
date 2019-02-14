@@ -6,7 +6,40 @@
 <div id="spinner">
     <partial name="_Spinner" />
 </div>
-<div id="container" class="d-none">
+<div id="scheduleChooseContainer" class="alert alert-secondary d-none">
+    <h5 class="alert-header">Choose an Advising Scheduler</h5>
+    <p>
+        Which scheduler do you want to be used by students when creating advising appointments?
+    </p>
+    <hr />
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <input type="radio" name="scheduler" value="builtin" onclick="schedulerSelectBuiltin()" />
+            </div>
+        </div>
+        <span class="input-group-text">Use Built-in Scheduler</span>
+    </div>
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <input type="radio" name="scheduler" value="timetrade" onclick="schedulerSelectTimeTrade()" />
+            </div>
+        </div>
+        <span class="input-group-text">Use TimeTrade Scheduler</span>
+        <input id="timetradeUrl" type="text" class="form-control" placeholder="Enter TimeTrade scheduling URL...">
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col">
+            <button id="tabAppointmentPrev" class="btn btn-primary float-right"
+                    onclick="schedulerSendUpdate()">
+                <i class="far fa-save mr-1"></i>Save
+            </button>
+        </div>
+    </div>
+</div>
+<div id="builtinContainer" class="d-none">
     <div class="alert alert-secondary">
         <h5 class="alert-header">Set Hours of Availability</h5>
         <hr />
@@ -27,7 +60,6 @@
             </div>
         </div>
     </div>
-
     <div class="alert alert-secondary">
         <h5 class="alert-header">Set Scheduling Limits</h5>
         <hr />
@@ -84,7 +116,9 @@
         <hr />
         <div class="row mt-2">
             <div class="col-4 offset-8">
-                <button type="button" class="btn btn-primary float-right" onclick="schedulerSendUpdate()">Save Limits</button>
+                <button type="button" class="btn btn-primary float-right" onclick="schedulerSendUpdate()">
+                    <i class="far fa-save mr-1"></i>Save
+                </button>
             </div>
         </div>
     </div>
@@ -97,34 +131,13 @@
     <script>
         gAdvisorId = '@advisorId';
 
-        var slider = $("#sliderApptLen").slider()
+        $("#sliderApptLen").slider()
             .on("slideStop", function(e) {
                 $("output").text(e.value);
-            })
-            .data('slider');
-
-        $.get("/api/ajax/GetMyProfileScheduler/" + gAdvisorId)
-        .done(function(data) {
-            $("#dayMonday > textarea").val(data.availability.monday);
-            schedulerSetDay("dayMonday");
-            $("#dayTuesday > textarea").val(data.availability.tuesday);
-            schedulerSetDay("dayTuesday");
-            $("#dayWednesday > textarea").val(data.availability.wednesday);
-            schedulerSetDay("dayWednesday");
-            $("#dayThursday > textarea").val(data.availability.thursday);
-            schedulerSetDay("dayThursday");
-            $("#dayFriday > textarea").val(data.availability.friday);
-            schedulerSetDay("dayFriday");
-
-            $("#minHours").val(data.limits.minHours);
-            $("#maxDays").val(data.limits.maxDays);
-            $("output").val(data.limits.appointmentLength);
-            slider.setValue(data.limits.appointmentLength);
-
-            $("#spinner").addClass("d-none");
-            $("#container").removeClass("d-none");
-            slider.refresh({ useCurrentValue: true });
-        })
+            });
+            
+        $.get("/api/ajax/MyProfileGetSchedule/" + gAdvisorId)
+        .done(schedulerInit)
         .fail(function(xhr, status, error) {
             alert("Request Failed: " + status + ", " + error);
         });

@@ -11,11 +11,31 @@ namespace BennyAdvisor.Reports
     {
         readonly CalendarProvider Provider = new CalendarProvider();
 
-        public AvailabilityModel Generate(string advisorId, string studentId, DateTime day)
+        public ScheduleAvailabilityReportModel Generate(string advisorId, string studentId, DateTime day)
         {
             var provider = new MyProfileProvider();
             var sch = provider.GetSchedule(advisorId);
 
+            if (sch.TimeTrade != null)
+            {
+                return new ScheduleAvailabilityReportModel
+                {
+                    TimeTrade = sch.TimeTrade,
+                    Builtin = null
+                };
+            }
+            else
+            {
+                return new ScheduleAvailabilityReportModel
+                {
+                    TimeTrade = null,
+                    Builtin = GenerateAvailability(new ScheduleBuiltinModel(sch.Builtin), advisorId, studentId, day)
+                };
+            }
+        }
+
+        AvailabilityModel GenerateAvailability(ScheduleBuiltinModel sch, string advisorId, string studentId, DateTime day)
+        {
             var apptLen = new TimeSpan(0, sch.Limits.AppointmentLength, 0);
             var earliest = DateTime.Today.ToUniversalTime().AddDays(2).StartOfWeek(DayOfWeek.Monday);
             var weeksFromToday = (day - earliest).Days / 7;
@@ -66,7 +86,7 @@ namespace BennyAdvisor.Reports
         IEnumerable<TimeRange> GetAvailableSlots(
             List<CalendarEvent> advisorEvents, List<CalendarEvent> studentEvents,
             DateTime day, TimeSpan apptLen, DateTime minDate,
-            IEnumerable<AvailabilityPreferencesRange> ranges)
+            IEnumerable<ScheduleRange> ranges)
         {
             var available = new List<TimeSlot>();
 

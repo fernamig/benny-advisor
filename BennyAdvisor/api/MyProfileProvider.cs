@@ -10,15 +10,15 @@ namespace BennyAdvisor.api
         {
         }
 
-        public MyProfileSchedulerModel GetSchedule(string id)
+        public ScheduleSettingsModel GetSchedule(string id)
         {
             var my = TryGet(id) ?? new MyProfileModel();
-            return my.Scheduler;
+            return my.Schedule;
         }
-        public void SetSchedule(string id, MyProfileSchedulerModel schedule)
+        public void SetSchedule(string id, ScheduleSettingsModel schedule)
         {
             var my = TryGet(id) ?? new MyProfileModel();
-            my.Scheduler = schedule;
+            my.Schedule = schedule;
             Set(id, my);
         }
     }

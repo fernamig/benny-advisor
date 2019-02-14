@@ -4,71 +4,57 @@ using System.Linq;
 
 namespace BennyAdvisor.Models
 {
+    // TODO: split these into individual files.
     public class MyProfileModel
     {
-        public MyProfileSchedulerModel Scheduler { get; set; }
+        public ScheduleSettingsModel Schedule { get; set; }
 
         public MyProfileModel()
         {
-            Scheduler = new MyProfileSchedulerModel();
+            Schedule = new ScheduleSettingsModel();
         }
     }
 
-    public class MyProfileSchedulerViewModel
+    public class ScheduleSettingsModel
     {
-        public MyProfileSchedulerLimitsModel Limits { get; set; }
-        public MyProfileSchedulerAvailabilityViewModel Availability { get; set; }
+        public ScheduleSettingsTimeTradeModel TimeTrade { get; set; }
+        public ScheduleSettingsBuiltinModel Builtin { get; set; }
     }
-    public class MyProfileSchedulerAvailabilityViewModel
+    public class ScheduleSettingsTimeTradeModel
     {
-        public string Monday { get; set; }
-        public string Tuesday { get; set; }
-        public string Wednesday { get; set; }
-        public string Thursday { get; set; }
-        public string Friday { get; set; }
+        public string Url { get; set; }
+    }
+    public class ScheduleSettingsBuiltinModel
+    {
+        public ScheduleLimitsModel Limits { get; set; }
+        public ScheduleAvailabilityViewModel Availability { get; set; }
+    }
+    public class ScheduleBuiltinModel
+    {
+        public ScheduleLimitsModel Limits { get; set; }
+        public ScheduleAvailabilityModel Availability { get; set; }
 
-        public MyProfileSchedulerAvailabilityViewModel() { }
-        public MyProfileSchedulerAvailabilityViewModel(MyProfileSchedulerAvailabilityModel m)
+        public ScheduleBuiltinModel(ScheduleSettingsBuiltinModel m)
         {
-            Monday = string.Join(",", m.Monday.Select(x => $"{x.Start.ToString(@"h\:mm")}-{x.End.ToString(@"h\:mm")}"));
-            Tuesday = string.Join(",", m.Tuesday.Select(x => $"{x.Start.ToString(@"h\:mm")}-{x.End.ToString(@"h\:mm")}"));
-            Wednesday = string.Join(",", m.Wednesday.Select(x => $"{x.Start.ToString(@"h\:mm")}-{x.End.ToString(@"h\:mm")}"));
-            Thursday = string.Join(",", m.Thursday.Select(x => $"{x.Start.ToString(@"h\:mm")}-{x.End.ToString(@"h\:mm")}"));
-            Friday = string.Join(",", m.Friday.Select(x => $"{x.Start.ToString(@"h\:mm")}-{x.End.ToString(@"h\:mm")}"));
+            Limits = m.Limits;
+            Availability = new ScheduleAvailabilityModel(m.Availability);
         }
     }
-    public class MyProfileSchedulerLimitsModel
+    public class ScheduleAvailabilityReportModel
     {
-        public int MinHours { get; set; }
-        public int MaxDays { get; set; }
-        public int AppointmentLength { get; set; }
+        public ScheduleSettingsTimeTradeModel TimeTrade { get; set; }
+        public AvailabilityModel Builtin { get; set; }
     }
-    public class MyProfileSchedulerModel
+    public class ScheduleAvailabilityModel
     {
-        public MyProfileSchedulerLimitsModel Limits { get; set; }
-        public MyProfileSchedulerAvailabilityModel Availability { get; set; }
+        public IEnumerable<ScheduleRange> Monday { get; set; }
+        public IEnumerable<ScheduleRange> Tuesday { get; set; }
+        public IEnumerable<ScheduleRange> Wednesday { get; set; }
+        public IEnumerable<ScheduleRange> Thursday { get; set; }
+        public IEnumerable<ScheduleRange> Friday { get; set; }
 
-        public MyProfileSchedulerModel()
-        {
-            Limits = new MyProfileSchedulerLimitsModel
-            {
-                MinHours = 12,
-                MaxDays = 21,
-                AppointmentLength = 30,
-            };
-            Availability = new MyProfileSchedulerAvailabilityModel();
-         }
-    }
-    public class MyProfileSchedulerAvailabilityModel
-    {
-        public IEnumerable<AvailabilityPreferencesRange> Monday { get; set; }
-        public IEnumerable<AvailabilityPreferencesRange> Tuesday { get; set; }
-        public IEnumerable<AvailabilityPreferencesRange> Wednesday { get; set; }
-        public IEnumerable<AvailabilityPreferencesRange> Thursday { get; set; }
-        public IEnumerable<AvailabilityPreferencesRange> Friday { get; set; }
-
-        public MyProfileSchedulerAvailabilityModel() { }
-        public MyProfileSchedulerAvailabilityModel(MyProfileSchedulerAvailabilityViewModel m)
+        public ScheduleAvailabilityModel() { }
+        public ScheduleAvailabilityModel(ScheduleAvailabilityViewModel m)
         {
             Monday = Parse(m.Monday);
             Tuesday = Parse(m.Tuesday);
@@ -77,9 +63,9 @@ namespace BennyAdvisor.Models
             Friday = Parse(m.Friday);
         }
 
-        IEnumerable<AvailabilityPreferencesRange> Parse(string str)
+        IEnumerable<ScheduleRange> Parse(string str)
         {
-            var times = new List<AvailabilityPreferencesRange>();
+            var times = new List<ScheduleRange>();
             if (!string.IsNullOrWhiteSpace(str))
             {
                 foreach (var range in str.Split(','))
@@ -87,7 +73,7 @@ namespace BennyAdvisor.Models
                     var parts = range.Split('-');
                     if (parts.Length == 2)
                     {
-                        times.Add(new AvailabilityPreferencesRange
+                        times.Add(new ScheduleRange
                         {
                             Start = DateTimeOffset.Parse(parts[0]).TimeOfDay,
                             End = DateTimeOffset.Parse(parts[1]).TimeOfDay
@@ -98,7 +84,21 @@ namespace BennyAdvisor.Models
             return times;
         }
     }
-    public class AvailabilityPreferencesRange
+    public class ScheduleAvailabilityViewModel
+    {
+        public string Monday { get; set; }
+        public string Tuesday { get; set; }
+        public string Wednesday { get; set; }
+        public string Thursday { get; set; }
+        public string Friday { get; set; }
+    }
+    public class ScheduleLimitsModel
+    {
+        public int MinHours { get; set; }
+        public int MaxDays { get; set; }
+        public int AppointmentLength { get; set; }
+    }
+    public class ScheduleRange
     {
         public TimeSpan Start { get; set; }
         public TimeSpan End { get; set; }

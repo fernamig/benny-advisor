@@ -33,6 +33,18 @@ $.cachedAjax = $.createCache(function(defer, url) {
     $.get(url).then(defer.resolve, defer.reject);
 });
 
+$.fn.disable = function() {
+    return this.each(function() {
+        if (typeof this.disabled != "undefined") this.disabled = true;
+    });
+}
+
+$.fn.enable = function() {
+    return this.each(function() {
+        if (typeof this.disabled != "undefined") this.disabled = false;
+    });
+}
+
 //
 // Misc Helpers.
 //
@@ -193,14 +205,21 @@ function tabProgressInit() {
 // Make Appointment tab functionality.
 //
 
-function tabAppointmentInit() {
-    var tmpl = $.templates("#scheduleTmpl");
+function tabAppointmentInit(wk) {
     // Get the start of the week.
-    var wk = $("#tabAppointmentStart").attr("data-date");
+    if (!wk)
+        wk = $("#tabAppointmentStart").attr("data-date");
 
     $.get("/api/ajax/GetAdvisingAvailability/" + gStudentId + "/" + gAdvisorId + "/" + wk)
     .done(function(data) {
-        $("#tabAppointmentContainer").html(tmpl.render(data));
+        if (data.timeTrade) {
+            var tmpl = $.templates("#scheduleTimeTradeTmpl");
+            $("#tabAppointmentContainer").html(tmpl.render(data.timeTrade));
+        }
+        else if (data.builtin) {
+            var tmpl = $.templates("#scheduleTmpl");
+            $("#tabAppointmentContainer").html(tmpl.render(data.builtin));
+        }
     })
     .fail(function(xhr, status, error) {
         alert("Request Failed: " + status + ", " + error);
@@ -264,36 +283,13 @@ function schedulerSelectAdvisor(el) {
     $("#selectedAdvisor").html($(el).html());
 
     var curr = moment().add(2, 'days').startOf("isoWeek");
-
-    $.get("/api/ajax/GetAdvisingAvailability/" + gStudentId + "/" + gAdvisorId + "/" + curr.format("MM-DD-YYYY"))
-    .done(function (data) {
-        $("#tabAppointmentContainer").html($.templates("#scheduleTmpl").render(data));
-    })
-    .fail(function (xhr, status, error) {
-        alert("Request Failed: " + status + ", " + error);
-    });
+    var currFmt = curr.format("MM-DD-YYYY");
+    $("#tabAppointmentStart").attr("data-date", currFmt);
+    tabAppointmentInit(currFmt);
 }
 
 function schedulerShowCreateAppointmentModal() {
     $('#schedulerCreateAppointmentModal').modal('show');
-}
-
-function schedulerSelectSlot(el) {
-    $("#tabAppointmentContainer").html($("#spinnerContainer").html());
-
-    gAdvisorId = $(el).attr("data-id");
-    $("#selectedAdvisor").attr("data-id", gAdvisorId);
-    $("#selectedAdvisor").html($(el).html());
-
-    var curr = moment().add(2, 'days').startOf("isoWeek");
-
-    $.get("/api/ajax/GetAdvisingAvailability/" + gStudentId + "/" + gAdvisorId + "/" + curr.format("MM-DD-YYYY"))
-        .done(function (data) {
-            $("#tabAppointmentContainer").html($.templates("#scheduleTmpl").render(data));
-        })
-        .fail(function (xhr, status, error) {
-            alert("Request Failed: " + status + ", " + error);
-        });
 }
 
 function schedulerSaveDay(day) {
@@ -328,30 +324,98 @@ function schedulerSetDay(day) {
 }
 
 function schedulerSendUpdate() {
-    var data = {
-        limits: {
+    var type = $('input[name=scheduler]:checked').val();
+    var data = { };
+
+    if (type === "timetrade") {
+        data.timetrade = { };
+        data.timetrade.url = $("#timetradeUrl").val();
+    }
+    else if (type === "builtin") {
+        data.builtin = { };
+        data.builtin.limits = {
             minHours: $("#minHours").val(),
             maxDays: $("#maxDays").val(),
             appointmentLength: $("output").text()
-        },
-        availability: {
+        };
+        data.builtin.availability = {
             monday: $("#dayMonday > textarea").val(),
             tuesday: $("#dayTuesday > textarea").val(),
             wednesday: $("#dayWednesday > textarea").val(),
             thursday: $("#dayThursday > textarea").val(),
             friday: $("#dayFriday > textarea").val()
-        }
-    };
+        };
+    }
+
     $.ajax({
         type: "POST",
-        url: "/api/ajax/SetMyProfileScheduler/" + gAdvisorId,
+        url: "/api/ajax/MyProfileSetSchedule/" + gAdvisorId,
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json"
     })
-        .fail(function (xhr, status, error) {
-            alert("Request Failed: " + status + ", " + error);
+    .fail(function (xhr, status, error) {
+        alert("Request Failed: " + status + ", " + error);
+    });
+}
+
+function schedulerInit(data, slider) {
+    if (data.timeTrade) {
+        $("#timetradeUrl").val(data.timeTrade.url);
+        $("input[name=scheduler][value=timetrade").prop("checked", true);
+        schedulerInitBuiltin({
+            availability: {
+                monday: "",
+                tuesday: "",
+                wednesday: "",
+                thursday: "",
+                friday: ""
+            },
+            limits: {
+                minHours: 8,
+                maxDays: 21,
+                appointmentLength: 30
+            }
         });
+        schedulerSelectTimeTrade();
+    }
+    else if (data.builtin) {
+        $("input[name=scheduler][value=builtin").prop("checked", true);
+        schedulerInitBuiltin(data.builtin);
+        schedulerSelectBuiltin();
+    }
+    $("#scheduleChooseContainer").removeClass("d-none");
+    $("#spinner").hide();
+}
+
+function schedulerInitBuiltin(data) {
+    $("#dayMonday > textarea").val(data.availability.monday);
+    schedulerSetDay("dayMonday");
+    $("#dayTuesday > textarea").val(data.availability.tuesday);
+    schedulerSetDay("dayTuesday");
+    $("#dayWednesday > textarea").val(data.availability.wednesday);
+    schedulerSetDay("dayWednesday");
+    $("#dayThursday > textarea").val(data.availability.thursday);
+    schedulerSetDay("dayThursday");
+    $("#dayFriday > textarea").val(data.availability.friday);
+    schedulerSetDay("dayFriday");
+
+    $("#minHours").val(data.limits.minHours);
+    $("#maxDays").val(data.limits.maxDays);
+    $("output").val(data.limits.appointmentLength);
+    $("#sliderApptLen").slider("setValue", data.limits.appointmentLength);
+}
+
+function schedulerSelectBuiltin() {
+    $("#timetradeUrl").attr("disabled", "disabled");
+    $("#builtinContainer").removeClass("d-none");
+    $("#sliderApptLen").slider("relayout");
+    $("#sliderApptLen").slider("refresh");
+}
+
+function schedulerSelectTimeTrade() {
+    $("#timetradeUrl").removeAttr("disabled");
+    $("#builtinContainer").addClass("d-none");
 }
 
 //

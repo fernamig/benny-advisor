@@ -303,6 +303,10 @@ div:not(.show-summary) > .summary {
     border-radius: .2rem;
 }
 
+.h-800x {
+    height: 800px;
+}
+
 .mh-100 {
     min-height: 100px;
 }

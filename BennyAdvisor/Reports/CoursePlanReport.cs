@@ -139,7 +139,7 @@ namespace BennyAdvisor.Reports
                     },
                     Courses = kv.Value.Values
                 });
-            }
+            } 
 
             return plan;
         }
