@@ -17,6 +17,7 @@
     <Folder Include="TagHelpers\" />
     <Folder Include="Extensions\" />
     <Folder Include="wwwroot\lib\bootstrap-slider\" />
+    <Folder Include="Pages\Service\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="api\StudentsController %28copy%29.cs" />
