@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using BennyAdvisor.Models;
 using BennyAdvisor.Reports;
 
@@ -139,6 +140,12 @@ namespace BennyAdvisor.api
                 provider.Add(id, note);
                 return Json("The note was added.");
             }
+        }
+        [HttpPost]
+        public async Task<JsonResult> AddStudentNote2([FromBody] JObject note)
+        {
+            var provider = new Notes2Provider();
+            return Json(await provider.Add(note));
         }
 
         [HttpGet]

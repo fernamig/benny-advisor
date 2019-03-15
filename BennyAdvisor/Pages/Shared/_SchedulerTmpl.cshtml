@@ -22,9 +22,8 @@
             </div>
             <div class="col-2 text-right">
                 <button id="tabAppointmentNext" class="btn btn-primary"
-                        {{if days[4].day>
-                    = latest}}disabled{{/if}}
-                    onclick="schedulerShowNextWeek()">
+                        {{if days[4].day >= latest}}disabled{{/if}}
+                        onclick="schedulerShowNextWeek()">
                     Next&nbsp;<i class="fas fa-angle-double-right"></i>
                 </button>
             </div>

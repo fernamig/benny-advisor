@@ -242,6 +242,13 @@ function tabNotesInit() {
         alert("Request Failed: " + status + ", " + error);
     });
 }
+function tabNotesInit2() {
+    $.cachedAjax("/api/ajax/GetStudentNotes2/" + gStudentId)
+        .done(notesShowNotes)
+        .fail(function (xhr, status, error) {
+            alert("Request Failed: " + status + ", " + error);
+        });
+}
 
 //
 // Test Scores tab.
@@ -426,14 +433,14 @@ function schedulerInitBuiltin(data) {
     $("#minHours").val(data.limits.minHours);
     $("#maxDays").val(data.limits.maxDays);
     $("output").val(data.limits.appointmentLength);
-    $("#sliderApptLen").slider("setValue", data.limits.appointmentLength);
+    $("#sliderApptLen").slider("setValue", data.limits.appointmentLength, true);
+    $("#sliderApptLen").attr('data-slider-value', data.limits.appointmentLength);
 }
 
 function schedulerSelectBuiltin() {
     $("#timetradeUrl").attr("disabled", "disabled");
     $("#builtinContainer").removeClass("d-none");
     $("#sliderApptLen").slider("relayout");
-    $("#sliderApptLen").slider("refresh");
 }
 
 function schedulerSelectTimeTrade() {
@@ -487,6 +494,44 @@ function notesAdd() {
         alert("Request Failed: " + status + ", " + error);
     });
 }
+function notesAdd2() {
+    $('#notesAddModal').modal('hide');
+
+    var note = {
+        type: "note",
+        attributes: {
+            note: $("#notesAddNote").val(),
+            // TODO: A null context is not valid?
+            //context: null,
+            context: {
+                contextType: "",
+                contextId: ""
+            },
+            studentId: gStudentId,
+            creatorId: gAdvisorId,
+            permissions: "advisors"
+        },
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "/api/ajax/AddStudentNote2/",
+        data: JSON.stringify(note),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json"
+    })
+    .done(function (data) {
+        $.cachedAjax("/api/ajax/GetStudentNotes2/" + gStudentId, true)
+            .done(notesShowNotes)
+            .fail(function (xhr, status, error) {
+                alert("Request Failed: " + status + ", " + error);
+            });
+    })
+    .fail(function (xhr, status, error) {
+        alert("Request Failed: " + status + ", " + error);
+    });
+}
+
 
 //
 // Course plan functionality.

@@ -2,7 +2,28 @@
 @model StudentModel
 @{
     var serviceId = ViewContext.RouteData.Values["serviceId"];
-    var studentId = ViewContext.RouteData.Values["studentId"];
 }
 
 <partial name="_StudentDetails" for="Student" />
+
+<button type="button" class="btn btn-primary mb-2"
+        aria-label="Create Note" title="Create Note"
+        onclick="notesShowAddModal()">
+    <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Note
+</button>
+
+<div id="tabNotesContainer">
+    <partial name="_Spinner" />
+</div>
+
+<partial name="_NotesTmpl2" />
+
+@section Scripts {
+    <script>
+        gStudentId = '@Model.Student.Id';
+        // TODO: The Notes API requires a valid creator id.
+        gAdvisorId = '100000001';
+
+        tabNotesInit2();
+    </script>
+}

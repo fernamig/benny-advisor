@@ -1,0 +1,12 @@
+﻿<script id="notesTmpl" type="text/x-jsrender">
+    <div class="alert alert-info pb-1">
+        <p>{{:attributes.note}}</p>
+        <p class="text-muted m-0">{{:attributes.source}}</p>
+    </div>
+</script>
+
+<modal id="notesAddModal" title="Add Note" ok-title="Add" on-ok-click="notesAdd2()">
+    <div class="form-group">
+        <textarea id="notesAddNote" class="form-control" rows="10" autofocus></textarea>
+    </div>
+</modal>
