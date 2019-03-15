@@ -31,6 +31,10 @@ namespace BennyAdvisor
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddMvc().AddRazorOptions(options =>
+            {
+                options.PageViewLocationFormats.Add("/Pages/Shared/MyProfile/{0}.cshtml");
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

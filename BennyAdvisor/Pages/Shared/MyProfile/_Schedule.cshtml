@@ -1,0 +1,120 @@
+﻿<div id="spinner">
+    <partial name="_Spinner" />
+</div>
+<div id="scheduleChooseContainer" class="alert alert-secondary d-none">
+    <h5 class="alert-header">Choose an Advising Scheduler</h5>
+    <p>
+        Which scheduler do you want to be used by students when creating advising appointments?
+    </p>
+    <hr />
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <input type="radio" name="scheduler" value="builtin" onclick="schedulerSelectBuiltin()" />
+            </div>
+        </div>
+        <span class="input-group-text">Use Built-in Scheduler</span>
+    </div>
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <input type="radio" name="scheduler" value="timetrade" onclick="schedulerSelectTimeTrade()" />
+            </div>
+        </div>
+        <span class="input-group-text">Use TimeTrade Scheduler</span>
+        <input id="timetradeUrl" type="text" class="form-control" placeholder="Enter TimeTrade scheduling URL...">
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col">
+            <button id="tabAppointmentPrev" class="btn btn-primary float-right"
+                    onclick="schedulerSendUpdate()">
+                <i class="far fa-save mr-1"></i>Save
+            </button>
+        </div>
+    </div>
+</div>
+<div id="builtinContainer" class="d-none">
+    <div class="alert alert-secondary">
+        <h5 class="alert-header">Set Hours of Availability</h5>
+        <hr />
+        <div class="container">
+            <div class="row">
+                <partial name="_ScheduleDayHeader" model="@("Monday")" />
+                <partial name="_ScheduleDayHeader" model="@("Tuesday")" />
+                <partial name="_ScheduleDayHeader" model="@("Wednesday")" />
+                <partial name="_ScheduleDayHeader" model="@("Thursday")" />
+                <partial name="_ScheduleDayHeader" model="@("Friday")" />
+            </div>
+            <div class="row mh-100">
+                <partial name="_ScheduleDay" model="@("Monday")" />
+                <partial name="_ScheduleDay" model="@("Tuesday")" />
+                <partial name="_ScheduleDay" model="@("Wednesday")" />
+                <partial name="_ScheduleDay" model="@("Thursday")" />
+                <partial name="_ScheduleDay" model="@("Friday")" />
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-secondary">
+        <h5 class="alert-header">Set Scheduling Limits</h5>
+        <hr />
+        <div class="container">
+            <div class="row">
+                <div class="col-7 text-uppercase small">
+                    Do not allow appointments to be scheduled fewer than
+                </div>
+                <div class="col-5 text-uppercase small">
+                    Schedule appointment length of <b><output class="h6">30</output></b> minutes
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-7">
+                    <div class="row">
+                        <div class="col-3">
+                            <input id="minHours" type="number" min="0" max="100" class="form-control" />
+                        </div>
+                        <div class="col-6 pl-0">
+                            <span class="lh-24">hours in the future</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <input id="sliderApptLen" type="text"
+                           data-provide="slider"
+                           data-slider-min="10"
+                           data-slider-max="60"
+                           data-slider-step="5"
+                           data-slider-value="30"
+                           data-slider-ticks="[10, 20, 30, 40, 50, 60]"
+                           data-slider-ticks-labels="[10, 20, 30, 40, 50, 60]"
+                           data-slider-tooltip="hide" />
+                </div>
+            </div>
+            <div class="row mt-1">
+                <div class="col-7 text-uppercase small">
+                    Do not allow appointments to be scheduled more than
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-7">
+                    <div class="row">
+                        <div class="col-3">
+                            <input id="maxDays" type="number" min="0" max="365" class="form-control" />
+                        </div>
+                        <div class="col-6 pl-0">
+                            <span class="lh-24">days in the future</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row mt-2">
+            <div class="col-4 offset-8">
+                <button type="button" class="btn btn-primary float-right" onclick="schedulerSendUpdate()">
+                    <i class="far fa-save mr-1"></i>Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -217,8 +217,13 @@ function tabAppointmentInit(wk) {
             $("#tabAppointmentContainer").html(tmpl.render(data.timeTrade));
         }
         else if (data.builtin) {
-            var tmpl = $.templates("#scheduleTmpl");
+            var tmpl = $.templates("#scheduleBuiltinTmpl");
             $("#tabAppointmentContainer").html(tmpl.render(data.builtin));
+        }
+        else
+        {
+            var tmpl = $.templates("#scheduleNoneTmpl");
+            $("#tabAppointmentContainer").html(tmpl.render({ service: gAdvisorId }));
         }
     })
     .fail(function(xhr, status, error) {
@@ -281,6 +286,16 @@ function schedulerSelectAdvisor(el) {
     gAdvisorId = $(el).attr("data-id");
     $("#selectedAdvisor").attr("data-id", gAdvisorId);
     $("#selectedAdvisor").html($(el).html());
+
+    var curr = moment().add(2, 'days').startOf("isoWeek");
+    var currFmt = curr.format("MM-DD-YYYY");
+    $("#tabAppointmentStart").attr("data-date", currFmt);
+    tabAppointmentInit(currFmt);
+}
+
+// TODO: Merge schedulerSelectService with schedulerSelectAdvisor.
+function schedulerSelectService() {
+    $("#tabAppointmentContainer").html($("#spinnerContainer").html());
 
     var curr = moment().add(2, 'days').startOf("isoWeek");
     var currFmt = curr.format("MM-DD-YYYY");
@@ -363,20 +378,7 @@ function schedulerInit(data, slider) {
     if (data.timeTrade) {
         $("#timetradeUrl").val(data.timeTrade.url);
         $("input[name=scheduler][value=timetrade").prop("checked", true);
-        schedulerInitBuiltin({
-            availability: {
-                monday: "",
-                tuesday: "",
-                wednesday: "",
-                thursday: "",
-                friday: ""
-            },
-            limits: {
-                minHours: 8,
-                maxDays: 21,
-                appointmentLength: 30
-            }
-        });
+        schedulerSetDefaultBuiltin();
         schedulerSelectTimeTrade();
     }
     else if (data.builtin) {
@@ -384,8 +386,29 @@ function schedulerInit(data, slider) {
         schedulerInitBuiltin(data.builtin);
         schedulerSelectBuiltin();
     }
+    else {
+        // There is not schedule preferences so set the defaults for the built-in.
+        schedulerSetDefaultBuiltin();
+    }
     $("#scheduleChooseContainer").removeClass("d-none");
     $("#spinner").hide();
+}
+
+function schedulerSetDefaultBuiltin() {
+    schedulerInitBuiltin({
+        availability: {
+            monday: "",
+            tuesday: "",
+            wednesday: "",
+            thursday: "",
+            friday: ""
+        },
+        limits: {
+            minHours: 8,
+            maxDays: 21,
+            appointmentLength: 30
+        }
+    });
 }
 
 function schedulerInitBuiltin(data) {

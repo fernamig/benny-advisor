@@ -1,0 +1,38 @@
+﻿@page "/Service/{serviceId}/Schedule"
+@{
+    var serviceId = ViewContext.RouteData.Values["serviceId"];
+}
+
+<div class="alert alert-secondary">
+    <h4 class="alert-heading">Schedule an Appointment With @serviceId.ToString().ToUpper()</h4>
+</div>
+
+<div id="tabAppointmentContainer">
+</div>
+
+<div id="spinnerContainer" class="d-none">
+    <partial name="_Spinner" />
+</div>
+
+<partial name="_SchedulerTmpl" />
+
+<modal id="schedulerCreateAppointmentModal" title="Schedule Appointment" ok-title="Schedule" on-ok-click="">
+    <div class="form-group">
+        <div class="alert alert-danger">
+            Not Implemented.
+        </div>
+    </div>
+</modal>
+
+@section Scripts {
+    <script>
+    $.views.settings.allowCode(true);
+    gStudentId = '000000000';
+    gAdvisorId = '@serviceId';
+    schedulerSelectService();
+
+    $(document).on('click', 'select', function (e) {
+        e.stopPropagation()
+    });
+    </script>
+}

@@ -1,0 +1,8 @@
+﻿@page "/Service/{serviceId}/Student/{studentId}"
+@model StudentModel
+@{
+    var serviceId = ViewContext.RouteData.Values["serviceId"];
+    var studentId = ViewContext.RouteData.Values["studentId"];
+}
+
+<partial name="_StudentDetails" for="Student" />

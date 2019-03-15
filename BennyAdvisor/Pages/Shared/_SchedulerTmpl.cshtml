@@ -1,4 +1,4 @@
-﻿<script id="scheduleTmpl" type="text/x-jsrender">
+﻿<script id="scheduleBuiltinTmpl" type="text/x-jsrender">
     <div class="alert alert-secondary">
         <div class="row">
             <div class="col-2 text-left">
@@ -22,8 +22,9 @@
             </div>
             <div class="col-2 text-right">
                 <button id="tabAppointmentNext" class="btn btn-primary"
-                        {{if days[4].day >= latest}}disabled{{/if}}
-                        onclick="schedulerShowNextWeek()">
+                        {{if days[4].day>
+                    = latest}}disabled{{/if}}
+                    onclick="schedulerShowNextWeek()">
                     Next&nbsp;<i class="fas fa-angle-double-right"></i>
                 </button>
             </div>
@@ -65,5 +66,18 @@
 <script id="scheduleTimeTradeTmpl" type="text/x-jsrender">
     <div class="alert alert-secondary">
         <iframe src="{{:url}}" class="w-100 border-0 h-800x"></iframe>
+    </div>
+</script>
+
+<script id="scheduleNoneTmpl" type="text/x-jsrender">
+    <div class="alert alert-danger" role="alert">
+        <div class="row vertical-align">
+            <div class="col-xs-1 text-center">
+                <i class="fa fa-exclamation-triangle fa-2x"></i>
+            </div>
+            <div class="col-xs-11">
+                <strong>Error:&nbsp;</strong>An availability schedule has not been defined by {{:service}}.
+            </div>
+        </div>
     </div>
 </script>

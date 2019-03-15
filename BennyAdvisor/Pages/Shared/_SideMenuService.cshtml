@@ -1,0 +1,29 @@
+﻿
+@{
+    var activePage = ViewContext.RouteData.Values["page"] as string;
+}
+
+<ul class="navbar-nav">
+    <li class="nav-group @(activePage == "/Service/Index" ? "active" : "")">
+        <a asp-page="/Service/Index">
+            <i class="fa fa-tachometer-alt float-right"></i>Dashboard
+        </a>
+    </li>
+    <li class="nav-group @(activePage == "/Service/Schedule" ? "active" : "")">
+        <a asp-page="/Service/Schedule">
+            <i class="fa fa-calendar-check float-right"></i>Schedule Appointment
+        </a>
+    </li>
+
+    <li class="nav-group">
+        <a asp-page="/Service/MyProfile/Schedule">
+            <i class="fas fa-user-cog float-right"></i>My Profile
+        </a>
+    </li>
+    @if (activePage.StartsWith("/Service/MyProfile/"))
+    {
+        <li class="nav-item @(activePage == "/Service/MyProfile/Schedule" ? "active" : "")">
+            <a asp-page="/Service/MyProfile/Schedule">Schedule</a>
+        </li>
+    }
+</ul>

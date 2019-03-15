@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BennyAdvisor.Models;
 using BennyAdvisor.Reports;
@@ -119,6 +120,12 @@ namespace BennyAdvisor.api
             var provider = new NotesProvider();
             return Json(provider.Get(id));
         }
+        [HttpGet]
+        public async Task<JsonResult> GetStudentNotes2(string id)
+        {
+            var provider = new Notes2Provider();
+            return Json(await provider.Get(id));
+        }
 
         [HttpPost]
         public JsonResult AddStudentNote(string id, [FromBody] NoteModel note)
@@ -172,6 +179,69 @@ namespace BennyAdvisor.api
             }
 
             return students;
+        }
+
+        [HttpGet]
+        public JsonResult GetRecentUpcomingAppointments(string id)
+        {
+            var provider = new StudentProvider();
+
+            var upcoming = new[] {
+                new AppointmentModel
+                {
+                    DateTime = "Wednesday, August 1 at 9 am",
+                    Agenda = "Recommended by advisor",
+                    Student = provider.Get("000000001")
+                },
+                new AppointmentModel
+                {
+                    DateTime = "Wednesday, August 1 at 9 am",
+                    Agenda = "Recommended by advisor",
+                    Student = provider.Get("000000002")
+                },
+                new AppointmentModel
+                {
+                    DateTime = "Wednesday, August 1 at 9 am",
+                    Agenda = "Recommended by advisor",
+                    Student = provider.Get("000000003")
+                },
+                new AppointmentModel
+                {
+                    DateTime = "Wednesday, August 1 at 9 am",
+                    Agenda = "Recommended by advisor",
+                    Student = provider.Get("000000004")
+                }
+            };
+            var recent = new[] {
+                new AppointmentModel
+                {
+                    DateTime = "Today at 9 am",
+                    Agenda = "Recommended by advisor",
+                    Student = provider.Get("000000005")
+                },
+                new AppointmentModel
+                {
+                    DateTime = "Today at 9 am",
+                    Agenda = "Recommended by advisor",
+                    Student = provider.Get("000000006")
+                },
+                new AppointmentModel
+                {
+                    DateTime = "Today at 9 am",
+                    Agenda = "Recommended by advisor",
+                    Student = provider.Get("000000007")
+                },
+                new AppointmentModel
+                {
+                    DateTime = "Today at 9 am",
+                    Agenda = "Recommended by advisor",
+                    Student = provider.Get("000000009")
+                }
+            };
+            return Json(new {
+                recent = recent,
+                upcoming = upcoming
+            });
         }
     }
 }

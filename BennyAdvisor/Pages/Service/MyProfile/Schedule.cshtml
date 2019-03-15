@@ -1,0 +1,24 @@
+﻿@page "/Service/{serviceId}/MyProfile"
+@{
+    var serviceId = ViewContext.RouteData.Values["serviceId"];
+}
+
+<partial name="_Schedule" />
+
+@section Scripts {
+    <script src="~/lib/bootstrap-slider/bootstrap-slider.min.js"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap-slider/css/bootstrap-slider.css" />
+
+    <script>
+        $("#sliderApptLen").slider()
+            .on("slideStop", function(e) {
+                $("output").text(e.value);
+            });
+
+        $.get("/api/ajax/MyProfileGetSchedule/@serviceId")
+        .done(schedulerInit)
+        .fail(function(xhr, status, error) {
+            alert("Request Failed: " + status + ", " + error);
+        });
+    </script>
+}

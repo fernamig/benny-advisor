@@ -1,8 +1,52 @@
-﻿@page
+﻿@page "/Service/{serviceId}"
+@{
+    var serviceId = ViewContext.RouteData.Values["serviceId"];
+}
 
-<div class="btn-group" role="group">
-    <button type="button" class="btn btn-secondary">All</button>
-    <button type="button" class="btn btn-secondary">Middle</button>
-    <button type="button" class="btn btn-secondary">Middle</button>
-    <button type="button" class="btn btn-secondary">Right</button>
+<div class="row">
+    <div class="col">
+        <div class="card bg-primary">
+            <h5 class="card-header text-white">Upcoming Appointments</h5>
+            <div id="upcomingContainer">
+                <partial name="_Spinner" />
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-white bg-primary">
+            <h5 class="card-header">Recent Appointments</h5>
+            <div id="recentContainer">
+                <partial name="_Spinner" />
+            </div>
+        </div>
+    </div>
 </div>
+
+<script id="studentTmpl" type="text/x-jsrender">
+    <a href="/Service/@serviceId/Student/{{:student.id}}">
+        <div class="row bg-card m-0">
+            <div class="col-4 p-1 col-middle">
+                <img class="rounded-circle img-fluid img-thumbnail" src="{{:student.imagePath}}" />
+            </div>
+            <div class="col-8 p-1">
+                <div class="mt-0">{{:dateTime}}</div>
+                <div class="">{{:student.lastName}}, {{:student.firstName}}</div>
+                <div class="text-muted">{{:agenda}}</div>
+            </div>
+        </div>
+    </a>
+</script>
+
+@section Scripts {
+    <script>
+        $.cachedAjax("/api/ajax/GetRecentUpcomingAppointments/@serviceId")
+        .done(function (data) {
+            var tmpl = $.templates("#studentTmpl");
+            $("#upcomingContainer").html($(tmpl.render(data.upcoming)));
+            $("#recentContainer").html($(tmpl.render(data.recent)));
+        })
+        .fail(function (xhr, status, error) {
+            alert("Request Failed: " + status + ", " + error);
+        });
+    </script>
+}

@@ -24,12 +24,20 @@ namespace BennyAdvisor.Reports
                     Builtin = null
                 };
             }
-            else
+            else if (sch.Builtin != null)
             {
                 return new ScheduleAvailabilityReportModel
                 {
                     TimeTrade = null,
                     Builtin = GenerateAvailability(new ScheduleBuiltinModel(sch.Builtin), advisorId, studentId, day)
+                };
+            }
+            else
+            {
+                return new ScheduleAvailabilityReportModel
+                {
+                    TimeTrade = null,
+                    Builtin = null
                 };
             }
         }
