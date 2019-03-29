@@ -1,9 +1,9 @@
-﻿<script id="scheduleTmpl" type="text/x-jsrender">
+﻿<script id="scheduleBuiltinTmpl" type="text/x-jsrender">
     <div class="alert alert-secondary">
         <div class="row">
             <div class="col-2 text-left">
                 <button id="tabAppointmentPrev" class="btn btn-primary"
-                        {{if days[0].day <= earliest}} disabled{{/if}}
+                        {{if days[0].day <= earliest}}disabled{{/if}}
                         onclick="schedulerShowPrevWeek()">
                     <i class="fas fa-angle-double-left"></i>&nbsp;Prev
                 </button>
@@ -22,7 +22,7 @@
             </div>
             <div class="col-2 text-right">
                 <button id="tabAppointmentNext" class="btn btn-primary"
-                        {{if days[4].day >= latest}} disabled{{/if}}
+                        {{if days[4].day >= latest}}disabled{{/if}}
                         onclick="schedulerShowNextWeek()">
                     Next&nbsp;<i class="fas fa-angle-double-right"></i>
                 </button>
@@ -31,20 +31,16 @@
     </div>
     <div id="scheduleContainer" class="card alert-secondary container small">
         <div class="row card-header p-0">
-            <div class="col-1"></div>
             {{for days tmpl="#scheduleHeaderColTmpl" /}}
-            <div class="col-1"></div>
         </div>
         <div class="row">
-            <div class="col-1"></div>
             {{for days tmpl="#scheduleDayTmpl" /}}
-            <div class="col-1"></div>
         </div>
     </div>
 </script>
 
 <script id="scheduleHeaderColTmpl" type="text/x-jsrender">
-    <div class="col-2">
+    <div class="col">
         <div class="text-uppercase">
             {{*:moment(data.day).format("dddd")}}
         </div>
@@ -55,13 +51,32 @@
 </script>
 
 <script id="scheduleDayTmpl" type="text/x-jsrender">
-    <div class="col-2">
+    <div class="col">
         {{for slots tmpl="#scheduleSlotTmpl" /}}
     </div>
 </script>
 
 <script id="scheduleSlotTmpl" type="text/x-jsrender">
     <div class="schedule-slot rounded" onclick="schedulerShowCreateAppointmentModal()">
-        {{*:moment(data.start).format("h:mm")}} - {{*:moment(data.end).format("h:mma")}}
+        {{*:moment(data.start).format("h:mma")}} - {{*:moment(data.end).format("h:mma")}}
+    </div>
+</script>
+
+<script id="scheduleTimeTradeTmpl" type="text/x-jsrender">
+    <div class="alert alert-secondary">
+        <iframe src="{{:url}}" class="w-100 border-0 h-800x"></iframe>
+    </div>
+</script>
+
+<script id="scheduleNoneTmpl" type="text/x-jsrender">
+    <div class="alert alert-danger" role="alert">
+        <div class="row vertical-align">
+            <div class="col-xs-1 text-center">
+                <i class="fa fa-exclamation-triangle fa-2x"></i>
+            </div>
+            <div class="col-xs-11">
+                <strong>Error:&nbsp;</strong>An availability schedule has not been defined by {{:service}}.
+            </div>
+        </div>
     </div>
 </script>

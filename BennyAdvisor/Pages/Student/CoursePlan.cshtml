@@ -9,7 +9,9 @@
     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar">
         <div class="btn-group mr-2" role="group" aria-label="">
             <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-primary dropdown-toggle" type="button"
+                        onclick="coursePlanDisableSelectedTerms()"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Add Term
                 </button>
                 <div class="dropdown-menu">
@@ -56,10 +58,21 @@
     </ul>
 </modal>
 
-<modal id="removeTermModal" title="Remove Term" ok-title="Yes" cancel-title="No" on-ok-click="onRemoveTerm()">
+<modal id="removeTermModal" title="Remove Term" ok-title="Yes" cancel-title="No"
+       on-ok-click="coursePlanOnRemoveTerm()">
     <input type="hidden" id="removeTermCode">
     <p>
         Do you want to remove term '<span id="removeTermTitle"></span>'?
+    </p>
+</modal>
+
+<modal id="removeCourseModal" title="Remove Course" ok-title="Yes" cancel-title="No"
+       on-ok-click="coursePlanOnRemoveCourse()">
+    <input type="hidden" id="removeCourseCode">
+    <input type="hidden" id="removeCourseTermCode">
+    <p>
+        Do you want to remove the course '<span id="removeCourseTitle"></span>'
+        from the term '<span id="removeCourseTermTitle"></span>'?
     </p>
 </modal>
 
@@ -119,36 +132,5 @@
         coursePlanSendUpdate();
     });
 
-    function showRemoveTermModal(termCode, termTitle)
-    {
-        $('#removeTermCode').val(termCode);
-        $('#removeTermTitle').text(termTitle);
-        $('#removeTermModal').modal('show');
-    }
-
-    function onRemoveTerm()
-    {
-        var termCode = $("#removeTermCode").val();
-        $("#coursePlanTerm" + termCode).closest(".card").remove();
-        $("#removeTermModal").modal("hide");
-        coursePlanSendUpdate();
-    }
-
-    function showAddCourseModal(termCode)
-    {
-        $("#courseFilter").val('');
-        $("#courseList").html('<li class="list-group-item">Loading...</li>');
-        $('#addCourseTermCode').val(termCode);
-        $('#addCourseModal').modal('show');
-
-        $.cachedAjax("/api/ajax/GetCourses")
-        .done(function(data) {
-            var tmpl = $.templates("#searchCourseItemTmpl");
-            $("#courseList").html(tmpl.render(data));
-        })
-        .fail(function(xhr, status, error) {
-            alert("Request Failed: " + status + ", " + error);
-        });
-    }
     </script>
 }

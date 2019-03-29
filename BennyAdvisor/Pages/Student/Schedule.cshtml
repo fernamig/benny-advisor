@@ -7,19 +7,40 @@
         <li class="dropdown">
             <div class="dropdown-toggle caret-off p-2" data-toggle="dropdown">
                 <span class="chevron-right fa fa-chevron-down"></span>
-                <div id="selectedAdvisor" data-id="" class="">
+                <div id="selectedAdvisor">
                     <span>Choose an Advisor</span>
                     <span>&nbsp;</span>
                 </div>
             </div>
             <div class="alert alert-secondary w-100 dropdown-menu">
-                <div class="p-2 dropdown-select mb-1" data-id="100000001" onclick="schedulerSelectAdvisor(this)">
-                    <div>John Doe ~ College of Engineering ~ Specialty</div>
+                <h5 class="dropdown-heading p-2 rounded">My Advisor</h5>
+                <div class="p-2 dropdown-select cursor-pointer mb-1 ml-4" data-id="100000001" onclick="schedulerSelectAdvisor(this)">
+                    <div>Advisor 1 ~ College of Engineering ~ Uses Builtin</div>
                     <div class="text-muted">30 minutes</div>
                 </div>
-                <div class="p-2 dropdown-select mb-1" data-id="100000001" onclick="schedulerSelectAdvisor(this)">
-                    <div>John Doe ~ College of Engineering ~ Specialty</div>
+                <div class="p-2 dropdown-select cursor-pointer mb-1 ml-4" data-id="200000001" onclick="schedulerSelectAdvisor(this)">
+                    <div>Advisor 2  ~ College of Engineering ~ Uses TimeTrade</div>
                     <div class="text-muted">30 minutes</div>
+                </div>
+                <select class="form-control form-control-lg dropdown-heading h5 mt-3">
+                    @foreach (var c in CollegeProvider.Get())
+                    {
+                        <option value="@c.Code">@c.Title Advisors</option>
+                    }
+                </select>
+                <div id="collegeAdvisorsContainer">
+                    <div class="p-2 dropdown-select cursor-pointer mb-1 ml-4" data-id="100000001" onclick="schedulerSelectAdvisor(this)">
+                        <div>Advisor 1 ~ College of Engineering ~ Uses Builtin</div>
+                        <div class="text-muted">30 minutes</div>
+                    </div>
+                    <div class="p-2 dropdown-select cursor-pointer mb-1 ml-4" data-id="200000001" onclick="schedulerSelectAdvisor(this)">
+                        <div>Advisor 2  ~ College of Engineering ~ Uses TimeTrade</div>
+                        <div class="text-muted">30 minutes</div>
+                    </div>
+                    <div class="p-2 dropdown-select cursor-pointer mb-1 ml-4" data-id="100000001" onclick="schedulerSelectAdvisor(this)">
+                        <div>John Doe ~ College of Engineering ~ Specialty</div>
+                        <div class="text-muted">30 minutes</div>
+                    </div>
                 </div>
             </div>
         </li>
@@ -47,5 +68,9 @@
 <script>
     $.views.settings.allowCode(true);
     gStudentId = '@ViewContext.RouteData.Values["studentId"]';
+
+    $(document).on('click', 'select', function (e) {
+        e.stopPropagation()
+    });
 </script>
 }

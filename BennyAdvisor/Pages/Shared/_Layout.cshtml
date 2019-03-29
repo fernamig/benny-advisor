@@ -47,11 +47,15 @@
             <div class="col-2 side-bar">
                 @if (activePage.StartsWith("/Advisor/"))
                 {
-                    <partial name="_SideMenuAdvisor.cshtml" />
+                    <partial name="_SideMenuAdvisor" />
                 }
                 else if (activePage.StartsWith("/Student/"))
                 {
-                    <partial name="_SideMenuStudent.cshtml" />
+                    <partial name="_SideMenuStudent" />
+                }
+                else if (activePage.StartsWith("/Service/"))
+                {
+                    <partial name="_SideMenuService" />
                 }
             </div>
             <div class="col-10 pt-2">

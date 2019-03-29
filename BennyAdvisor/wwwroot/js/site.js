@@ -33,6 +33,18 @@ $.cachedAjax = $.createCache(function(defer, url) {
     $.get(url).then(defer.resolve, defer.reject);
 });
 
+$.fn.disable = function() {
+    return this.each(function() {
+        if (typeof this.disabled != "undefined") this.disabled = true;
+    });
+}
+
+$.fn.enable = function() {
+    return this.each(function() {
+        if (typeof this.disabled != "undefined") this.disabled = false;
+    });
+}
+
 //
 // Misc Helpers.
 //
@@ -193,14 +205,26 @@ function tabProgressInit() {
 // Make Appointment tab functionality.
 //
 
-function tabAppointmentInit() {
-    var tmpl = $.templates("#scheduleTmpl");
+function tabAppointmentInit(wk) {
     // Get the start of the week.
-    var wk = $("#tabAppointmentStart").attr("data-date");
+    if (!wk)
+        wk = $("#tabAppointmentStart").attr("data-date");
 
     $.get("/api/ajax/GetAdvisingAvailability/" + gStudentId + "/" + gAdvisorId + "/" + wk)
     .done(function(data) {
-        $("#tabAppointmentContainer").html(tmpl.render(data));
+        if (data.timeTrade) {
+            var tmpl = $.templates("#scheduleTimeTradeTmpl");
+            $("#tabAppointmentContainer").html(tmpl.render(data.timeTrade));
+        }
+        else if (data.builtin) {
+            var tmpl = $.templates("#scheduleBuiltinTmpl");
+            $("#tabAppointmentContainer").html(tmpl.render(data.builtin));
+        }
+        else
+        {
+            var tmpl = $.templates("#scheduleNoneTmpl");
+            $("#tabAppointmentContainer").html(tmpl.render({ service: gAdvisorId }));
+        }
     })
     .fail(function(xhr, status, error) {
         alert("Request Failed: " + status + ", " + error);
@@ -217,6 +241,13 @@ function tabNotesInit() {
     .fail(function(xhr, status, error) {
         alert("Request Failed: " + status + ", " + error);
     });
+}
+function tabNotesInit2() {
+    $.cachedAjax("/api/ajax/GetStudentNotes2/" + gStudentId)
+        .done(notesShowNotes)
+        .fail(function (xhr, status, error) {
+            alert("Request Failed: " + status + ", " + error);
+        });
 }
 
 //
@@ -241,7 +272,7 @@ function tabScoresInit() {
 }
 
 //
-// Scheduler appointment functionality.
+// Scheduler functionality.
 //
 
 function schedulerShowPrevWeek() {
@@ -264,36 +295,157 @@ function schedulerSelectAdvisor(el) {
     $("#selectedAdvisor").html($(el).html());
 
     var curr = moment().add(2, 'days').startOf("isoWeek");
+    var currFmt = curr.format("MM-DD-YYYY");
+    $("#tabAppointmentStart").attr("data-date", currFmt);
+    tabAppointmentInit(currFmt);
+}
 
-    $.get("/api/ajax/GetAdvisingAvailability/" + gStudentId + "/" + gAdvisorId + "/" + curr.format("MM-DD-YYYY"))
-    .done(function (data) {
-        $("#tabAppointmentContainer").html($.templates("#scheduleTmpl").render(data));
-    })
-    .fail(function (xhr, status, error) {
-        alert("Request Failed: " + status + ", " + error);
-    });
+// TODO: Merge schedulerSelectService with schedulerSelectAdvisor.
+function schedulerSelectService() {
+    $("#tabAppointmentContainer").html($("#spinnerContainer").html());
+
+    var curr = moment().add(2, 'days').startOf("isoWeek");
+    var currFmt = curr.format("MM-DD-YYYY");
+    $("#tabAppointmentStart").attr("data-date", currFmt);
+    tabAppointmentInit(currFmt);
 }
 
 function schedulerShowCreateAppointmentModal() {
     $('#schedulerCreateAppointmentModal').modal('show');
 }
 
-function schedulerSelectSlot(el) {
-    $("#tabAppointmentContainer").html($("#spinnerContainer").html());
+function schedulerSaveDay(day) {
+    schedulerSetDay(day);
+    schedulerSendUpdate();
+}
 
-    gAdvisorId = $(el).attr("data-id");
-    $("#selectedAdvisor").attr("data-id", gAdvisorId);
-    $("#selectedAdvisor").html($(el).html());
+function schedulerSetDay(day) {
+    var val = $("#" + day + " > textarea").val();
+    var parts = val.split(",");
+    var text = [];
+    var badges = [];
+    parts.forEach(function (el) {
+        var range = el.split("-");
+        if (range.length === 2) {
+            var startTime = moment(range[0], ['h:m a', 'h:ma', 'ha']);
+            var endTime = moment(range[1], ['h:m a', 'h:ma', 'ha']);
+            if (startTime < endTime) {
+                var start = startTime.format('h:mma');
+                var end = endTime.format('h:mma');
+                text.push(start + "-" + end);
+                badges.push(
+                    '<span class="badge badge-warning">'
+                    + start + " - " + end +
+                    '</span>');
+            }
+        }
+    });
 
-    var curr = moment().add(2, 'days').startOf("isoWeek");
+    $("#" + day + " > textarea").val(text.join(", "));
+    $("#" + day + " > div").html(badges.join(" "));
+}
 
-    $.get("/api/ajax/GetAdvisingAvailability/" + gStudentId + "/" + gAdvisorId + "/" + curr.format("MM-DD-YYYY"))
-        .done(function (data) {
-            $("#tabAppointmentContainer").html($.templates("#scheduleTmpl").render(data));
-        })
-        .fail(function (xhr, status, error) {
-            alert("Request Failed: " + status + ", " + error);
-        });
+function schedulerSendUpdate() {
+    var type = $('input[name=scheduler]:checked').val();
+    var data = { };
+
+    if (type === "timetrade") {
+        data.timetrade = { };
+        data.timetrade.url = $("#timetradeUrl").val();
+    }
+    else if (type === "builtin") {
+        data.builtin = { };
+        data.builtin.limits = {
+            minHours: $("#minHours").val(),
+            maxDays: $("#maxDays").val(),
+            appointmentLength: $("output").text()
+        };
+        data.builtin.availability = {
+            monday: $("#dayMonday > textarea").val(),
+            tuesday: $("#dayTuesday > textarea").val(),
+            wednesday: $("#dayWednesday > textarea").val(),
+            thursday: $("#dayThursday > textarea").val(),
+            friday: $("#dayFriday > textarea").val()
+        };
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/api/ajax/MyProfileSetSchedule/" + gAdvisorId,
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json"
+    })
+    .fail(function (xhr, status, error) {
+        alert("Request Failed: " + status + ", " + error);
+    });
+}
+
+function schedulerInit(data, slider) {
+    if (data.timeTrade) {
+        $("#timetradeUrl").val(data.timeTrade.url);
+        $("input[name=scheduler][value=timetrade").prop("checked", true);
+        schedulerSetDefaultBuiltin();
+        schedulerSelectTimeTrade();
+    }
+    else if (data.builtin) {
+        $("input[name=scheduler][value=builtin").prop("checked", true);
+        schedulerInitBuiltin(data.builtin);
+        schedulerSelectBuiltin();
+    }
+    else {
+        // There is not schedule preferences so set the defaults for the built-in.
+        schedulerSetDefaultBuiltin();
+    }
+    $("#scheduleChooseContainer").removeClass("d-none");
+    $("#spinner").hide();
+}
+
+function schedulerSetDefaultBuiltin() {
+    schedulerInitBuiltin({
+        availability: {
+            monday: "",
+            tuesday: "",
+            wednesday: "",
+            thursday: "",
+            friday: ""
+        },
+        limits: {
+            minHours: 8,
+            maxDays: 21,
+            appointmentLength: 30
+        }
+    });
+}
+
+function schedulerInitBuiltin(data) {
+    $("#dayMonday > textarea").val(data.availability.monday);
+    schedulerSetDay("dayMonday");
+    $("#dayTuesday > textarea").val(data.availability.tuesday);
+    schedulerSetDay("dayTuesday");
+    $("#dayWednesday > textarea").val(data.availability.wednesday);
+    schedulerSetDay("dayWednesday");
+    $("#dayThursday > textarea").val(data.availability.thursday);
+    schedulerSetDay("dayThursday");
+    $("#dayFriday > textarea").val(data.availability.friday);
+    schedulerSetDay("dayFriday");
+
+    $("#minHours").val(data.limits.minHours);
+    $("#maxDays").val(data.limits.maxDays);
+    $("output").val(data.limits.appointmentLength);
+    $("#sliderApptLen").slider("setValue", data.limits.appointmentLength, true);
+    $("#sliderApptLen").attr('data-slider-value', data.limits.appointmentLength);
+}
+
+function schedulerSelectBuiltin() {
+    $("#timetradeUrl").attr("disabled", "disabled");
+    $("#builtinContainer").removeClass("d-none");
+    $("#sliderApptLen").slider("relayout");
+}
+
+function schedulerSelectTimeTrade() {
+    $("#timetradeUrl").removeAttr("disabled");
+    $("#builtinContainer").addClass("d-none");
 }
 
 //
@@ -342,6 +494,44 @@ function notesAdd() {
         alert("Request Failed: " + status + ", " + error);
     });
 }
+function notesAdd2() {
+    $('#notesAddModal').modal('hide');
+
+    var note = {
+        type: "note",
+        attributes: {
+            note: $("#notesAddNote").val(),
+            // TODO: A null context is not valid?
+            //context: null,
+            context: {
+                contextType: "",
+                contextId: ""
+            },
+            studentId: gStudentId,
+            creatorId: gAdvisorId,
+            permissions: "advisors"
+        },
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "/api/ajax/AddStudentNote2/",
+        data: JSON.stringify(note),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json"
+    })
+    .done(function (data) {
+        $.cachedAjax("/api/ajax/GetStudentNotes2/" + gStudentId, true)
+            .done(notesShowNotes)
+            .fail(function (xhr, status, error) {
+                alert("Request Failed: " + status + ", " + error);
+            });
+    })
+    .fail(function (xhr, status, error) {
+        alert("Request Failed: " + status + ", " + error);
+    });
+}
+
 
 //
 // Course plan functionality.
@@ -421,4 +611,57 @@ function coursePlanAddCourseToTerm(courseCode)
     .fail(function(xhr, status, error) {
         alert("Request Failed: " + status + ", " + error);
     });
+}
+
+function coursePlanDisableSelectedTerms() {
+    $(".add-term").removeAttr("disabled");
+    $(".card.term").each(function () {
+        var termCode = $(this).attr("data-id");
+        $(".add-term[data-code=" + termCode + "]").attr("disabled", "disabled");
+    });
+}
+
+function coursePlanShowAddCourseModal(termCode) {
+    $("#courseFilter").val('');
+    $("#courseList").html('<li class="list-group-item">Loading...</li>');
+    $('#addCourseTermCode').val(termCode);
+    $('#addCourseModal').modal('show');
+
+    $.cachedAjax("/api/ajax/GetCourses")
+        .done(function (data) {
+            var tmpl = $.templates("#searchCourseItemTmpl");
+            $("#courseList").html(tmpl.render(data));
+        })
+        .fail(function (xhr, status, error) {
+            alert("Request Failed: " + status + ", " + error);
+        });
+}
+
+function coursePlanShowRemoveTermModal(termCode, termTitle) {
+    $('#removeTermCode').val(termCode);
+    $('#removeTermTitle').text(termTitle);
+    $('#removeTermModal').modal('show');
+}
+
+function coursePlanOnRemoveTerm() {
+    var termCode = $("#removeTermCode").val();
+    $("#coursePlanTerm" + termCode).closest(".card").remove();
+    $("#removeTermModal").modal("hide");
+    coursePlanSendUpdate();
+}
+
+function coursePlanShowRemoveCourseModal(courseCode, courseTitle, termCode, termTitle) {
+    $('#removeCourseCode').val(courseCode);
+    $('#removeCourseTitle').text(courseTitle);
+    $('#removeCourseTermCode').val(termCode);
+    $('#removeCourseTermTitle').text(termTitle);
+    $('#removeCourseModal').modal('show');
+}
+
+function coursePlanOnRemoveCourse() {
+    var courseCode = $("#removeCourseCode").val();
+    var termCode = $("#removeCourseTermCode").val();
+    $("#coursePlanTerm" + termCode).find(".course[data-id=" + courseCode + "]").remove();
+    $("#removeCourseModal").modal("hide");
+    coursePlanSendUpdate();
 }

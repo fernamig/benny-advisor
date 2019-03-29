@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using BennyAdvisor.Models;
 using BennyAdvisor.Reports;
 
@@ -11,8 +13,8 @@ namespace BennyAdvisor.api
     [Route("api/[controller]/[action]/{id?}")]
     public class AjaxController : Controller
     {
-        static object s_LockCoursePlan = new object();
-        static object s_LockNotes = new object();
+        static readonly object s_LockCoursePlan = new object();
+        static readonly object s_LockNotes = new object();
 
         [HttpGet]
         public JsonResult GetCourses()
@@ -42,14 +44,32 @@ namespace BennyAdvisor.api
             foreach (var s in GetStudents(id))
             {
                 var claims = provider.HasClaims(s.Id, "HSRCAssistance");
-                if (claims.Count() > 0)
+                if (claims.Any())
+                {
                     results.Add(new StudentClaimsModel()
                     {
                         Student = s,
                         Claims = claims
                     });
+                }
             }
             return Json(results);
+        }
+
+        [HttpGet]
+        public JsonResult MyProfileGetSchedule(string id)
+        {
+            var provider = new MyProfileProvider();
+            var sch = provider.GetSchedule(id);
+            return Json(sch);
+        }
+
+        [HttpPost]
+        public JsonResult MyProfileSetSchedule(string id, [FromBody] ScheduleSettingsModel sch)
+        {
+            var provider = new MyProfileProvider();
+            provider.SetSchedule(id, sch);
+            return Json("The scheduler preferences have been updated.");
         }
 
         [HttpGet]
@@ -101,6 +121,12 @@ namespace BennyAdvisor.api
             var provider = new NotesProvider();
             return Json(provider.Get(id));
         }
+        [HttpGet]
+        public async Task<JsonResult> GetStudentNotes2(string id)
+        {
+            var provider = new Notes2Provider();
+            return Json(await provider.Get(id));
+        }
 
         [HttpPost]
         public JsonResult AddStudentNote(string id, [FromBody] NoteModel note)
@@ -114,6 +140,12 @@ namespace BennyAdvisor.api
                 provider.Add(id, note);
                 return Json("The note was added.");
             }
+        }
+        [HttpPost]
+        public async Task<JsonResult> AddStudentNote2([FromBody] JObject note)
+        {
+            var provider = new Notes2Provider();
+            return Json(await provider.Add(note));
         }
 
         [HttpGet]
@@ -154,6 +186,69 @@ namespace BennyAdvisor.api
             }
 
             return students;
+        }
+
+        [HttpGet]
+        public JsonResult GetRecentUpcomingAppointments(string id)
+        {
+            var provider = new StudentProvider();
+
+            var upcoming = new[] {
+                new AppointmentModel
+                {
+                    DateTime = "Wednesday, August 1 at 9 am",
+                    Agenda = "Recommended by advisor",
+                    Student = provider.Get("000000001")
+                },
+                new AppointmentModel
+                {
+                    DateTime = "Wednesday, August 1 at 9 am",
+                    Agenda = "Recommended by advisor",
+                    Student = provider.Get("000000002")
+                },
+                new AppointmentModel
+                {
+                    DateTime = "Wednesday, August 1 at 9 am",
+                    Agenda = "Recommended by advisor",
+                    Student = provider.Get("000000003")
+                },
+                new AppointmentModel
+                {
+                    DateTime = "Wednesday, August 1 at 9 am",
+                    Agenda = "Recommended by advisor",
+                    Student = provider.Get("000000004")
+                }
+            };
+            var recent = new[] {
+                new AppointmentModel
+                {
+                    DateTime = "Today at 9 am",
+                    Agenda = "Recommended by advisor",
+                    Student = provider.Get("000000005")
+                },
+                new AppointmentModel
+                {
+                    DateTime = "Today at 9 am",
+                    Agenda = "Recommended by advisor",
+                    Student = provider.Get("000000006")
+                },
+                new AppointmentModel
+                {
+                    DateTime = "Today at 9 am",
+                    Agenda = "Recommended by advisor",
+                    Student = provider.Get("000000007")
+                },
+                new AppointmentModel
+                {
+                    DateTime = "Today at 9 am",
+                    Agenda = "Recommended by advisor",
+                    Student = provider.Get("000000009")
+                }
+            };
+            return Json(new {
+                recent = recent,
+                upcoming = upcoming
+            });
         }
     }
 }

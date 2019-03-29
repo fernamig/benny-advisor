@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using BennyAdvisor.Models;
 using BennyAdvisor.api;
 
-namespace BennyAdvisor.Pages.Advisor.Student
+namespace BennyAdvisor.Pages.Service
 {
-    public class IndexModel : PageModel
+    public class StudentModel : PageModel
     {
-        public StudentModel Student { get; set; }
+        public Models.StudentModel Student { get; set; }
 
         public void OnGet(string studentId)
         {

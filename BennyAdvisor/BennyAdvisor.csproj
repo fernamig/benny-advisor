@@ -8,6 +8,7 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="AWSSDK.S3" Version="3.3.31.8" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="System.Runtime.Caching" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,8 +16,19 @@
     <Folder Include="Reports\" />
     <Folder Include="TagHelpers\" />
     <Folder Include="Extensions\" />
+    <Folder Include="wwwroot\lib\bootstrap-slider\" />
+    <Folder Include="Pages\Service\" />
+    <Folder Include="Pages\Shared\MyProfile\" />
+    <Folder Include="Pages\Service\MyProfile\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="api\StudentsController %28copy%29.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="api\CollegeProvider.json" />
+    <Content Remove="wwwroot\lib\rangeslider\rangeslider.css" />
+    <Content Remove="wwwroot\lib\rangeslider\rangeslider.js" />
+    <Content Remove="wwwroot\lib\rangeslider\rangeslider.min.js" />
+    <Content Remove="Pages\Service\MyProfile\_ScheduleDayHeader.cshtml" />
   </ItemGroup>
 </Project>
